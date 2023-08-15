@@ -1,0 +1,121 @@
+/* 	css rules for register.html page
+	author: 1111111;
+	date: dd-mm-yy;
+	version: 0.1;
+*/
+
+.container a {
+  text-decoration: underline;
+  color: navy;
+}
+.form-control {
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  justify-items: center;
+  text-align: center;
+  padding: 55px 40px;
+  /* width: 25vw; */
+  height: 25vh;
+  background-color: white;
+  border-radius: 5px;
+}
+.input-container {
+  display: flex;
+  flex-direction: row;
+  margin: 20px 0 20px;
+  width: 300px;
+}
+.input-container i {
+  position: relative;
+  top: 0;
+  padding-left: 10px;
+  font-size: 25px;
+}
+.input-container input {
+  background-color: transparent;
+  border: 0;
+  border-bottom: 2px solid gray;
+  display: block;
+  width: 100%;
+  font-family: inherit;
+}
+.input-container:focus {
+  color: rgb(227, 120, 120);
+}
+.input-container input:focus {
+  outline: 0;
+  border-bottom-color: rgb(227, 120, 120);
+  transition: 0.3s;
+}
+.btn-form {
+  background-color: rgb(91, 91, 219);
+  color: white;
+  border: none;
+  width: 100%;
+  padding: 5%;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-family: inherit;
+  margin-top: 2px;
+}
+.btn-form:hover {
+  background-color: navy;
+}
+.check-container {
+  display: block;
+  position: relative;
+  margin-bottom: 12px;
+  padding-left: 9rem;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.check-container input {
+  position: absolute;
+  right: 0;
+  opacity: 0;
+  cursor: pointer;
+  height: 0px;
+  width: 0px;
+}
+.checkmark {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #eee;
+  border-radius: 5px;
+}
+.check-container:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+.check-container input:checked ~ .checkmark {
+  background-color: rgb(227, 120, 120);
+}
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+.check-container input:checked ~ .checkmark:after {
+  display: block;
+}
+.check-container .checkmark:after {
+  left: 9px;
+  top: 5px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+.check-container a {
+  margin-right: 2rem;
+}

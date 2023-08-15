@@ -1,0 +1,57 @@
+const bcrypt = require("bcrypt");
+const User = require("../DB/schemas/user");
+
+function hashPassword(password) {
+  const salt = bcrypt.genSaltSync();
+  return bcrypt.hashSync(password, salt);
+}
+
+function comparePass(rawPass, hashedPass) {
+  return bcrypt.compareSync(rawPass, hashedPass);
+}
+function validateEmail(email) {
+  if (!email.match(/^[A-Za-z\._\-0-9]*[@][A-Za-z]*[\.][a-z]{2,4}$/)) {
+    return false;
+  } else {
+    return true;
+  }
+}
+function validatePassword(password) {
+  if (!password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{6,})/)) {
+    return false;
+  } else {
+    return true;
+  }
+}
+function validateCredentials(item) {
+  let regEx;
+  item === email
+    ? (regEx = /^[A-Za-z\._\-0-9]*[@][A-Za-z]*[\.][a-z]{2,4}$/)
+    : (regEx = /^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z]).{2}$/);
+  if (!item.match(regEx)) {
+    return false;
+  } else {
+    return true;
+  }
+}
+function randomCodeGenerator() {
+  return Math.floor(Math.random() * 1000);
+}
+function producePhotoName(image, name) {
+  image.name = name;
+}
+
+function userToken(rawToken) {
+  const regex = /(?<=(s:)).*(?=\.)/;
+  let token = rawToken.match(regex);
+  // const userProfile =  User.findOne({ token });
+  return token[0];
+}
+module.exports = {
+  hashPassword,
+  comparePass,
+  validateEmail,
+  validatePassword,
+  randomCodeGenerator,
+  userToken,
+};

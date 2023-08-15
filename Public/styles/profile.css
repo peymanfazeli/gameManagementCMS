@@ -1,0 +1,161 @@
+/* nav {
+  margin-top: 5vh;
+} */
+.mainView {
+  font-family: "Muli", sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  overflow: hidden;
+  margin: 0;
+}
+.sectionsContainer {
+  display: flex;
+  width: 50vw;
+}
+.panel,
+.cover {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 50vh;
+  flex: 1;
+  transition: flex 0.7s ease-in;
+  color: rgba(0, 0, 0, 0.6);
+  position: relative;
+  border-radius: 10px;
+  margin: 10px;
+}
+.panel {
+  flex-direction: column;
+  display: flex;
+  justify-content: center;
+}
+.active {
+  flex: 10;
+}
+
+.cover {
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(55px);
+  position: absolute;
+  width: 100%;
+  margin: 0;
+  opacity: 98%;
+  transition: 0.3s;
+}
+.cover:hover {
+  opacity: 93%;
+}
+.cover h6 {
+  position: relative;
+  top: 40%;
+}
+.profileSetting,
+.categorySetting {
+  padding: 0 auto;
+  box-shadow: 1px 2px 3px;
+}
+.imgContainer,
+.categoryContainer {
+  height: 25vh;
+  margin: 2vh auto;
+  width: 100%;
+  padding: 10px;
+}
+.panel .imgContainer img {
+  width: 100%;
+  height: 100%;
+}
+.panel .btn {
+  /* margin: 10px 15% 0 10px; */
+  outline: 0;
+  border: 0;
+  background-color: rgb(102, 183, 210);
+  transition: 0.3s;
+}
+.panel .btn:hover {
+  background-color: rgb(118, 203, 232);
+}
+/* rgb(118, 203, 232); */
+.panel form {
+  padding: 0 5px;
+}
+.panel form .btn {
+  marign-left: 0;
+}
+.panel form,
+.userNameSection,
+.passwordSection {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin-top: 10px;
+}
+.userNameSection input,
+.passwordSection input {
+  height: 1.7rem;
+  width: 40%;
+  border: 0;
+  border-bottom: 1px solid rgb(118, 203, 232);
+  outline: 0;
+  transition: 0.3s;
+  background-color: transparent;
+  border-radius: 5px;
+}
+#changePasswordInput {
+  margin-right: 10px;
+}
+.userNameSection input:focus,
+.passwordSection input:focus {
+  border-bottom: 1px solid white;
+  box-shadow: 1px 2px 15px 5px rgb(118, 203, 232);
+  outline: 0;
+}
+.userNameSection label,
+.passwordSection label {
+  font-size: 12pt;
+  margin-left: 2px;
+}
+/* category Container */
+.categoryContainer {
+  margin: 50px auto 0;
+  text-align: center;
+  display: flex;
+  justify-content: space-evenly;
+}
+.categoryContainer .btn {
+  font-size: 8pt;
+  padding: 2%;
+}
+.categoryContainer label {
+  font-size: small;
+}
+.categoryContainer form {
+  font-size: x-small;
+  height: 15vh;
+  margin-top: 10px;
+}
+form .radio {
+  display: flex;
+}
+form .radio {
+  /* box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.6); */
+  /* position: absolute; */
+  /* border: 1px solid rgba(0, 0, 0, 0.3); */
+  border-radius: 5px;
+  width: 100px;
+  transition: 0.3s;
+  cursor: pointer;
+  /* margin-bottom: 10px; */
+}
+form .radio:hover {
+  box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.6);
+  /* background: radial-gradient(
+    circle,
+    rgba(242, 242, 242, 1) 0%,
+    rgba(174, 182, 193, 1) 100%
+  ); */
+}
+/*Styling Selectbox*/

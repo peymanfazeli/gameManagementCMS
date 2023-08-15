@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles/style.css" />
+    <link rel="stylesheet" href="styles/adminPage.css" />
+    <title>Adminstrator</title>
+  </head>
+  <body>
+    <nav>
+      <div class="header">
+        <a class="title" href="index.html">
+          <i class="fa fa-gamepad"></i>
+          امیرکبیر
+          <span>استودیو</span>
+        </a>
+        <div class="submit">
+          <a href="login.html" class="btn" id="loginBtn">ورود</a>
+          <a href="profile.html" class="btn" id="profileBtn"></a>
+          <a href="adminPage.html" class="btn" id="adminBtn"></a>
+          <a href="register.html" class="btn" id="signup">ثبت نام</a>
+          <a href="#" class="btn" id="logout" onclick="clearSession()">خروج</a>
+        </div>
+      </div>
+    </nav>
+    <h3 id="adminPageTitle">Welcome to Admin Page</h3>
+    <div class="container">
+      <section class="" id="playerSetting">
+        <span>کاربران</span>
+        <div class="playerSection panel">
+          <span> تمام کاربران </span>
+          <ul class="allPlayers">
+           <!-- dynamically loaded -->
+          </ul>
+        </div>
+      </section>
+      <section class="" id="gameSetting">
+        <span>بازی ها</span>
+        <div class="allGames panel">
+          <span>ویرایش بازی </span>
+          <div class="newGameSection">
+            <label for="gameName">نام بازی</label>
+            <input type="text" name="gameName" id="searchGameUpdateInputs" />
+            <button class="btn" id="searchBtn">جستجو</button>
+          </div>
+          <div class="updateGameData">
+            <div class="newGameSection" style="display: none">
+              <label for="gameName">آی دی </label>
+              <input type="text" name="gameName" id="gameIdInput" disabled />
+            </div>
+            <div class="newGameSection">
+              <label for="gameName">نام بازی</label>
+              <input type="text" name="gameName" id="gameUpdatedNameInput" />
+            </div>
+            <div class="newGameSection">
+              <label for="gameName">خلاصه</label>
+              <input
+                type="text"
+                name="gameName"
+                id="gameUpdatedAbstractInput"
+              />
+            </div>
+            <div class="newGameSection">
+              <label for="gameName">اطلاعات</label>
+              <input type="text" name="gameName" id="gameUpdatedInfoInput" />
+            </div>
+            <div class="newGameSection"id='updateDropdownContainer' >
+              <label for="abstract">دسته </label>
+              <input type="text" name="abstract" id="updateGameCtgInput"  value="دسته بندی بازی رو انتخاب کن"></input>
+              <div class="dropdown-content" id="dropdownContentUpdate" >
+              </div>
+            </div>
+            <div class="newGameSection btnContainer">
+              <button class="btn practical" id="updateGameBtn">
+                ویرایش اطلاعات
+              </button>
+              <button class="btn practical" id="deleteGameBtn">حذف بازی</button>
+            </div>
+          </div>
+        </div>
+        <div class="addGame panel">
+          <span>بازی جدید</span>
+          <div class="newGameSection">
+            <label for="gameName">اسم </label>
+            <input type="text" name="gameName" id="gameNameInput" />
+          </div>
+          <div class="newGameSection">
+            <label for="abstract">خلاصه</label>
+            <textarea name="abstract" id="abstractInput"></textarea>
+          </div>
+          <div class="newGameSection">
+            <label for="info">اطلاعات</label>
+            <textarea name="info" id="infoInput"></textarea>
+          </div>
+          <div class="newGameSection"id='dropdownContainer' >
+            <label for="abstract">دسته </label>
+            <input type="text" name="abstract" id="newGameCtgInput"  value="دسته بندی بازی رو انتخاب کن"></input>
+            <div class="dropdown-content" id="dropdownContentRegister">
+            </div>
+          </div>
+          <div class="newGameSection">
+            <label for="abstract">امتیاز </label>
+            <textarea name="abstract" id="gameRateInput"></textarea>
+          </div>
+          <button class="btn practical" id="registerGameBtn">ثبت</button>
+        </div>
+        <div class="addCategory panel">
+          <span>دسته بندی جدید</span>
+          <div class="newGameSection">
+            <label for="categoryName">اسم دسته بندی </label>
+            <input type="text" name="categoryName" id="categoryNameInput" />
+          </div>
+          <button class="btn practical" id="registerCtgBtn">ثبت</button>
+        </div>
+      </section>
+      <!-- <section class="" id="adminSetting">Admin Profile</section> -->
+    </div>
+
+    <script src="js/script.js"></script>
+    <script src="js/clientSideHelper.js"></script>
+    <script src="js/adminPage.js"></script>
+    <!-- <script src="js/profile.js"></script> -->
+  </body>
+</html>

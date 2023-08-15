@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>پروفایل</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link rel="stylesheet" href="styles/style.css" />
+    <link rel="stylesheet" href="styles/profile.css" />
+  </head>
+  <body>
+    <nav>
+      <div class="header">
+        <a class="title" href="index.html">
+          <i class="fa fa-gamepad"></i>
+          امیرکبیر
+          <span>استودیو</span>
+        </a>
+        <div class="submit">
+          <a href="login.html" class="btn" id="loginBtn">ورود</a>
+          <a href="profile.html" class="btn" id="profileBtn"></a>
+          <a href="adminPage.html" class="btn" id="adminBtn"></a>
+          <a href="register.html" class="btn" id="signup">ثبت نام</a>
+          <a href="#" class="btn" id="logout" onclick="clearSession()">خروج</a>
+        </div>
+      </div>
+    </nav>
+    <div class="mainView">
+      <div class="sectionsContainer">
+        <section class="panel profileSetting">
+          <form
+            action="http://localhost:3001/assets"
+            method="post"
+            enctype="multipart/form-data"
+          >
+            <input type="file" name="image" id="changeProfileImage" />
+            <button class="btn" id="changePhoto" type="submit">
+              تعویض تصویر
+            </button>
+          </form>
+          <!-- <div class="userNameAndPassword"> -->
+          <div class="userNameSection">
+            <label for="changeUserName">نام کاربری</label>
+            <input type="text" name="" id="changeUserNameInput" />
+            <button class="btn" id="changeUserNameBtn">تغییر</button>
+          </div>
+          <div class="passwordSection">
+            <label for="changePassword">رمزعبور</label>
+            <input type="text" name="" id="changePasswordInput" />
+            <button class="btn" id="changePasswordBtn">تغییر</button>
+          </div>
+          <div class="cover" style="color: white; text-align: center">
+            <h6>تنظیمات پروفایل</h6>
+          </div>
+        </section>
+        <section class="panel categorySetting">
+          <div class="categoryContainer">
+            <div class="right">
+              <label for="allCtgs">تمام دسته بندی ها</label>
+              <form id="allCtgs" action="" method=""></form>
+              <button class="btn" id="categoryAdd">اضافه کردن دسته بندی</button>
+            </div>
+            <div class="left">
+              <label for="yourCtgs">دسته بندی شما</label>
+              <form id="yourCtgs" action="" method=""></form>
+              <button class="btn" id="categoryDelete">حذف دسته بندی</button>
+            </div>
+          </div>
+          <div class="cover" style="color: white; text-align: center">
+            <h6>تنظیمات دسته بندی</h6>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <script src="js/clientSideHelper.js"></script>
+    <script src="js/profile.js"></script>
+    <script src="js/script.js"></script>
+  </body>
+</html>

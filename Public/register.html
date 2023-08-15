@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+
+<html lang="fa">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>ثبت نام</title>
+    <meta name="description" content="ثبت نام در سایت" />
+    <meta name="author" content="1111111" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link rel="stylesheet" href="styles/hw2-global.css" />
+    <link rel="stylesheet" href="styles/register.css" />
+  </head>
+
+  <body>
+    <!-- navigation -->
+    <header>
+      <nav>
+        <div class="right"><a href="#">Bazam Bazi</a></div>
+        <div class="left">
+          <a href="login.html"><i class="fa fa-user"></i></a>
+        </div>
+      </nav>
+    </header>
+    <!-- bg and centeralization -->
+    <div class="body-container">
+      <!-- card -->
+      <div class="container">
+        <h1>ثبت نام</h1>
+        <form action class="form-control">
+          <div class="input-container">
+            <i class="fa fa-user"></i>
+            <input
+              type="text"
+              name=""
+              id="userName"
+              placeholder="نام کاربری"
+              required
+            />
+          </div>
+          <div class="input-container">
+            <i class="fa fa-envelope"></i>
+            <input
+              type="text"
+              name=""
+              id="email"
+              placeholder="رایانامه"
+              required
+            />
+          </div>
+          <div class="input-container">
+            <i class="fa fa-lock"></i>
+            <input
+              type="text"
+              name=""
+              id="password"
+              placeholder="رمز عبور"
+              required
+            />
+          </div>
+          <label class="check-container"
+            ><a href=""><a href="index.html">قوانین</a> را میپذیرم</a>
+            <input type="checkbox" id="policy" name="policy" value="policy" />
+            <span class="checkmark"></span>
+          </label>
+          <button class="btn-form">ثبت نام</button>
+        </form>
+      </div>
+      <span class="result"></span>
+    </div>
+    <script src="js/clientSideHelper.js"></script>
+    <script src="js/register.js"></script>
+  </body>
+</html>

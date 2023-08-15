@@ -1,0 +1,734 @@
+@font-face {
+  font-family: "yekan";
+  src: url("../fonts/Yekan.eot");
+  src: url(../fonts/Yekan.eot?#iefix) format("embedded-opentype"),
+    url("../fonts/Yekan.woff") format("woff"),
+    url("../fonts/Yekan.ttf") format("truetype"),
+    url("../fonts/Yekan.svg#BYekan") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+* {
+  box-sizing: border-box;
+  direction: rtl;
+  text-decoration: none;
+  font-family: "yekan";
+}
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "yekan";
+}
+/* other pages style */
+/* Loader */
+.spinnerContainer {
+  filter: none;
+}
+.spinner {
+  display: none;
+  margin: 100px auto;
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  top: 50%;
+  text-align: center;
+  -webkit-animation: sk-rotate 2s infinite linear;
+  animation: sk-rotate 2s infinite linear;
+  z-index: 3;
+  left: 50%;
+  background: white;
+  border-radius: 50%;
+}
+
+.dot1,
+.dot2 {
+  width: 60%;
+  height: 60%;
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  background-color: #333;
+  border-radius: 100%;
+
+  -webkit-animation: sk-bounce 2s infinite ease-in-out;
+  animation: sk-bounce 2s infinite ease-in-out;
+}
+
+.dot2 {
+  top: auto;
+  bottom: 0;
+  -webkit-animation-delay: -1s;
+  animation-delay: -1s;
+}
+
+@-webkit-keyframes sk-rotate {
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+@keyframes sk-rotate {
+  100% {
+    transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@-webkit-keyframes sk-bounce {
+  0%,
+  100% {
+    -webkit-transform: scale(0);
+  }
+  50% {
+    -webkit-transform: scale(1);
+  }
+}
+
+@keyframes sk-bounce {
+  0%,
+  100% {
+    transform: scale(0);
+    -webkit-transform: scale(0);
+  }
+  50% {
+    transform: scale(1);
+    -webkit-transform: scale(1);
+  }
+}
+/* /loader */
+/* fixedHeader from game list is here */
+.fixedHeader,
+.fixedHeader .left,
+.fixedHeader header {
+  display: flex;
+}
+.fixedHeader {
+  flex-direction: column;
+  background-color: #ddd;
+}
+.fixedHeader a {
+  /* color: #adadad; */
+}
+.fixedHeader header {
+  padding: 10px 0 20px 0;
+  color: #adadad;
+  position: fixed;
+  z-index: 2;
+  width: 100%;
+  background-color: #ddd;
+  top: 0;
+}
+header .headerContainer {
+  display: flex;
+  margin: 0 auto;
+}
+header .title span {
+  color: rgb(93, 183, 213);
+}
+header .left {
+  margin-right: 200px;
+  display: flex !important;
+  justify-content: space-between;
+}
+header .left .searchPart {
+  position: relative;
+  width: 144px;
+}
+.searchPart input {
+  padding: 2%;
+  border-radius: 5px;
+  background-color: transparent;
+  outline: none;
+  border: 1px solid #ccc;
+  position: relative;
+}
+.searchPart #searchIcon {
+  position: absolute;
+  left: 10px;
+  bottom: 0;
+  transition: 0.3s;
+}
+.searchPart #searchIcon:hover {
+  color: cornflowerblue;
+}
+header .left input::placeholder {
+  color: #adadad;
+  font-family: "yekan";
+}
+header .left i {
+  line-height: 33px;
+  margin: 0 10px;
+}
+header a {
+  color: #adadad;
+}
+
+.fixedHeader .content {
+  position: relative;
+}
+.fixedHeader .banner #bannerImg {
+  width: 100%;
+  height: 400px;
+  filter: blur(1px) brightness(0.4);
+}
+.fixedHeader .banner .content .gameTextData {
+  color: white;
+  position: absolute;
+  top: 0;
+  margin-top: 200px;
+  display: flex;
+  justify-items: center;
+  /* justify-content: space-around; */
+  /* width: 100%; */
+}
+.fixedHeader .banner .content .gameTextData h6,
+.fixedHeader .banner .content .gameTextData h3 {
+  margin: 0;
+}
+.fixedHeader .banner .content .gameTextData .textContent {
+  margin-right: 20px;
+}
+.fixedHeader .banner .content .gameTextData #gameImg {
+  width: 100px;
+  height: 100px;
+  border-radius: 5px;
+}
+.fixedHeader .banner .content .btn {
+  margin-right: 200px;
+}
+.nThreshold {
+  width: 660px;
+  margin: 0 auto;
+}
+/* /fixedHeader from game list is here */
+.fixedHeader .generalGameList {
+  display: none;
+  grid-template-columns: auto auto auto;
+  background-color: white;
+  position: absolute;
+  z-index: 1;
+  top: -45vh;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  padding: 5% 0;
+  opacity: 0.6;
+  transition: 0.3s all;
+}
+
+.fixedHeader .generalGameList:hover {
+  opacity: 1;
+}
+
+.firstView {
+  text-align: center;
+  height: 100vh;
+}
+.firstView .container {
+  position: relative;
+  padding: 20em 1em;
+  /* background: url("../images/call-of-duty-background-18.jpg"); */
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+  filter: blur(1px) brightness(0.4);
+  height: 100%;
+  transition: 0.3s;
+  /* max-width: 130vw; */
+  /* min-width: 130vw; */
+}
+.firstView .content {
+  position: absolute;
+  top: 5vh;
+  /* right: 4%; */
+  display: flex;
+  flex-direction: column;
+  color: white;
+  width: 100%;
+}
+.header {
+  display: flex;
+  justify-content: space-around;
+}
+nav {
+  margin-top: 5vh;
+}
+.header .title span {
+  color: rgb(118, 203, 232);
+}
+.header .submit .btn {
+  color: rgba(0, 0, 0, 0.3);
+}
+.btn {
+  padding: 3px 10px;
+  text-decoration: none;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+}
+#signup {
+  background-color: rgb(51, 99, 177);
+}
+#logout {
+  background-color: rgb(173, 173, 173);
+}
+#adminBtn {
+  background: rgb(185, 255, 157);
+}
+#adminBtn:hover {
+  background: linear-gradient(
+    90deg,
+    rgba(251, 251, 251, 1) 0%,
+    rgba(75, 253, 29, 1) 50%,
+    rgba(69, 252, 198, 1) 100%
+  );
+  color: red;
+}
+#profileBtn {
+  color: white;
+  background-size: 50px 50px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.hideBtn {
+  display: none;
+}
+.bannerBtn {
+  display: inline-block;
+  margin-top: 50px;
+  background-color: rgb(51, 99, 177);
+  width: 200px;
+  text-align: center;
+}
+.layerBtn {
+  padding: 3px 6px;
+  margin-bottom: 2px;
+  margin-top: 10px;
+  font-size: smaller;
+  text-decoration: none;
+  color: white;
+  border-radius: 2px;
+  background-color: rgba(255, 255, 255, 0.3);
+  position: absolute;
+  bottom: 5px;
+}
+.layer .layerTitle {
+  margin-top: 10px;
+  margin-bottom: 2px;
+  font-size: 12pt;
+  line-height: 20px;
+}
+.layer .commentsNumber {
+  position: absolute;
+  top: 35%;
+}
+.firstView .banner {
+  text-align: right;
+  margin: 5% 20% 5% 20%;
+}
+.bannerTitle {
+  word-spacing: 1rem;
+}
+.bannerText {
+  display: block;
+  /* height: 50px;
+  width: 700px; */
+  text-align: justify;
+  line-height: 30px;
+  height: 20vh;
+}
+.firstView .fvSlider {
+  position: absolute;
+  /* bottom: -98%; */
+  bottom: -200px;
+  width: 100%;
+}
+.sliderContainer {
+  width: 100%;
+}
+.firstView .fvSlider .owl-carousel .owItem {
+  width: 200px;
+  height: 150px;
+  padding: 20px;
+  position: relative;
+  transition: transform 0.5s ease;
+  z-index: 1;
+}
+.firstView .fvSlider .owl-carousel .owItem img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+.firstView .fvSlider .owl-carousel .owItem .imgTitle {
+  position: absolute;
+  bottom: 5px;
+  font-size: 8pt;
+  padding: 0 1px;
+  text-align: center;
+}
+.firstView .fvSlider .owl-carousel .layer {
+  color: white;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  opacity: 0;
+  transition: 0.5s ease;
+  box-shadow: 2px 2px 30px rgba(0, 0, 0, 0.6);
+  text-align: right;
+  padding-right: 20px;
+  z-index: 9999;
+}
+.firstView .fvSlider .owl-carousel #blueLayer {
+  background-color: rgb(95, 204, 237);
+}
+.firstView .fvSlider .owl-carousel #greenLayer {
+  opacity: 1;
+  background-color: rgb(42, 199, 115);
+  transform: scale(0.8);
+}
+.firstView .layer .commentsNumber {
+  font-size: 8pt;
+}
+.owl-stage {
+  top: 20px;
+  height: 200px;
+}
+.firstView .fvSlider .owl-carousel .owItem:hover {
+}
+.firstView .fvSlider .owl-carousel .owItem:hover .layer {
+  opacity: 1;
+  transform: scale(0.8);
+}
+.threshold {
+  padding: 2% 20px;
+  margin: 0 150px;
+}
+.secondView {
+  /* max-width: 130vw; */
+  /* min-width: 130vw; */
+}
+.secondView .top {
+  background-color: white;
+}
+.secondView .top .svSlider {
+  display: flex;
+  height: 300px;
+}
+/* .secondView .top .svSlider .sliderContainer .owlTheme .disabled {
+  display: block !important;
+} */
+.secondView .top .svSlider .owl-controls {
+  position: relative;
+  z-index: 99;
+  margin-top: -35px;
+  height: 20px;
+  background-color: red;
+}
+.secondView .top .svSlider .owl-carousel {
+  position: relative;
+}
+.secondView .top .svSlider .owl-dots {
+  position: absolute;
+  top: -50px;
+  left: 0;
+  /* width: 50px; */
+}
+.secondView .top .gameCard .cardContainer {
+  width: 100px;
+}
+.secondView .top .gameCard:first-child {
+  margin-right: 0;
+}
+.secondView .top .gameCard {
+  width: 150px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #ccc;
+  margin-right: 10px;
+}
+.secondView .top .gameCard img {
+  width: 100%;
+  height: 100%;
+}
+.secondView .top .gameCard:hover {
+  box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.6);
+}
+.secondView .top .gameCard .content {
+  padding: 10px 5px 0 5px;
+}
+.secondView .top .gameCard .title,
+.categories {
+  margin: 1px;
+  color: #ccc;
+}
+.secondView .top .gameCard .rate {
+  display: flex;
+  grid-gap: 3px;
+  padding: 3px 0 3px 0;
+}
+.secondView .top .gameCard .rate a {
+  transition: 0.6s;
+  color: #333;
+}
+.secondView .top .gameCard .rate .checked {
+  color: rgb(108, 205, 237);
+}
+.secondView .top .gameCard .title {
+  color: rgb(108, 205, 237);
+  height: 10px;
+  line-height: 9pt;
+  margin-bottom: 10px;
+}
+.bottom {
+  background-color: #dadadab5;
+  /* background-color: #ccc; */
+  /* height: 300px; */
+}
+.secondView .bottom .bottomText {
+  display: block;
+  width: 40%;
+  line-height: 30px;
+}
+.secondView .bottomDevider {
+  display: flex;
+}
+.secondView .bottomDevider .comments {
+  margin-left: 20%;
+}
+.secondView .bottomDevider .item {
+  display: flex;
+  justify-content: start;
+  line-height: 10px;
+  padding-bottom: 5%;
+  border-bottom: 1px solid #a0a0a0;
+  width: 300px;
+}
+.secondView .bottomDevider .item:last-child {
+  border-bottom: none;
+}
+.secondView .bottomDevider .item img {
+  width: 70px;
+  height: 70px;
+  border-radius: 100%;
+  margin-left: 20px;
+  padding: 2%;
+}
+.secondView .bottomDevider .tutorials img {
+  border-radius: 0;
+}
+.secondView .bottomDevider .item h5,
+.secondView .bottomDevider .item .cmTitle {
+  color: rgb(108, 205, 237);
+  margin-bottom: 15px;
+  cursor: pointer;
+}
+.secondView .bottomDevider .item span {
+  font-size: xx-small;
+}
+.joinUs {
+  position: relative;
+  height: 500px;
+  text-align: center;
+  background-color: rgb(80, 158, 184);
+  background-size: cover;
+}
+.joinUs .overlay {
+  width: 100%;
+  height: 100%;
+  background: url("../images/The-Witcher-3-Wild-Hunt.jpg");
+  background-size: cover;
+  opacity: 0.3;
+}
+
+.joinUs .content {
+  position: absolute;
+  top: 12%;
+  right: 12%;
+  padding: 10%;
+  color: white;
+  justify-content: center;
+}
+.joinUs .content h2 {
+  font-size: 20pt;
+}
+.joinUs .content .btn {
+  background-color: white;
+  color: #333;
+  max-width: 200px;
+  margin: 0 auto;
+}
+.footer {
+  background-color: #eee;
+  margin-top: 2%;
+  padding-top: 5%;
+}
+.footer .top {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+}
+.footer .top .menu {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+.footer .top .left {
+  float: left;
+  /* margin-right: 50px; */
+  /* letter-spacing: -1px;
+  width: 110px; */
+}
+.footer .top .left .title {
+  color: #a0a0a0;
+}
+.footer .top .left .title span {
+  color: rgb(80, 158, 184);
+}
+.footer .top ul {
+  display: flex;
+  flex-direction: row;
+  margin: 0;
+  padding: 0;
+}
+.footer .top ul li {
+  margin-left: 20px;
+  list-style-type: none;
+}
+.footer .top ul li a {
+  color: rgb(80, 158, 184);
+  display: block;
+  letter-spacing: -1px;
+}
+.footer .icons {
+  display: flex;
+  justify-content: space-evenly;
+  margin: 10px 0;
+}
+.footer .icons i:first-child {
+  margin-right: 0;
+}
+.footer .icons i {
+  margin-right: 50px;
+}
+
+.footer .bottom {
+  color: #a0a0a0;
+  padding: 20px 0;
+  margin: 0 auto;
+  text-align: center;
+}
+#dotsCarousel {
+  width: 50%;
+  margin: 0 auto;
+}
+#autoplayCarousel .owl-item {
+  bottom: -120px;
+  width: 135px;
+  margin-right: 10px;
+}
+/* responsiveness */
+@media only screen and (min-device-width: 320px) and (max-device-width: 680px) {
+  body {
+    width: 104vw;
+  }
+  .threshold {
+    margin: 0;
+  }
+  .firstView .content {
+    padding: 0 3%;
+    margin-right: 2%;
+  }
+  .firstView .header {
+    justify-content: space-between;
+  }
+  .firstView .banner {
+    margin: 5%;
+  }
+  .firstView .bannerTitle {
+    word-spacing: 0;
+    font-size: medium;
+  }
+  .firstView .banner .bannerText {
+    height: 30vh;
+    overflow: hidden;
+  }
+  .firstView .banner .btn {
+    display: block;
+    width: 100%;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 2%;
+  }
+  .firstView .banner .bannerBtn {
+    margin-top: 20px;
+  }
+  .firstView .fvSlider {
+    bottom: -200px;
+  }
+  .firstView .fvSlider #autoplayCarousel .owl-item {
+    bottom: 0;
+    margin-right: 0;
+  }
+  .firstView .fvSlider .owl-carousel .owItem {
+    width: 100%;
+  }
+  .firstView .fvSlider .owl-carousel .owl-stage-outer {
+    right: -10px;
+  }
+  .firstView .fvSlider .owl-carousel .layer,
+  .firstView .fvSlider .owl-carousel #greenLayer {
+    transform: scale(0);
+  }
+  .secondView .bottomDevider {
+    display: block;
+  }
+  .secondView .top .svSlider .owl-dots {
+    position: absolute;
+    top: -58px;
+    left: -25px;
+    /* width: 50px;*/
+  }
+  .joinUs .content {
+    right: 0;
+  }
+  .footer .top .menu,
+  .footer .top ul {
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+  }
+  .footer .top ul li:hover {
+    background-color: #fefefe;
+  }
+}
+/* more than 680 */
+@media only screen and (min-device-width: 681px) and (max-device-width: 1280px) {
+  /* body {
+    width: 146vw;
+  } */
+  .threshold {
+    /* margin: 0; */
+    margin-right: 104px;
+  }
+  .firstView .content {
+    /* right: 10%; */
+  }
+  .firstView .fvSlider .owl-carousel {
+    bottom: -150px;
+  }
+  .firstView .fvSlider .owl-carousel .owItem {
+    /* bottom:-200px */
+    width: 140%;
+  }
+  .firstView .fvSlider .owl-carousel .owItem .imgTitle {
+    font-size: xx-small;
+  }
+  .firstView .fvSlider .owl-carousel .layer,
+  .firstView .fvSlider .owl-carousel #greenLayer {
+    transform: scale(0.9);
+  }
+}

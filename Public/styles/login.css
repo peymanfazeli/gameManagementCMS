@@ -1,0 +1,92 @@
+/* 	css rules for login.html page
+	author: 1111111;
+	date: dd-mm-yy;
+	version: 0.1;
+*/
+.container {
+  overflow: hidden;
+}
+.container a {
+  text-decoration: underline;
+  color: navy;
+}
+.form-control {
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  justify-items: center;
+  text-align: center;
+  padding: 20px 40px;
+  /* width: 25vw; */
+  height: 25vh;
+  background-color: white;
+  border-radius: 5px;
+}
+.input-container,
+.captcha-container {
+  display: flex;
+  flex-direction: row;
+  margin: 10px 0 10px;
+  width: 300px;
+}
+.input-container i,
+.captcha-container i {
+  position: relative;
+  top: 0;
+  padding-left: 20px;
+  font-size: 15px;
+}
+.input-container input,
+.captcha-container input {
+  background-color: transparent;
+  border: 0;
+  border-bottom: 2px solid gray;
+  display: block;
+  width: 100%;
+  font-family: inherit;
+}
+.captcha-container input {
+  width: 30%;
+}
+.captcha-container #captchaCode {
+  margin: 10px 100px 0 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  padding: 5px;
+  border-radius: 2px;
+}
+.input-container input:focus,
+.captcha-container input:focus {
+  outline: 0;
+  border-bottom-color: rgb(227, 120, 120);
+  transition: 0.3s;
+}
+.check-container,
+.captcha-container {
+  text-align: right;
+  margin-bottom: 10px;
+}
+
+.btn-form {
+  background-color: rgb(227, 120, 120);
+  color: white;
+  border: none;
+  width: 100%;
+  padding: 5%;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-family: inherit;
+  margin-bottom: 5px;
+}
+.btn-form:hover {
+  background-color: rgb(180, 95, 95);
+}
+.btn-form:active {
+  transform: scale((0.98));
+}
+.container footer {
+  margin-top: 1rem;
+  background-color: gray;
+  text-align: center;
+  padding: 1.5%;
+}
