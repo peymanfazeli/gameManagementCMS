@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const User = require("../DB/schemas/user");
+const categories = require("../DB/schemas/categories");
 
 function hashPassword(password) {
   const salt = bcrypt.genSaltSync();
@@ -47,6 +48,27 @@ function userToken(rawToken) {
   // const userProfile =  User.findOne({ token });
   return token[0];
 }
+function getCategories(collection, isAllGame) {
+  let entityCtgs = [];
+  collection.forEach((entity) => {
+    isAllGame
+      ? entityCtgs.push(entity.categories)
+      : entityCtgs.push(entity.name);
+  });
+  return entityCtgs;
+}
+function findCommonElements(firstCollection, secondCollection) {
+  // return firstCollection.some((item) => secondCollection.includes(item));
+  let sameCtg = [];
+  for (let i = 0; i < firstCollection.length; i++) {
+    for (let j = 0; j < secondCollection.length; j++) {
+      if (firstCollection[i] === secondCollection[j]) {
+        sameCtg.push(secondCollection[j]);
+      }
+    }
+  }
+  return sameCtg;
+}
 module.exports = {
   hashPassword,
   comparePass,
@@ -54,4 +76,6 @@ module.exports = {
   validatePassword,
   randomCodeGenerator,
   userToken,
+  getCategories,
+  findCommonElements,
 };

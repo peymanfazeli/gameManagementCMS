@@ -8,27 +8,8 @@ const categories = require("../DB/schemas/categories");
 // const Comments = require("../DB/schemas/comments");
 const { validatePassword, hashPassword } = require("../Utils/helper");
 
-// profileRoute.get("/:email", async (req, res) => {
-//   const { email } = req.params;
-//   const userInDb = await User.findOne({ email });
-//   if (userInDb) {
-//     return res.status(200).send({ userData: userInDb });
-//   } else {
-//     return res.send(400);
-//   }
-// });
-// profileRoute.get("/validate", async (request, response) => {
-//   console.log("request cookie in  validate/profileRouter: ", request.cookies);
-//   let token = userToken(request.cookies.Token);
-//   // token[0]
-//   const user = await User.findOne({ token });
-//   if (user) {
-//     return response.json({ user: user });
-//   } else {
-//     return response.sendStatus(400);
-//   }
-// });
 profileRoute.get("/", async (request, response) => {
+  // console.log("reques user in profileroute: ", request.user);
   response.json({ userProfile: request.user });
 });
 profileRoute.post("/update", async (request, response) => {

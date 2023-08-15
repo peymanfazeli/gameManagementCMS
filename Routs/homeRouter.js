@@ -1,8 +1,12 @@
 const { Router } = require("express");
 const homeRouter = Router();
 
+const { getCategories, findCommonElements } = require("../Utils/helper");
+
+const User = require("../DB/schemas/user");
 const Games = require("../DB/schemas/games");
-const comments = require("../DB/schemas/comments");
+const Comments = require("../DB/schemas/comments");
+const Categories = require("../DB/schemas/categories");
 
 const homeResposne = {
   ok: true,
@@ -11,13 +15,29 @@ const homeResposne = {
   },
 };
 
-homeRouter.get("/", (request, response) => {
+homeRouter.get("/", async (request, response) => {
   if (request.user) {
-    // let userId = request.user._id;
-    // console.log("request User in homerouter userOk:", userId.toString());
-    return response.json({ user: request.user });
+    let loggedinUser = request.user;
+    let userCtgs = loggedinUser.ctg;
+    let userAllCtgs = getCategories(userCtgs);
+    let allGames = await Games.find();
+    let allGamesCtgs = getCategories(allGames, true);
+    let sameCtgsResponse = findCommonElements(userAllCtgs, allGamesCtgs);
+    let sameCtgsArr = [];
+    sameCtgsResponse.forEach((ctg) => {
+      sameCtgsArr.push(ctg);
+    });
+    const userGames = await Games.find({
+      categories: sameCtgsArr,
+    });
+    // console.log("user ctgs: ", userAllCtgs);
+    // console.log("all games ctgs: ", allGamesCtgs);
+    // console.log("same categories:", sameCtgsArr);
+    // console.log("fave games: ", userGames);
+    return response.json({ user: loggedinUser, games: userGames });
   } else {
-    return response.json({ response: homeResposne });
+    const allGames = await Games.find();
+    return response.json({ games: allGames });
   }
 });
 

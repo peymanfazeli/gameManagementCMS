@@ -27,11 +27,13 @@ function displayLoginBtn(
 }
 
 function offDisplayLogin() {
-  signup.style.display = "inline-block";
-  loginBtn.style.display = "inline-block";
-  profileBtn.style.display = "none";
-  logout.style.display = "none";
-  adminBtn.style.display = "none";
+  if (window.location.href !== "http://localhost:5500/Public/login.html") {
+    signup.style.display = "inline-block";
+    loginBtn.style.display = "inline-block";
+    profileBtn.style.display = "none";
+    logout.style.display = "none";
+    adminBtn.style.display = "none";
+  }
 }
 
 function clearSession() {
@@ -184,6 +186,7 @@ function myFetch(path, method, callBack, data = "", func = "") {
     }
   });
 }
+
 // Logged in Profile data:
 function getProfileData(response) {
   let userProfile = response.userProfile;

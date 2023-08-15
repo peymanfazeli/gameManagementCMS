@@ -25,7 +25,7 @@ let commentSection;
 let paramUrl;
 let htmlString = "";
 
-const serverUrl = `http://localhost:3001/home`;
+// const serverUrl = `http://localhost:3001/home`;
 
 function headerSliderInit(imgContainer, sliderNum, gameId) {
   imgContainer.css("background", `url(${sliders[sliderNum].large_image})`);
@@ -87,6 +87,41 @@ function enableDots(dots) {
 //     // console.log("ok");
 //   });
 // }
+// test part
+function initFvData(response, error) {
+  if (error) {
+    console.log("Error in initializing fvData1 data", error);
+    return;
+  } else {
+    let user = response.user;
+    let games = response.games;
+    console.log("games: ", games);
+    // let gameImage = games[0].large_image;
+    // let gameImagePath = gameImage.replace(
+    //   "C:/xampp/htdocs/IE-Express/Public/",
+    //   ""
+    // );
+    // bgImage.css("background", `url(${gameImagePath})`);
+    //   let userAvatarPath = userProfile.avatar;
+    // let userAvatarFile = userAvatarPath.replace(
+    //   "C:/xampp/htdocs/IE-Express/Public/",
+    //   ""
+    // );
+    // fvContainer.style.backgroundImage = games[0].large_image;
+
+    headerSliderInit(bgImage, 0, games[0]._id);
+    //   let homepage;
+    //   try {
+    //     homepage = data.response.result.homepage;
+    //   } catch (error) {
+    //     throw "homepage response met an error" + error;
+    //   }
+  }
+}
+function fvData1() {
+  myFetch("home", "GET", initFvData);
+}
+fvData1();
 // fetch Api
 function fvData() {
   fetch(serverUrl)
@@ -245,7 +280,7 @@ function initFooter() {
   makeElement(htmlString, footerSection);
 }
 if (window.location.href === "http://localhost:5500/Public/index.html") {
-  fvData();
+  // fvData();
   // deleteAllDisabled(document.querySelectorAll(".disabled"));
   // enableDots(owlDots);
   initFooter();

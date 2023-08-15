@@ -56,3 +56,6 @@ function getCapthaCode() {
   myFetch("auth/login", "GET", displayCaptcha);
 }
 getCapthaCode();
+if (checkUserLogin()) {
+  window.location = "http://localhost:5500/Public/index.html";
+}
