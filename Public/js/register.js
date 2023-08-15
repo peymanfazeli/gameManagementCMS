@@ -1,5 +1,10 @@
-function registerDataResponse(response) {
-  console.log("rsponse :", response);
+function registerDataResponse(response, error) {
+  if (error) {
+    console.log("Error in registering data: ", error);
+    return;
+  } else {
+    console.log("rsponse :", response);
+  }
 }
 document.querySelector(".btn-form").addEventListener("click", (e) => {
   e.preventDefault();
@@ -15,7 +20,7 @@ document.querySelector(".btn-form").addEventListener("click", (e) => {
       "C:/xampp/htdocs/IE-Express/Public/images/profilePhoto/generalAvatar.png",
     token: "1",
   };
-  myFetch("auth/register", "POST", registerDataResponse, data);
+  myFetch("auth/register", "POST", registerDataResponse, data, "registerData");
   // async function sendRegisterData() {
   //   const registerResponse = await fetch(
   //     "http://localhost:3001/auth/register",

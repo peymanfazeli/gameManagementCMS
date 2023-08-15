@@ -36,53 +36,57 @@ function removeActiveClass() {
 }
 
 // Server connection
-function makeCtgs(response) {
-  let allCategories = response.allCtg;
-  let userCategories = response.userCtg;
-  htmlString = "";
-  allCategories.forEach((ctg) => {
-    htmlString += ` <label class="radio">
-      <input name="radio" type="radio"  id='${ctg._id}' onclick="getCtgValue(this)" >
-      <span >${ctg.name}</span>
-    </label>`;
-  });
-  makeElement(htmlString, allCtgs);
-  htmlString = "";
-  // user's categories part
-  if (userCategories.length < 1) {
-    htmlString = `<h3 id='noUserCtg'> هنوز دسته بندی ای انتخاب نکردی</h3>`;
-    makeElement(htmlString, yourCtgs);
-    htmlString = "";
+function makeCtgs(response, error) {
+  if (error) {
+    console.log("Error in making categories: ", error);
+    return;
   } else {
-    let noUserCtgSign = document.getElementById("noUserCtg");
-    if (noUserCtgSign) {
-      noUserCtgSign.remove();
-    }
-    userCategories.forEach((ctg) => {
+    let allCategories = response.allCtg;
+    let userCategories = response.userCtg;
+    htmlString = "";
+    allCategories.forEach((ctg) => {
       htmlString += ` <label class="radio">
         <input name="radio" type="radio"  id='${ctg._id}' onclick="getCtgValue(this)" >
         <span >${ctg.name}</span>
       </label>`;
     });
-    makeElement(htmlString, yourCtgs);
+    makeElement(htmlString, allCtgs);
     htmlString = "";
+    // user's categories part
+    if (userCategories.length < 1) {
+      htmlString = `<h3 id='noUserCtg'> هنوز دسته بندی ای انتخاب نکردی</h3>`;
+      makeElement(htmlString, yourCtgs);
+      htmlString = "";
+    } else {
+      let noUserCtgSign = document.getElementById("noUserCtg");
+      if (noUserCtgSign) {
+        noUserCtgSign.remove();
+      }
+      userCategories.forEach((ctg) => {
+        htmlString += ` <label class="radio">
+          <input name="radio" type="radio"  id='${ctg._id}' onclick="getCtgValue(this)" >
+          <span >${ctg.name}</span>
+        </label>`;
+      });
+      makeElement(htmlString, yourCtgs);
+      htmlString = "";
+    }
   }
 }
 function getAllCtg() {
   myFetch("categories", "GET", makeCtgs);
 }
-function checkPasword(response) {
-  if (response.code === 400) {
-    console.log("Error in pass", response);
-    setTimeout(() => {
-      alert("رمز عبور باید شامل حروف کوچیک بزرگ و عدد باشه");
-      changePasswordInput.value = "";
-    }, 500);
+function checkPasword(response, error) {
+  if (error) {
+    console.log("Error in updating profile password: ", error);
+    return;
   } else {
+    console.log("response in updating pass is: ", response);
     setTimeout(() => {
       alert("تغییرات ذخیره شد"), location.reload();
     }, 500);
   }
+  // }
 }
 function updateData(type) {
   let userName = changeUserNameInput.value;
@@ -91,13 +95,17 @@ function updateData(type) {
   type === "userName"
     ? (updateInfo = { userName })
     : (updateInfo = { password });
-  myFetch("profile/update", "POST", checkPasword, updateInfo);
+  myFetch("profile/update", "POST", checkPasword, updateInfo, "updateData");
 }
-function ctgResponse(response) {
-  setTimeout(() => {
-    alert("دسته بندی ها آپدیت شد");
-    location.reload();
-  }, 500);
+function ctgResponse(response, error) {
+  if (error) {
+    console.log("Error in handling ctgResponse: ", error);
+    return;
+  } else {
+    setTimeout(() => {
+      alert("تغییرات ذخیره شد"), location.reload();
+    }, 500);
+  }
 }
 let category;
 function updateCtg() {

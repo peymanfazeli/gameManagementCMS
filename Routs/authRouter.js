@@ -134,11 +134,11 @@ authRouter.post("/login", async (request, response, next) => {
   if (Number(userCaptcha) !== captchaGeneratedCode) {
     return response.sendStatus(498);
   }
-  const adminPass =
-    "$2a$12$JjgqUdQaaTpf5EkN8ZLo2.bQpPRJm86iWGGFWLHlyIFlZ6iGcRIJ.";
-  if (email === "admin@admin.com" && comparePass(password, adminPass)) {
-    return response.sendStatus(301);
-  }
+  // const adminPass =
+  //   "$2a$12$JjgqUdQaaTpf5EkN8ZLo2.bQpPRJm86iWGGFWLHlyIFlZ6iGcRIJ.";
+  // if (email === "admin@admin.com" && comparePass(password, adminPass)) {
+  //   return response.sendStatus(301);
+  // }
 
   const filteredUser = await User.findOne({ email });
   if (!filteredUser) {

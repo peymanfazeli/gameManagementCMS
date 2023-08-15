@@ -38,7 +38,7 @@ document.querySelector(".btn-form").addEventListener("click", (e) => {
       alert("همه فیلد ها باید پر بشن");
     }, 500);
   } else {
-    myFetch("auth/login", "POSt", postLoginResponse, data);
+    myFetch("auth/login", "POSt", postLoginResponse, data, "postLoginResponse");
   }
 });
 

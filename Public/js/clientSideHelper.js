@@ -96,7 +96,7 @@ function makeInputEmpty(item) {
   item.value = "";
 }
 // My Fetch
-function myFetch(path, method, callBack, data = "") {
+function myFetch(path, method, callBack, data = "", func = "") {
   fetch(
     `http://localhost:3001/${path}`,
     method === "GET"
@@ -131,14 +131,22 @@ function myFetch(path, method, callBack, data = "") {
         callBack(
           null,
           setTimeout(() => {
-            alert("چیزی که دنبالشی تو دیتابیس نداریم");
+            if ((func = "registerData")) {
+              alert("ایمیلت تکراریه");
+            } else {
+              alert("چیزی که دنبالشی تو دیتابیس نداریم");
+            }
           }, 500)
         );
       } else if (errCode === 401) {
         callBack(
           null,
           setTimeout(() => {
-            alert("ایمیل یا رمز عبور رو اشتباه وارد کردی");
+            if (func === "updateData") {
+              alert("رمز عبور باید شامل حروف کوچیک و بزرگ و عددباشه");
+            } else {
+              alert("ایمیل یا رمز عبور رو اشتباه وارد کردی");
+            }
           }, 500)
         );
       } else if (errCode === 403) {

@@ -30,7 +30,7 @@ cdnRouter.post("/", async (request, response) => {
         { $set: { avatar: avatarSrcInDb } }
       );
       avatar.mv(cdnPath + "/profilePhoto/" + avatar.name);
-      response.sendStatus(200);
+      // response.send({ user: user });
     }
   }
 });

@@ -50,7 +50,7 @@ profileRoute.post("/update", async (request, response) => {
       );
       return response.send({ user: userInDb });
     } else {
-      return response.send({ code: 400 });
+      return response.sendStatus(401);
     }
   }
 });
