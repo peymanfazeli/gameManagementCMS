@@ -77,30 +77,34 @@ async function adminAllCtgCb(ctgResponse, type) {
         e.preventDefault();
         newGameCtgInput.value = btn.nextElementSibling.innerText;
       });
+      string = "";
     });
-    string = "";
   } else if (type !== "register") {
-    makeElement(string, dropdownUpdate);
-    let ctgIdentifiers = dropdownUpdate.children[0].children;
-    console.log(ctgIdentifiers);
-    for (let index = 0; index < ctgIdentifiers.length; index++) {
-      ctgIdentifiers[index].children.radio.setAttribute(
-        "class",
-        "updatedCtgIdentifiers"
+    if (dropdownUpdate.children.length < 1) {
+      makeElement(string, dropdownUpdate);
+      let ctgIdentifiers = dropdownUpdate.children[0].children;
+      for (let index = 0; index < ctgIdentifiers.length; index++) {
+        ctgIdentifiers[index].children.radio.setAttribute(
+          "class",
+          "updatedCtgIdentifiers"
+        );
+      }
+      const updatedCtgIdentifiers = document.querySelectorAll(
+        ".updatedCtgIdentifiers"
       );
-    }
-    const updatedCtgIdentifiers = document.querySelectorAll(
-      ".updatedCtgIdentifiers"
-    );
-    updatedCtgIdentifiers.forEach((btn) => {
-      btn.addEventListener("click", (e) => {
-        e.preventDefault();
-        gameUpdatedCtgInput.value = btn.nextElementSibling.innerText;
+      updatedCtgIdentifiers.forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          e.preventDefault();
+          gameUpdatedCtgInput.value = btn.nextElementSibling.innerText;
+        });
       });
-    });
-    // string = "";
+      string = "";
+    } else {
+      return;
+    }
   }
 }
+
 function allPlayersCb(response, error) {
   if (error) {
     console.log("Error in getting all players: ", error);
