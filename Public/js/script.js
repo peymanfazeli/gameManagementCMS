@@ -24,7 +24,7 @@ let trailerBtn = $("#gallery");
 let commentSection;
 let paramUrl;
 let htmlString = "";
-
+console.log("banner Btn: ", bannerBtn);
 // const serverUrl = `http://localhost:3001/home`;
 // function headerSliderInit(imgContainer, sliderNum, gameId) {
 //   imgContainer.css("background", `url(${sliders[sliderNum].large_image})`);
@@ -40,7 +40,6 @@ let htmlString = "";
 // }
 function headerSliderInit(imgContainer, game, gameNum, gameId) {
   let imgPath = correctImgAddress(game.large_image);
-  console.log("gamepath in headerSliderInit function: ", imgPath);
   imgContainer.css("background", `url(${imgPath})`);
   imgContainer.css("background-repeat", `no-repeat`);
   imgContainer.css("background-size", `cover`);
@@ -74,16 +73,17 @@ function implementGreenLayer(gameId) {
   });
 }
 function transferData(btnHref) {
+  console.log("btnHref in transferData: ", btnHref);
+
   let transferableData = new URLSearchParams();
   if (btnHref instanceof jQuery) {
     location.href =
-      "http://localhost/IE-F95-API-master/public/AmirKabirStudio/gamePage.html" +
+      "http://localhost:5500/Public/gamePage.html" +
       `?game=${btnHref.attr("gameTitle")}`;
-    // console.log(" rendered by Jq");
     // "http://localhost/IE-F95-API-master/public/AmirKabirStudio/gamePage.html" + `?game=${btnHref.attr("gameTitle")}#info`;
   } else {
     location.href =
-      "http://localhost/IE-F95-API-master/public/AmirKabirStudio/gamePage.html" +
+      "http://localhost:5500/Public/gamePage.html" +
       `?game=${btnHref.getAttribute("gameTitle")}`;
     // console.log("rendered by vanila");
   }
@@ -101,7 +101,6 @@ function enableDots(dots) {
 //   });
 // }
 // test part
-const headerGamesImg = document.querySelector("#headerGamesImg");
 function initFvData(response, error) {
   if (error) {
     console.log("Error in initializing fvData1 data", error);
@@ -109,12 +108,12 @@ function initFvData(response, error) {
   } else {
     let user = response.user;
     let games = response.games;
-    console.log("games: ", games);
+    let newGames = response.newGames;
+    console.log("newGames: ", newGames);
     // show user game slider in homepage
     let i = 0;
     headerSliderInit(bgImage, games[i], i, i);
     let carouselItems = "";
-    console.log("user: ", user);
     Object.values(games).forEach((game, counter) => {
       let large_image = correctImgAddress(game.large_image);
       let small_image = correctImgAddress(game.small_image);
@@ -153,6 +152,23 @@ function initFvData(response, error) {
       true
     );
     carouselItems = "";
+    Object.values(newGames).forEach((games) => {
+      carouselItems += `${produceCard(games)}`;
+    });
+    Object.values(newGames).forEach((games) => {
+      carouselItems += `${produceCard(games)}`;
+    });
+    Object.values(newGames).forEach((games) => {
+      carouselItems += `${produceCard(games)}`;
+    });
+    let item = "something";
+
+    makeElement(
+      `<div class='owl-carousel owl-theme' id="dotsCarousel">${carouselItems}</div>`,
+      svSlider,
+      2,
+      false
+    );
   }
 }
 function fvData1() {
@@ -482,6 +498,7 @@ function searchItems(item) {
 }
 // Producing gameCard Function
 function produceCard(item, hasHeader = false, headerText = "") {
+  let large_image = correctImgAddress(item.large_image);
   let stars = 5;
   let uRate;
   let rateString = "";
@@ -504,7 +521,7 @@ function produceCard(item, hasHeader = false, headerText = "") {
         <h5 class="rgHeader"> ${headerText}  </h5>
         <div class="rGames">
           <div class="gameCard" id="${item.title}" gameTitle="${item.title}#info"  onclick="transferData(this)">
-          <img src="${item.large_image}" alt="" />
+          <img src="${large_image}" alt="" />
           <div class="content">
             <h5 class="title">${item.title}</h5>
             <h6 class="categories">${item.categories}</h6>
@@ -515,7 +532,7 @@ function produceCard(item, hasHeader = false, headerText = "") {
         `)
     : (htmlString = `
         <div class="gameCard" id="${item.title}"gameTitle="${item.title}#info"  onclick="transferData(this)">
-        <img src="${item.large_image}" alt="" />
+        <img src="${large_image}" alt="" />
         <div class="content">
           <h5 class="title">${item.title}</h5>
           <h6 class="categories">${item.categories}</h6>

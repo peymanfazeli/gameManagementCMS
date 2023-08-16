@@ -140,7 +140,7 @@ if (!checkUserLogin()) {
 // click
 document.querySelector("#registerGameBtn").addEventListener("click", (e) => {
   e.preventDefault();
-  const title = gameNameInput.value;
+  const title = gameNameInput.value.split(" ").join("");
   const abstract = abstractInput.value;
   const info = infoInput.value;
   const categories = newGameCtgInput.value;
@@ -187,14 +187,20 @@ function fillCtgItemsInUpdateGameDataForm(response, error) {
 }
 searchBtn.addEventListener("click", async (e) => {
   e.preventDefault();
-  let gameName = searchGameUpdateInputs.value;
+  let gameName = searchGameUpdateInputs.value.split(" ").join("");
   console.log("game name: ", gameName);
-  myFetch(`games/${gameName}`, "GET", fillUpdateGameDataInput);
+  myFetch(
+    `games/${gameName}`,
+    "GET",
+    fillUpdateGameDataInput,
+    "",
+    "fillUpdateGameData"
+  );
 });
 updateGameBtn.addEventListener("click", async (e) => {
   e.preventDefault();
   let _id = gameIdInput.value;
-  let title = gameUpdatedNameInput.value;
+  let title = gameUpdatedNameInput.value.split(" ").join("");
   let abstract = gameUpdatedAbstractInput.value;
   let info = gameUpdatedInfoInput.value;
   let categories = gameUpdatedCtgInput.value;

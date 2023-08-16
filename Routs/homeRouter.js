@@ -16,6 +16,7 @@ const homeResposne = {
 };
 
 homeRouter.get("/", async (request, response) => {
+  const newGames = await Games.find().sort({ _id: -1 }).limit(1).limit(3);
   if (request.user) {
     let loggedinUser = request.user;
     let userCtgs = loggedinUser.ctg;
@@ -30,14 +31,19 @@ homeRouter.get("/", async (request, response) => {
     const userGames = await Games.find({
       categories: sameCtgsArr,
     });
+
     // console.log("user ctgs: ", userAllCtgs);
     // console.log("all games ctgs: ", allGamesCtgs);
     // console.log("same categories:", sameCtgsArr);
     // console.log("fave games: ", userGames);
-    return response.json({ user: loggedinUser, games: userGames });
+    return response.json({
+      user: loggedinUser,
+      games: userGames,
+      newGames: newGames,
+    });
   } else {
     const allGames = await Games.find();
-    return response.json({ games: allGames });
+    return response.json({ games: allGames, newGames: newGames });
   }
 });
 

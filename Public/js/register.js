@@ -20,7 +20,13 @@ document.querySelector(".btn-form").addEventListener("click", (e) => {
       "C:/xampp/htdocs/IE-Express/Public/images/profilePhoto/generalAvatar.png",
     token: "1",
   };
-  myFetch("auth/register", "POST", registerDataResponse, data, "registerData");
+  myFetch(
+    "auth/register",
+    "POST",
+    registerDataResponse,
+    data,
+    "registerDataResponse"
+  );
   // async function sendRegisterData() {
   //   const registerResponse = await fetch(
   //     "http://localhost:3001/auth/register",

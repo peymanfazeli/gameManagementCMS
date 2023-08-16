@@ -133,10 +133,10 @@ function myFetch(path, method, callBack, data = "", func = "") {
         callBack(
           null,
           setTimeout(() => {
-            if ((func = "registerData")) {
-              alert("ایمیلت تکراریه");
-            } else {
+            if (func !== "registerDataResponse") {
               alert("چیزی که دنبالشی تو دیتابیس نداریم");
+            } else if (func === "registerDataResponse") {
+              alert("ایمیلت تکراریه");
             }
           }, 500)
         );
