@@ -186,6 +186,13 @@ function myFetch(path, method, callBack, data = "", func = "") {
     }
   });
 }
+function correctImgAddress(entityImg) {
+  if (entityImg) {
+    return entityImg.replace("C:/xampp/htdocs/IE-Express/Public/", "");
+  } else {
+    return;
+  }
+}
 
 // Logged in Profile data:
 function getProfileData(response) {

@@ -26,16 +26,29 @@ let paramUrl;
 let htmlString = "";
 
 // const serverUrl = `http://localhost:3001/home`;
-
-function headerSliderInit(imgContainer, sliderNum, gameId) {
-  imgContainer.css("background", `url(${sliders[sliderNum].large_image})`);
+// function headerSliderInit(imgContainer, sliderNum, gameId) {
+//   imgContainer.css("background", `url(${sliders[sliderNum].large_image})`);
+//   imgContainer.css("background-repeat", `no-repeat`);
+//   imgContainer.css("background-size", `cover`);
+//   imgContainer.css("background-position", `center center`);
+//   imgContainer.attr("gameId", gameId);
+//   implementGreenLayer(gameId);
+//   bannerText.text(sliders[sliderNum].abstract);
+//   paramUrl = sliders[sliderNum].title;
+//   bannerBtn.attr("gameTitle", `${paramUrl}#info`);
+//   trailerBtn.attr("gameTitle", `${paramUrl}#gallery`);
+// }
+function headerSliderInit(imgContainer, game, gameNum, gameId) {
+  let imgPath = correctImgAddress(game.large_image);
+  console.log("gamepath in headerSliderInit function: ", imgPath);
+  imgContainer.css("background", `url(${imgPath})`);
   imgContainer.css("background-repeat", `no-repeat`);
   imgContainer.css("background-size", `cover`);
   imgContainer.css("background-position", `center center`);
   imgContainer.attr("gameId", gameId);
   implementGreenLayer(gameId);
-  bannerText.text(sliders[sliderNum].abstract);
-  paramUrl = sliders[sliderNum].title;
+  bannerText.text(game.abstract);
+  paramUrl = game.title;
   bannerBtn.attr("gameTitle", `${paramUrl}#info`);
   trailerBtn.attr("gameTitle", `${paramUrl}#gallery`);
 }
@@ -88,6 +101,7 @@ function enableDots(dots) {
 //   });
 // }
 // test part
+const headerGamesImg = document.querySelector("#headerGamesImg");
 function initFvData(response, error) {
   if (error) {
     console.log("Error in initializing fvData1 data", error);
@@ -96,26 +110,49 @@ function initFvData(response, error) {
     let user = response.user;
     let games = response.games;
     console.log("games: ", games);
-    // let gameImage = games[0].large_image;
-    // let gameImagePath = gameImage.replace(
-    //   "C:/xampp/htdocs/IE-Express/Public/",
-    //   ""
-    // );
-    // bgImage.css("background", `url(${gameImagePath})`);
-    //   let userAvatarPath = userProfile.avatar;
-    // let userAvatarFile = userAvatarPath.replace(
-    //   "C:/xampp/htdocs/IE-Express/Public/",
-    //   ""
-    // );
-    // fvContainer.style.backgroundImage = games[0].large_image;
-
-    headerSliderInit(bgImage, 0, games[0]._id);
-    //   let homepage;
-    //   try {
-    //     homepage = data.response.result.homepage;
-    //   } catch (error) {
-    //     throw "homepage response met an error" + error;
-    //   }
+    // show user game slider in homepage
+    let i = 0;
+    headerSliderInit(bgImage, games[i], i, i);
+    let carouselItems = "";
+    console.log("user: ", user);
+    Object.values(games).forEach((game, counter) => {
+      let large_image = correctImgAddress(game.large_image);
+      let small_image = correctImgAddress(game.small_image);
+      BannerBgImg.push(large_image);
+      console.log("banners bg img: ", BannerBgImg);
+      carouselItems += `<div class="owItem">
+      <img src="${small_image}" alt="" class="owItemImg" gameId=${counter} />
+      <p class="imgTitle">بررسی بازی  ${game.title}</p>
+      <div class="layer" id='blueLayer'>
+        <h6 class="layerTitle">${game.title}</h6>
+        <p class="commentsNumber">تعداد نظرات : ${game.number_of_comments}</p>
+        <span  class="layerBtn" gameTitle="${game.title}#info" onclick="transferData(this)"> صفحه بازی</span>
+      </div>
+    </div>`;
+    });
+    setInterval(() => {
+      if (i < games.length) {
+        headerSliderInit(bgImage, games[i], i, i);
+        i++;
+      } else {
+        i = 0;
+      }
+    }, 5000);
+    bannerBtn.on("click", function (e) {
+      e.preventDefault();
+      transferData(bannerBtn);
+    });
+    trailerBtn.on("click", function (e) {
+      e.preventDefault();
+      transferData(trailerBtn);
+    });
+    makeElement(
+      `<div class='owl-carousel' id="autoplayCarousel">${carouselItems}</div>`,
+      fvSlider,
+      1,
+      true
+    );
+    carouselItems = "";
   }
 }
 function fvData1() {
