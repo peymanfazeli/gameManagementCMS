@@ -7,10 +7,14 @@ const ctgRouter = Router();
 
 ctgRouter.get("/", async (request, response) => {
   let allCategories = await categories.find();
-  let userCategories = request.user.ctg;
-  userCategories.remove(0);
-  // await User.updateOne({ _id: request.user._id }, { $pop: { ctg: 1 } });
-  response.send({ allCtg: allCategories, userCtg: userCategories });
+  if (request.user) {
+    let userCategories = request.user.ctg;
+    userCategories.remove(0);
+    // await User.updateOne({ _id: request.user._id }, { $pop: { ctg: 1 } });
+    response.send({ allCtg: allCategories, userCtg: userCategories });
+  } else {
+    response.sendStatus(404);
+  }
 });
 ctgRouter.get("/adminCtg", async (request, response) => {
   let allCategories = await categories.find();

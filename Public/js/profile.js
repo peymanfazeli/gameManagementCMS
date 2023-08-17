@@ -13,6 +13,15 @@ const categoryDelete = document.querySelector("#categoryDelete");
 // Client Side
 window.onload = () => {
   initFixedHeader();
+  if (checkUserLogin()) {
+    console.log("User is Online");
+  } else {
+    console.log("user is Offline");
+  }
+  // if (!checkUserLogin()) {
+  //   // offDisplayLogin(signup, loginBtn, profileBtn, logout, adminBtn);
+  //   window.location='http://localhost:5500/Public/index.html'
+  // }
 };
 covers.forEach((cover) => {
   cover.addEventListener("click", () => {
@@ -77,7 +86,7 @@ function makeCtgs(response, error) {
   }
 }
 function getAllCtg() {
-  myFetch("categories", "GET", makeCtgs);
+  myFetch("categories", "GET", makeCtgs, "", "ctgResponse");
 }
 function checkPasword(response, error) {
   if (error) {
@@ -114,7 +123,13 @@ let category;
 function updateCtg() {
   category = newCategoryList;
   console.log("new ctg for sending to server: ", category);
-  myFetch("profile/ctgUpdate", "POST", ctgResponse, { category });
+  myFetch(
+    "profile/ctgUpdate",
+    "POST",
+    ctgResponse,
+    { category },
+    "ctgResponse"
+  );
 }
 function deleteCtg() {
   category = newCategoryList;

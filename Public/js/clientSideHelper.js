@@ -44,7 +44,15 @@ function checkUserLogin(href = "") {
       }
       return true;
     } else {
-      offDisplayLogin();
+      offDisplayLogin(
+        findElement("#signup"),
+        findElement("#loginBtn"),
+        findElement("#profileBtn"),
+        // profileBtn.innerHTML = userProfile.userName;
+        // profileBtn.style.backgroundImage = `url("${userAvatarFile}")`;
+        findElement("#adminBtn"),
+        findElement("#logout")
+      );
       return false;
     }
   } else {
@@ -200,7 +208,11 @@ function myFetch(path, method, callBack, data = "", func = "") {
         callBack(
           null,
           setTimeout(() => {
-            alert("فیلد مورد نظر رو پر کن");
+            if (func === "ctgResponse") {
+              console.log("دسته بندی مد نظر یافت نشد");
+            } else if (func !== "ctgResponse") {
+              alert("فیلد مورد نظر رو پر کن");
+            }
           }, 500)
         );
       } else if (errCode === 409) {

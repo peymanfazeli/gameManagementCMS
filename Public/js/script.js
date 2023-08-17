@@ -445,7 +445,7 @@ async function initFixedHeader() {
                 </div>
                 <div class="submit">
                 <i class="fa fa-user"></i>
-                <a href="login.html" class="btn" id="loginBtn"></a>
+                <a href="login.html" class="btn" id="loginBtn">ورود</a>
                 <a href="profile.html" class="btn" id="profileBtn" onclick=""></a>
                 <a href="adminPage.html" class="btn" id="adminBtn"></a>
                 <a href="register.html" class="btn" id="signup">ثبت نام</a>
@@ -459,9 +459,6 @@ async function initFixedHeader() {
     </div>
   `;
   makeElement(htmlString, headerSection, 0, "prepend");
-  if (!checkUserLogin()) {
-    offDisplayLogin(signup, loginBtn, profileBtn, logout, adminBtn);
-  }
 }
 window.onload = () => {
   offDisplayLogin(
