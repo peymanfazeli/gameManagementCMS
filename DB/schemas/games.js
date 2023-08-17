@@ -6,6 +6,7 @@ const gamesSchema = new mongoose.Schema({
   info: { type: mongoose.SchemaTypes.String },
   categories: { type: mongoose.SchemaTypes.String },
   rate: { type: mongoose.SchemaTypes.Number },
+  comments: { type: mongoose.SchemaTypes.String },
   large_image: { type: mongoose.SchemaTypes.String },
   small_image: { type: mongoose.SchemaTypes.String },
 });

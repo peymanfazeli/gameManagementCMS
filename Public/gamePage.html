@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- swiper slider -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/swiper/swiper-bundle.min.css"
+    />
+    <!-- fontAwesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+    />
+    <!-- style -->
+    <link rel="stylesheet" href="./styles/style.css" />
+    <link rel="stylesheet" href="./styles/gamePage.css" />
+
+    <title>صفحه بازی</title>
+  </head>
+  <body>
+    <div class="blackCover">
+      <section class="fixedHeader">
+        <div class="banner">
+          <!-- Banner data is fetched by gamePage.js -->
+        </div>
+        <!-- search test -->
+        <footer class="nThreshold">
+          <ul class="menu">
+            <li class="topic">
+              <a href="#info" onclick="selectTab('info')">اطلاعات بازی</a>
+            </li>
+            <li class="topic">
+              <a href="#leaderboard" onclick="selectTab('leaderboard')"
+                >رتبه بندی و امتیازات</a
+              >
+            </li>
+
+            <li class="topic">
+              <a href="#comments" onclick="selectTab('comments')"
+                >نظرات کاربران</a
+              >
+            </li>
+            <li class="topic">
+              <a href="#related_games" onclick="selectTab('related_games')"
+                >بازی های مشابه</a
+              >
+            </li>
+            <li class="topic">
+              <a href="#gallery" onclick="selectTab('gallery')"
+                >عکس ها و ویدیو ها</a
+              >
+            </li>
+          </ul>
+        </footer>
+      </section>
+      <!-- loader -->
+      <div class="spinner">
+        <div class="dot1"></div>
+        <div class="dot2"></div>
+      </div>
+      <!-- /loader -->
+      <section class="tabs nThreshold">
+        <div class="tab" id="info">
+          <div class="information"></div>
+        </div>
+        <div class="tab" id="leaderboard">
+          <!-- raging data must be loaded using gamePage.js file -->
+
+          <div class="noRate">
+            <h5>هیچ یک از شرکت کنندگان در مسابقه شرکت نکرده اند</h5>
+          </div>
+        </div>
+        <div class="tab" id="comments">
+          <!-- comments data is loaded using gamePage.js file -->
+        </div>
+        <div class="tab" id="related_games">
+          <!-- loaded by gamePage.js -->
+        </div>
+        <div class="tab" id="gallery">
+          <!-- loaded by gamePage.js -->
+        </div>
+      </section>
+    </div>
+    <section class="newCmModal">
+      <div class="closeBtn">&times;</div>
+      <div class="circle">
+        <span class="newCmHead"></span>
+        <span class="newCmBody"></span>
+      </div>
+      <div class="newCmBox">
+        <div>
+          <input type="text" name="cmUserName" id="" />
+          <label for="cmUserName">نام</label>
+        </div>
+        <div>
+          <textarea name="cmUserComment" id="" rows="5" cols="33"></textarea>
+          <label for="cmUserComment">متن نظر:</label>
+        </div>
+        <div class="starRating">
+          <a class="fa fa-star"></a>
+          <a class="fa fa-star"></a>
+          <a class="fa fa-star"></a>
+          <a class="fa fa-star"></a>
+          <a class="fa fa-star"></a>
+        </div>
+      </div>
+      <button class="btnCmSubmit">ارسال نظر</button>
+    </section>
+    <section class="footer">
+      <!-- Dynamically -->
+    </section>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script src="js/clientSideHelper.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/gamePage.js"></script>
+  </body>
+</html>

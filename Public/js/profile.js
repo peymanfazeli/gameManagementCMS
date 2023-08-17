@@ -11,6 +11,9 @@ const yourCtgs = document.querySelector("#yourCtgs");
 const categoryAdd = document.querySelector("#categoryAdd");
 const categoryDelete = document.querySelector("#categoryDelete");
 // Client Side
+window.onload = () => {
+  initFixedHeader();
+};
 covers.forEach((cover) => {
   cover.addEventListener("click", () => {
     addCover();

@@ -29,6 +29,7 @@ const dropdownContents = document.querySelectorAll(".dropdown-content");
 const dropdownRegister = document.querySelector("#dropdownContentRegister");
 // new Ctg Handler
 const categoryNameInput = document.querySelector("#categoryNameInput");
+
 // Client Side
 function changeCtgInputVal(ctgName) {
   newGameCtgInput.value = ctgName;
@@ -137,9 +138,6 @@ const getAdminAllCtg = (type) => {
 };
 getAdminAllCtg("register");
 // Server connection
-if (!checkUserLogin()) {
-  window.location = "http://localhost:5500/Public/login.html";
-}
 
 // click
 document.querySelector("#registerGameBtn").addEventListener("click", (e) => {
@@ -217,3 +215,6 @@ deleteGameBtn.addEventListener("click", (e) => {
   const data = { _id };
   myFetch("games/deleteGame", "POST", updateData, data);
 });
+if (!checkUserLogin()) {
+  window.location = "http://localhost:5500/Public/login.html";
+}

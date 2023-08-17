@@ -1,0 +1,707 @@
+@font-face {
+  font-family: "yekan";
+  src: url("../fonts/Yekan.eot");
+  src: url(../fonts/Yekan.eot?#iefix) format("embedded-opentype"),
+    url("../fonts/Yekan.woff") format("woff"),
+    url("../fonts/Yekan.ttf") format("truetype"),
+    url("../fonts/Yekan.svg#BYekan") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+* {
+  box-sizing: border-box;
+  direction: rtl;
+  text-decoration: none;
+  list-style: none;
+  font-family: "yekan";
+}
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "yekan";
+}
+
+.nThreshold,
+.footer .threshold {
+  margin: 0 auto !important;
+  width: 660px;
+}
+.btn {
+  border-radius: 5px;
+  color: white;
+  background-color: rgba(108, 200, 231, 0.81);
+  width: 150px;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  padding: 0;
+  cursor: pointer;
+  margin-top: 3%;
+  border: none;
+}
+.cmLoadMoreBtn {
+  margin-right: 30%;
+  display: block;
+}
+
+/* Loader */
+/* .spinner {
+  display: none;
+  margin: 100px auto;
+  width: 40px;
+  height: 40px;
+  position: relative;
+  top: -10px;
+  text-align: center;
+  -webkit-animation: sk-rotate 2s infinite linear;
+  animation: sk-rotate 2s infinite linear;
+}
+
+.dot1,
+.dot2 {
+  width: 60%;
+  height: 60%;
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  background-color: #333;
+  border-radius: 100%;
+
+  -webkit-animation: sk-bounce 2s infinite ease-in-out;
+  animation: sk-bounce 2s infinite ease-in-out;
+}
+
+.dot2 {
+  top: auto;
+  bottom: 0;
+  -webkit-animation-delay: -1s;
+  animation-delay: -1s;
+}
+
+@-webkit-keyframes sk-rotate {
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+@keyframes sk-rotate {
+  100% {
+    transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@-webkit-keyframes sk-bounce {
+  0%,
+  100% {
+    -webkit-transform: scale(0);
+  }
+  50% {
+    -webkit-transform: scale(1);
+  }
+}
+
+@keyframes sk-bounce {
+  0%,
+  100% {
+    transform: scale(0);
+    -webkit-transform: scale(0);
+  }
+  50% {
+    transform: scale(1);
+    -webkit-transform: scale(1);
+  }
+} */
+/* /loader */
+.blackCover {
+  /* filter: blur(10px); */
+  filter: none;
+  transition: 0.3s;
+}
+/* fixedHeader style is loaded from style.css*/
+.fixedHeader footer .menu {
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+.fixedHeader footer {
+  height: 50px;
+}
+.fixedHeader footer .menu a {
+  color: #adadad;
+  margin-left: 20px;
+  transition: 0.3s;
+}
+.fixedHeader footer li:last-child a {
+  margin-left: 0;
+}
+.fixedHeader footer a:hover {
+  border-bottom: 5px solid rgba(108, 200, 231);
+}
+.tabs {
+}
+.tabs .tab {
+  /* display: block; */
+  margin: 0 auto;
+  width: 100%;
+  text-align: justify;
+  transition: 3s ease;
+}
+.midmargin {
+  max-width: 100%;
+}
+.midmargin img {
+  width: 100%;
+  height: 500px;
+}
+.tabs .tab .cmHeader,
+.rgHeader,
+.gHeader {
+  display: flex;
+  padding: 3% 0;
+  border-bottom: 1px solid #adadad;
+  color: #adadad;
+}
+.cmHeader h5,
+.rgHeader,
+.gHeader {
+  font-size: larger;
+  margin: 2% 2% 0 2%;
+}
+.cmHeader #cmNumber {
+  line-height: 70px;
+}
+.cmHeader .cmBtn {
+  margin-right: 250px;
+}
+.tab .cmBody {
+  /* margin: 3% 0; */
+  padding: 0 0 0 12%;
+}
+.cmBody li:nth-child(odd) {
+  background-color: #f4f4f4;
+}
+.cmBody li:nth-child(even) {
+  background-color: white;
+}
+.cmBody .cmItem {
+  margin: 3% 0;
+  display: flex;
+  position: relative;
+}
+.cmBody .cmItem img {
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+  margin-left: 1%;
+}
+.cmBody .cmItem p {
+  margin: 0;
+}
+.cmBody .cmItem .cmDate {
+  font-size: x-small;
+  font-weight: bolder;
+}
+.cmBody .cmItem .cmText {
+  color: rgba(108, 200, 231);
+}
+.cmBody .cmItem .rate {
+  display: flex;
+  grid-gap: 3px;
+  padding: 3px 0 3px 0;
+  position: absolute;
+  left: 0;
+  padding: 2%;
+}
+.cmBody .cmItem .rate a {
+  transition: 0.6s;
+  color: #333;
+}
+.cmBody .cmItem .rate .checked {
+  color: rgb(108, 205, 237);
+}
+.newCmModal {
+  transition: 0.3s;
+  position: absolute;
+  background: #fff;
+  top: 20vh;
+  right: 40vw;
+  margin: 0 auto;
+  width: 300px;
+  border-radius: 25px;
+  padding: 20px;
+  box-shadow: 0px 10px 20px 2px;
+  display: none;
+}
+.circle .newCmHead {
+  display: inline-block;
+  width: 18px;
+  height: 20px;
+  margin: 0 auto;
+  margin-top: 6px;
+  border-radius: 50%;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+}
+.circle .newCmBody {
+  display: inline-block;
+  width: 35px;
+  margin: 0 auto;
+  margin-top: 26px;
+  border-radius: 50%;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+}
+.circle {
+  position: absolute;
+  margin: 0 auto;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  top: -35px;
+  right: 0;
+  left: 0;
+  background-color: rgb(1, 170, 133);
+  border: 2px solid #fff;
+}
+.newCmModal .circle,
+.newCmModal span {
+  display: inline-block;
+  position: absolute;
+}
+.newCmModal span {
+  height: 20px;
+  background-color: rgb(1, 170, 133);
+}
+.newCmModal button {
+  display: block;
+  margin: 0 auto;
+  margin-top: 25px;
+  border: none;
+  border-radius: 32px;
+  font-size: 15px;
+  background-color: rgb(1, 170, 133);
+  padding: 2%;
+  font-family: "yekan";
+}
+.newCmModal button:hover,
+.newCmModal button:focus {
+  background-color: rgb(3, 145, 144);
+  outline: rgb(2, 137, 108) 2px solid;
+  cursor: pointer;
+}
+.closeBtn {
+  display: block;
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  top: -10px;
+  right: 10px;
+  color: tomato;
+  font-size: 34px;
+  transition: 0.3s;
+}
+.closeBtn:hover {
+  color: rgba(125, 2, 2, 0.555);
+  cursor: pointer;
+}
+.newCmBox {
+  margin-top: 43px;
+}
+.newCmBox label {
+  display: block;
+  position: absolute;
+  font-size: 18px;
+  margin-top: -62px;
+  color: rgb(169, 171, 170);
+  padding-right: 18px;
+  text-align: right;
+  transform: 0.4s;
+  pointer-events: none;
+}
+.newCmBox input,
+.newCmBox textarea {
+  width: 95%;
+  margin: 28px 1px 10px 1px;
+  padding: 9px;
+  font-size: 18px;
+  color: #555;
+  border: 1px solid #555;
+  outline: none;
+  border-radius: 5px;
+  resize: none;
+}
+.newCmBox input {
+  height: 42px;
+}
+.newCmBox input:focus ~ label,
+.newCmBox input:valid ~ label,
+.newCmBox textarea:focus ~ label,
+.newCmBox textarea:valid ~ label {
+  padding-right: 8px;
+  color: #026948;
+  font-weight: 500;
+}
+.newCmBox input:focus ~ label,
+.newCmBox input:valid ~ label {
+  margin-top: -95px;
+}
+.newCmBox textarea:focus ~ label,
+.newCmBox textarea:valid ~ label {
+  margin-top: -258px;
+}
+.newCmBox .starRating {
+  display: flex;
+  flex-direction: row;
+  grid-gap: 3px;
+  padding: 0 3px 0 3px;
+  margin-right: 30%;
+}
+.newCmBox .starRating .fa {
+  background-color: white;
+  transition: 0.6s;
+}
+.newCmBox .starRating .fa:hover {
+  color: aqua;
+}
+/* game score and leaderboard */
+.noRate {
+  display: none;
+}
+.container {
+  margin-top: 5rem;
+  padding: 1.2% 3.2% 1.2% 3.2%;
+  height: initial;
+}
+.top {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 100%;
+  text-align: center;
+}
+/* .top img {
+} */
+.top .thirdScore img {
+  border: 1px solid brown;
+}
+.top .highestScore {
+  margin-top: -20px;
+}
+.top .highestScore .profile-pic img {
+  border: 1px solid gold;
+  width: 100px !important;
+  height: 100px !important;
+}
+.top .secondScore img {
+  border: 1px solid silver;
+}
+.person img,
+.profile-pic img {
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
+  position: relative;
+  top: -0.3rem;
+}
+.person .poly {
+  width: 10px;
+  height: 10px;
+  background: silver;
+  position: relative;
+  right: -55px;
+  top: -18px;
+  font-size: xx-small;
+  color: #fff;
+}
+.person .poly::before {
+  content: "";
+  width: 10px;
+  height: 0;
+  position: absolute;
+  top: -13px;
+  left: 0;
+  border-bottom: 16px solid silver;
+  border-left: 16px solid transparent;
+  border-right: 16px solid transparent;
+}
+.person .poly::after {
+  content: "";
+  width: 10px;
+  height: 0;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  border-top: 16px solid silver;
+  border-left: 16px solid transparent;
+  border-right: 16px solid transparent;
+}
+.person .poly a {
+  color: white;
+  text-align: center;
+  position: absolute;
+  right: -30px;
+  top: -15px;
+  font-size: large;
+  background-color: transparent;
+  z-index: 10;
+}
+.person .profile-desc {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.profile-score {
+  color: green;
+}
+.table {
+  margin-top: 3rem;
+  display: flex;
+  flex-direction: column;
+}
+.table .person {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: 1fr;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+}
+.div1 {
+  grid-area: 1 / 1 / 2 / 2;
+  display: flex;
+  flex-direction: row;
+}
+.div1 .id {
+  margin-left: 2.3rem;
+}
+.div1 .profile-pic {
+  position: relative;
+  top: -2rem;
+}
+.div1 .poly {
+  right: 1.2rem;
+  z-index: 10;
+}
+.div2 {
+  grid-area: 1 / 2 / 2 / 5;
+}
+.div2 .profile-desc {
+  margin-right: 2rem;
+}
+.div3 {
+  grid-area: 1 / 5 / 2 / 7;
+}
+/* Star Rating */
+.rating {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: center;
+}
+.rating > input {
+  display: none;
+}
+.rating > label {
+  position: relative;
+  width: 1.1em;
+  font-size: larger;
+  color: rgb(245, 160, 24);
+  cursor: pointer;
+}
+.rating > label::before {
+  content: "\2605";
+  position: absolute;
+  opacity: 0;
+}
+.rating > label:hover:before,
+.rating > label:hover ~ label:before {
+  opacity: 1 !important;
+}
+.rating > input:checked ~ label:before {
+  opacity: 1;
+}
+.rating:hover > input:checked ~ label:before {
+  opacity: 0.4;
+}
+.container .more {
+  width: 100%;
+  cursor: pointer;
+  text-align: center;
+  font-size: xx-large;
+}
+/* related games */
+.gameCard {
+  width: 150px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #ccc;
+  margin-right: 10px;
+}
+.gameCard img {
+  width: 100%;
+  height: 100%;
+}
+.gameCard:hover {
+  box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.6);
+}
+.gameCard .content {
+  padding: 10px 5px 0 5px;
+}
+.gameCard .title,
+.categories {
+  margin: 1px;
+  color: #ccc;
+}
+.gameCard .rate {
+  display: flex;
+  grid-gap: 3px;
+  padding: 3px 0 3px 0;
+}
+.gameCard .rate a {
+  transition: 0.6s;
+  color: #333;
+}
+.gameCard .rate .checked {
+  color: rgb(108, 205, 237);
+}
+.gameCard .title {
+  color: rgb(108, 205, 237);
+  height: 10px;
+  line-height: 9pt;
+  margin-bottom: 10px;
+}
+.rGames,
+.gGame {
+  margin: 3% 0;
+}
+/* Gallery */
+.gGame .topPic {
+  width: 630px;
+  height: 200px;
+  margin: 0 auto;
+  background-color: #f4f4f4;
+  border-radius: 5px;
+  position: relative;
+  box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.6);
+}
+.gGame .topPic img {
+  width: 100%;
+  height: 100%;
+  margin: 0 5%;
+  padding: 2% 0;
+  filter: brightness(0.4);
+}
+.gGame .topPic .playBtn {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #ccc;
+  opacity: 0.6;
+  position: absolute;
+  top: 40%;
+  right: 48%;
+  text-align: center;
+  line-height: 50px;
+  transition: 0.6s;
+}
+.gGame .topPic .playBtn:hover {
+  opacity: 1;
+}
+.gTextContent {
+  position: absolute;
+  bottom: 5%;
+  color: white;
+  margin: 0 3%;
+}
+.gTextContent .gName {
+  /* float: right; */
+}
+.gTextContent .gViews {
+  position: relative;
+  left: -25rem;
+  color: greenyellow;
+}
+.gGame .bottomSlider {
+  position: relative;
+  width: 90%;
+  display: flex;
+  align-items: center;
+  margin: 0 auto;
+}
+.swiper {
+  width: 950px;
+}
+.card {
+  position: relative;
+  /* background-color: #fff;
+  border-radius: 20px;
+  margin: 20px 0;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1); */
+}
+/* .card::before {
+  content: "";
+  position: absolute;
+  height: 40%;
+  width: 100%;
+  background-color: white;
+  border-radius: 20px 20px 0 0;
+} */
+.card .image {
+  height: 140px;
+  width: 140px;
+  position: relative;
+}
+.card .image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.swiper-button-next,
+.swiper-button-prev {
+  opacity: 0.7;
+  color: #777 !important;
+  transition: all 0.3s ease;
+}
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+  opacity: 1;
+  color: black;
+}
+.gGame .bottomSlider .container {
+  padding: 0 5%;
+}
+.card .image .sliderImageCover {
+  display: none;
+  width: 100%;
+  height: 100%;
+  background-color: #333;
+  opacity: 0.7;
+  position: absolute;
+  top: 0;
+  font-size: small;
+  transition: 0.7s ease;
+}
+.card .image .sliderImageCover .playBtn {
+  background-color: white;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  text-align: center;
+  position: absolute;
+  top: 40%;
+  left: 40%;
+  opacity: 1;
+  line-height: 25px;
+  padding-left: 4px;
+}
+.card .image .sliderImageCover span {
+  bottom: 0;
+  position: absolute;
+  right: 5px;
+  color: white;
+}
+.card .image:hover .sliderImageCover {
+  transition: 0.7s;
+  display: block;
+}

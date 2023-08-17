@@ -16,12 +16,13 @@ const homeResposne = {
 };
 
 homeRouter.get("/", async (request, response) => {
+  const allGames = await Games.find();
   const newGames = await Games.find().sort({ _id: -1 }).limit(1).limit(3);
   if (request.user) {
     let loggedinUser = request.user;
     let userCtgs = loggedinUser.ctg;
+    let userid = JSON.stringify(loggedinUser._id);
     let userAllCtgs = getCategories(userCtgs);
-    let allGames = await Games.find();
     let allGamesCtgs = getCategories(allGames, true);
     let sameCtgsResponse = findCommonElements(userAllCtgs, allGamesCtgs);
     let sameCtgsArr = [];
@@ -31,18 +32,33 @@ homeRouter.get("/", async (request, response) => {
     const userGames = await Games.find({
       categories: sameCtgsArr,
     });
-
+    const userComments = await Comments.findOne({
+      _id: "64dcf76cb9fdad2e717816c8",
+    });
+    // console.log(userComments);
+    // console.log("loggedinUser id:", userComments.text);
     // console.log("user ctgs: ", userAllCtgs);
     // console.log("all games ctgs: ", allGamesCtgs);
     // console.log("same categories:", sameCtgsArr);
     // console.log("fave games: ", userGames);
-    return response.json({
-      user: loggedinUser,
-      games: userGames,
-      newGames: newGames,
-    });
+    // console.log("same ctg arr: ", sameCtgsArr);
+    if (sameCtgsArr.length === 0) {
+      console.log("same ctg arr===0: ", sameCtgsArr.length);
+      return response.json({
+        user: loggedinUser,
+        games: allGames,
+        newGames: newGames,
+      });
+    } else if (sameCtgsArr.length !== 0) {
+      console.log("same ctg arr!==0: ", sameCtgsArr.length);
+      return response.json({
+        user: loggedinUser,
+        games: userGames,
+        newGames: newGames,
+        // userComments: userComments,
+      });
+    }
   } else {
-    const allGames = await Games.find();
     return response.json({ games: allGames, newGames: newGames });
   }
 });

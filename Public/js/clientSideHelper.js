@@ -1,32 +1,67 @@
-let signup = document.querySelector("#signup");
-let loginBtn = document.querySelector("#loginBtn");
-let profileBtn = document.querySelector("#profileBtn");
-let userNameBtn = document.querySelector("#userNameBtn");
-let logout = document.querySelector("#logout");
-let adminBtn = document.querySelector("#adminBtn");
-
-function displayLoginBtn(
-  userName = "پروفایل",
-  background = "transparent",
-  isAdmin
-) {
+// Logged in Profile data:
+function getProfileData(response, error) {
+  if (error) {
+    console.log("error in getting profile data:", error);
+    return;
+  } else {
+    let userProfile = response.userProfile;
+    console.log("get profile:", userProfile);
+    let id = userProfile._id;
+    if (userProfile.role === "admin") {
+      findElement("#adminBtn").style.display = "inline-block";
+      findElement("#adminBtn").innerHTML = "پنل مدیریت";
+    } else {
+      findElement("#adminBtn").style.display = "none";
+    }
+    let userAvatarPath = userProfile.avatar;
+    let userAvatarFile = userAvatarPath.replace(
+      "C:/xampp/htdocs/IE-Express/Public/",
+      ""
+    );
+    findElement("#profileBtn").innerHTML = userProfile.userName;
+    findElement(
+      "#profileBtn"
+    ).style.backgroundImage = `url("${userAvatarFile}")`;
+  }
+}
+function getProfile() {
+  myFetch("profile", "GET", getProfileData);
+  return true;
+}
+function checkUserLogin(href = "") {
+  if (href === "") {
+    if (document.cookie !== "") {
+      if (getProfile()) {
+        console.log("PROFILE", getProfile());
+        findElement("#signup").style.display = "none";
+        findElement("#loginBtn").style.display = "none";
+        findElement("#profileBtn").style.display = "inline-block";
+        // profileBtn.innerHTML = userProfile.userName;
+        // profileBtn.style.backgroundImage = `url("${userAvatarFile}")`;
+        findElement("#logout").style.display = "inline-block";
+      } else {
+        console.log("Nooothiiiiing");
+      }
+      return true;
+    } else {
+      offDisplayLogin();
+      return false;
+    }
+  } else {
+    console.log("href is= ", window.location.href);
+  }
+}
+function findElement(elName) {
+  return document.querySelector(`${elName}`);
+}
+function displayLogin(signup, loginBtn, profileBtn, logout, adminBtn) {
   signup.style.display = "none";
   loginBtn.style.display = "none";
   profileBtn.style.display = "inline-block";
-  profileBtn.innerHTML = userName;
-  profileBtn.style.backgroundImage = `url(${background})`;
-
-  if (isAdmin) {
-    adminBtn.style.display = "inline-block";
-    adminBtn.innerHTML = "پنل مدیریت";
-  } else {
-    adminBtn.style.display = "none";
-  }
-
   logout.style.display = "inline-block";
+  adminBtn.style.display = "inline-block";
 }
-
-function offDisplayLogin() {
+function offDisplayLogin(signup, loginBtn, profileBtn, logout, adminBtn) {
   if (window.location.href !== "http://localhost:5500/Public/login.html") {
     signup.style.display = "inline-block";
     loginBtn.style.display = "inline-block";
@@ -194,33 +229,4 @@ function correctImgAddress(entityImg) {
   }
 }
 
-// Logged in Profile data:
-function getProfileData(response) {
-  let userProfile = response.userProfile;
-  let id = userProfile._id;
-  let isAdmin;
-  if (userProfile.role === "admin") {
-    isAdmin = true;
-  } else {
-    isAdmin = false;
-  }
-  let userAvatarPath = userProfile.avatar;
-  let userAvatarFile = userAvatarPath.replace(
-    "C:/xampp/htdocs/IE-Express/Public/",
-    ""
-  );
-  displayLoginBtn(userProfile.userName, userAvatarFile, isAdmin);
-  return id;
-}
-function getProfile() {
-  myFetch("profile", "GET", getProfileData);
-}
-function checkUserLogin() {
-  if (document.cookie !== "") {
-    getProfile();
-    return true;
-  } else {
-    offDisplayLogin();
-    return false;
-  }
-}
+//

@@ -1,4 +1,7 @@
+let htmlString = "";
+const headerSection = $(".fixedHeader");
 //
+
 const fvSlider = document.querySelector(".fvSlider");
 const fvContainer = document.querySelector(".container");
 const svSlider = document.querySelector(".svSlider");
@@ -23,7 +26,7 @@ let bannerBtn = $(".bannerBtn");
 let trailerBtn = $("#gallery");
 let commentSection;
 let paramUrl;
-let htmlString = "";
+
 console.log("banner Btn: ", bannerBtn);
 // const serverUrl = `http://localhost:3001/home`;
 // function headerSliderInit(imgContainer, sliderNum, gameId) {
@@ -110,6 +113,7 @@ function initFvData(response, error) {
     let games = response.games;
     let newGames = response.newGames;
     console.log("newGames: ", newGames);
+    console.log("user Comments: ", response);
     // show user game slider in homepage
     let i = 0;
     headerSliderInit(bgImage, games[i], i, i);
@@ -421,9 +425,9 @@ function makeElement(
 
 //fixed-header Function
 htmlString = "";
-const headerSection = $(".fixedHeader");
+
 // console.log("header section in script.js:", headerSection);
-function initFixedHeader() {
+async function initFixedHeader() {
   htmlString = `
     <header class="nThreshold">
         <div class="headerContainer">
@@ -439,8 +443,14 @@ function initFixedHeader() {
                 <input type="search" id='keyword-search' placeholder="جستجو ..." />
                 <i id="searchIcon" class="fa fa-search" onclick="getTextFromInput()"></i>
                 </div>
+                <div class="submit">
                 <i class="fa fa-user"></i>
-                <a href="login.html">ورود</a>
+                <a href="login.html" class="btn" id="loginBtn"></a>
+                <a href="profile.html" class="btn" id="profileBtn" onclick=""></a>
+                <a href="adminPage.html" class="btn" id="adminBtn"></a>
+                <a href="register.html" class="btn" id="signup">ثبت نام</a>
+                <a href="#" class="btn" id="logout" onclick="clearSession">خروج</a>
+              </div>
             </div>
         </div>
     </header>
@@ -449,7 +459,20 @@ function initFixedHeader() {
     </div>
   `;
   makeElement(htmlString, headerSection, 0, "prepend");
+  if (!checkUserLogin()) {
+    offDisplayLogin(signup, loginBtn, profileBtn, logout, adminBtn);
+  }
 }
+window.onload = () => {
+  offDisplayLogin(
+    findElement("#signup"),
+    findElement("#loginBtn"),
+    findElement("#profileBtn"),
+    findElement("#logout"),
+    findElement("#adminBtn")
+  );
+  checkUserLogin();
+};
 // search Function
 let searchItem;
 let itemFound;
@@ -543,16 +566,6 @@ function produceCard(item, hasHeader = false, headerText = "") {
   return htmlString;
 }
 
-const logoutBtn = document.querySelector("#logout");
-logoutBtn.addEventListener("click", (e) => {
-  // e.preventDefault();
-  clearSession();
-});
+// const logoutBtn = document.querySelector("#logout");
 
-if (
-  !checkUserLogin() &&
-  window.location.href !== "http://localhost:5500/Public/index.html"
-) {
-  window.location = "http://localhost:5500/Public/login.html";
-}
 // checkUserLogin();

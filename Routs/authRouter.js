@@ -166,6 +166,7 @@ authRouter.post("/login", async (request, response, next) => {
   }
 });
 authRouter.get("/logout", async (request, response) => {
+  console.log("****-------logout clicked");
   console.log("session ID in logging out:", request.session);
   request.session.destroy((err) => {
     if (err) {
