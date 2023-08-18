@@ -1,72 +1,113 @@
-// let keysValues = window.location.search;
-
-// const urlParams = new URLSearchParams(keysValues);
-// const param = urlParams.get("game");
-// // console.log("*******");
-// let gameTitle = param;
-// // console.log("Recieved gameTitle:", gameTitle);
-// let tail;
-// let homepage;
-// let gameName;
-// // let sliders;
-// let gameInfoTab;
-// let commentItems;
-// let commentTabElement;
-// let ratingTab;
-// let relatedGamesTab;
-// let galleryTab;
-// let tableSection;
-// let leaderbordMembers;
-// let gameGallery;
-// // let htmlString = "";
-// //
+let keysValues = window.location.search;
+const urlParams = new URLSearchParams(keysValues);
+const param = urlParams.get("game");
+let gameTitle = param;
+console.log("********Recieved gameTitle:", gameTitle);
+let tail;
+let homepage;
+let gameName;
+// let sliders;
+let gameInfoTab;
+let commentItems;
+let commentTabElement;
+let ratingTab;
+let relatedGamesTab;
+let galleryTab;
+let tableSection;
+let leaderbordMembers;
+let gameGallery;
+//
 // // newComment Section handlers
-// const commentModal = document.querySelector(".newCmModal");
-// const cmCloseBtn = document.querySelector(".closeBtn");
-// const cmSubmitBtn = document.querySelector(".btnCmSubmit");
-// const cmBtn = document.querySelector(".cmHeader");
-// const blackCover = document.querySelector(".blackCover");
+const commentModal = document.querySelector(".newCmModal");
+const cmCloseBtn = document.querySelector(".closeBtn");
+const cmSubmitBtn = document.querySelector(".btnCmSubmit");
+const cmBtn = document.querySelector(".cmHeader");
+const blackCover = document.querySelector(".blackCover");
 
-// // Initailization
-// //fixed header
-// htmlString = "";
-
-// // game init part
-// let tab;
-// let header;
-// let relatedGames;
-// let galleryFlag = 0;
-// let commentsFlag = 0;
-// let gameInfoFlag = 0;
+// game init part
+let tab;
+let header;
+let relatedGames;
+let galleryFlag = 0;
+let commentsFlag = 0;
+let gameInfoFlag = 0;
 // initFixedHeader();
-// const bannerElement = document.querySelector(".banner");
-// gameInfoTab = $("#info");
-// ratingTab = $("#leaderboard");
-// commentTab = $("#comments");
-// relatedGamesTab = $("#related_games");
-// galleryTab = $("#gallery");
+const bannerElement = document.querySelector(".banner");
+gameInfoTab = $("#info");
+ratingTab = $("#leaderboard");
+commentTab = $("#comments");
+relatedGamesTab = $("#related_games");
+galleryTab = $("#gallery");
 
-// // init game data
-// // Load Header
-// // $(function () {
-// //   $.ajax({
-// //     url: `http://localhost/IE-F95-API-master/games/${gameTitle}/header`,
-// //     type: "GET",
-// //     dataType: "json",
-// //     success: function (data) {
-// //       renderHeader(data);
-// //       if (getTabFromUrl()) {
-// //         loadTabDataFromUrl();
-// //       }
-// //       // getTabFromUrl() ? loadTabDataFromUrl() : console.log("no tab in url");
-// //     },
-// //     error: function () {
-// //       setTimeout(() => {
-// //         alert("Error loading header data");
-// //       }, 1000);
-// //     },
-// //   });
-// //   // loading tab data
+//Functions
+function loadGameAndTabs(response, error) {
+  if (error) {
+    console.log("Error in loading game and tabs in gamePage: ", error);
+    return;
+  } else {
+    const gameObject = response.game;
+    renderHeader(gameObject);
+    console.log("tab part: ", getTabFromUrl());
+
+    if (getTabFromUrl()) {
+      loadTabDataFromUrl();
+    }
+  }
+}
+function loadDataBasedOnTab(response, error) {
+  if (error) {
+    console.log("Error while loading tab data: ", error);
+    return;
+  } else {
+    console.log("tab Data response: ", response);
+    const mainObject = response;
+    tab = response.tab;
+    let game = response.game;
+    if (tab === "leaderboard") {
+      renderLeaderboardTab(game);
+    } else if (tab === "comments") {
+      renderCommentTab(game);
+      // commentsFlag = 1;
+    } else if (tab === "related_games") {
+      renderRelatedGamesTab(game);
+    } else if (tab === "gallery") {
+      console.log(game);
+      renderGallery(game);
+      // galleryFlag = 1;
+    } else if (tab === "info") {
+      // $(".information").append(header.info);
+      console.log("game info: ", game);
+      renderInfoTab(game.info);
+      // gameInfoFlag = 1;
+    }
+  }
+}
+// init game data
+// Load Header
+$(function () {
+  myFetch(`games/${gameTitle}`, "GET", loadGameAndTabs, "", "loadGameAndTabs");
+});
+// // loading tab data
+$(".topic").one("click", function () {
+  let hashTab = $(this).children().attr("href").replace("#", "");
+  tab = hashTab;
+  if (tab === "comments" && commentsFlag) {
+    return;
+  }
+  if (tab === "gallery" && galleryFlag) {
+    return;
+  }
+  if (tab === "info" && gameInfoFlag) {
+    return;
+  }
+  myFetch(
+    `games/${gameTitle}/${tab}`,
+    "GET",
+    loadDataBasedOnTab,
+    "",
+    "loadDataBasedOnTab"
+  );
+});
 // //   $(".topic").one("click", function () {
 // //     hashTab = $(this).children().attr("href").replace("#", "");
 // //     tab = hashTab;
@@ -109,6 +150,7 @@
 // //     });
 // //   });
 // // });
+// // =================================================================================================
 // $(document).on({
 //   ajaxStart: function () {
 //     $(".spinner").css("display", "block");
@@ -119,13 +161,13 @@
 // });
 
 // let tb;
-// function selectTab(tabId) {
-//   const tabs = document.querySelectorAll(".tab");
-//   tabs.forEach((tab) => (tab.style.display = "none"));
-//   tb = document.querySelector(`#${tabId}`);
-//   tb.style.display = "block";
-//   // loadTabData(tb);
-// }
+function selectTab(tabId) {
+  const tabs = document.querySelectorAll(".tab");
+  tabs.forEach((tab) => (tab.style.display = "none"));
+  tb = document.querySelector(`#${tabId}`);
+  tb.style.display = "block";
+  // loadTabData(tb);
+}
 
 // window.onload = () => {
 //   // initFixedHeader();
@@ -142,47 +184,46 @@
 //   }
 // };
 // // Rendering
-// function renderHeader(data) {
-//   header = data.response.result.game;
-//   htmlString = `
-//   <img
-//    id="bannerImg"
-//    alt="game banner"
-//    src="${header.large_image}"
-//  />
-//  <div class="nThreshold">
-//  <div class="gameTextData ">
-//  <img
-//    id="gameImg"
-//    alt="game image"
-//    src="${header.small_image}"
-//  />
-//      <div class="textContent">
-//        <h3 class="topic" id="bannerTitle">${param.replace("بازی ", "")}</h3>
-//        <h6 class="category">${header.categories}</h6>
-//        <div class="rate"></div>
-//      </div>
-//      <span class="btn">شروع بازی</span>
-//  </div>
-//  </div>
-// `;
-//   makeElement(htmlString, bannerElement);
-//   // $(".information").append(header.info);
-//   // renderInfoTab("info");
-//   // gameInfoFlag = 1;
-//   initFooter();
-// }
-// const informationDiv = $(".information");
+function renderHeader(game) {
+  console.log("game: ", game);
+  htmlString = `
+  <img
+   id="bannerImg"
+   alt="game banner"
+   src="${correctImgAddress(game.large_image)}"
+ />
+ <div class="nThreshold">
+ <div class="gameTextData ">
+ <img
+   id="gameImg"
+   alt="game image"
+   src="${correctImgAddress(game.small_image)}"
+ />
+     <div class="textContent">
+       <h3 class="topic" id="bannerTitle">${param.replace("بازی ", "")}</h3>
+       <h6 class="category">${game.categories}</h6>
+       <div class="rate"></div>
+     </div>
+     <span class="btn gamePageBtn" >شروع بازی</span>
+ </div>
+ </div>
+`;
+  makeElement(htmlString, bannerElement);
+  // $(".information").append(header.info);
+  // renderInfoTab("info");
+  // gameInfoFlag = 1;
+  initFooter();
+}
+const informationDiv = $(".information");
 // let infoItems;
-// function renderInfoTab(tabInfo) {
-//   if (gameInfoFlag === 0) {
-//     gameInfoFlag = 1;
-//     infoItems = tabInfo.response.result.game;
-//     console.log("info tab is rendered", infoItems);
-//     htmlString = `<div>${infoItems.info}</div>`;
-//     makeElement(htmlString, informationDiv);
-//   }
-// }
+function renderInfoTab(gameInfo) {
+  if (gameInfoFlag === 0) {
+    gameInfoFlag = 1;
+    console.log("info tab is rendered", gameInfo);
+    htmlString = `<div>${gameInfo}</div>`;
+    makeElement(htmlString, informationDiv);
+  }
+}
 // function renderLeaderboardTab(tabInfo) {
 //   console.log(tabInfo);
 //   htmlString = "";
@@ -469,32 +510,56 @@
 //     // (htmlString, galleryTab, 3)
 //   }
 // }
-// // getting url params
-// function getTabFromUrl() {
-//   const pageUrl = window.location.href;
-//   let tabPart = pageUrl.split("#");
-//   // console.log("tab part: ", tabPart[1]);
-//   // loadTabData(`${tabPart}`);
-//   return tabPart[1];
-// }
-// function loadTabDataFromUrl(tabName) {
-//   tabName = getTabFromUrl();
-//   $.ajax({
-//     url: `http://localhost/IE-F95-API-master/games/${gameTitle}/${tabName}`,
-//     type: "GET",
-//     dataType: "json",
-//     success: function (tabInfo) {
-//       if (tabName === "comments") {
-//         renderCommentTab(tabInfo);
-//       } else if (tabName === "gallery") {
-//         renderGallery(tabInfo);
-//         // galleryFlag = 1;
-//       } else if (tabName === "info") {
-//         renderInfoTab(tabInfo);
-//       }
-//     },
-//   });
-// }
+// getting url params
+function getTabFromUrl() {
+  const pageUrl = window.location.href;
+  let tabPart = pageUrl.split("#");
+  return tabPart[1];
+}
+function tabLoadingResponse(response, error) {
+  if (error) {
+    console.log("Error in handling tabLoadingResponse in gamePage.js: ", error);
+    return;
+  } else {
+    let game = response.game;
+    let tab = response.tab;
+    if (tab === "comments") {
+      renderCommentTab(game);
+    } else if (tab === "gallery") {
+      renderGallery(game);
+      // galleryFlag = 1;
+    } else if (tab === "info") {
+      renderInfoTab(game.info);
+      console.log("info tab of " + game.title + " must be rendered");
+    }
+  }
+}
+function loadTabDataFromUrl(tabName) {
+  console.log("load tab data");
+  tabName = getTabFromUrl();
+  myFetch(
+    `games/${gameTitle}/${tabName}`,
+    "GET",
+    tabLoadingResponse,
+    "",
+    "tabLoadingResponse"
+  );
+  // $.ajax({
+  //   url: `http://localhost/IE-F95-API-master/games/${gameTitle}/${tabName}`,
+  //   type: "GET",
+  //   dataType: "json",
+  //   success: function (tabInfo) {
+  //     if (tabName === "comments") {
+  //       renderCommentTab(tabInfo);
+  //     } else if (tabName === "gallery") {
+  //       renderGallery(tabInfo);
+  //       // galleryFlag = 1;
+  //     } else if (tabName === "info") {
+  //       renderInfoTab(tabInfo);
+  //     }
+  //   },
+  // });
+}
 // function produceSwiperSlider() {
 //   console.log("swiper is called");
 //   // swiper slider
@@ -527,7 +592,10 @@
 //   console.log("user has logged in");
 //   console.log(document.querySelector(".fa-user"));
 // }
+// Initailization
+// Test part
 window.onload = () => {
+  //fixed header
   initFixedHeader();
   if (checkUserLogin()) {
     findElement("#logout").addEventListener("click", (e) => {

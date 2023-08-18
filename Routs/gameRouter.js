@@ -72,19 +72,11 @@ gameRoute.post("/postgame", async (request, response) => {
 //     res.send(games);
 //   }
 // });
-gameRoute.get("/:gameName", async (request, response) => {
-  const { gameName } = request.params;
-  console.log("game name in server: ", request.params);
-  let game = await Games.findOne({ title: gameName });
-  // let game = await Games.find({ title: gameName });
-  if (!request.params) {
-    response.sendStatus(404);
-  } else if (game) {
-    response.json({ game: game });
-  } else {
-    response.sendStatus(400);
-  }
-});
+// gameRoute.get("/:gameName/:tab", (request, response) => {
+//   console.log("game tab in server: ", request.params);
+//   response.send(200);
+// });
+
 gameRoute.post("/updateGame", async (request, response) => {
   const { _id, title, abstract, info, categories } = request.body;
   let game = await Games.findOne({ _id: _id });
@@ -120,10 +112,29 @@ gameRoute.post("/deleteGame", async (request, response) => {
 // gameRoute.get("/:gameName/header", (request, response) => {
 //   response.send(200);
 // });
-// gameRoute.get("/:gameName/tab", (request, response) => {
-//   response.send(200);
-// });
-
+gameRoute.get("/:gameName", async (request, response) => {
+  const { gameName } = request.params;
+  console.log("game name in server: ", request.params);
+  let game = await Games.findOne({ title: gameName });
+  // let game = await Games.find({ title: gameName });
+  if (!request.params) {
+    response.sendStatus(404);
+  } else if (game) {
+    response.json({ game: game });
+  } else {
+    response.sendStatus(400);
+  }
+});
+gameRoute.get("/:gameName/:tab", async (request, response) => {
+  const { gameName, tab } = request.params;
+  let game = await Games.findOne({ title: gameName });
+  if (!request.params) {
+    response.sendStatus(404);
+  } else if (tab) {
+    return response.json({ game: game, tab: tab });
+  }
+  response.send(200);
+});
 // function searchName(name) {
 //   return games.find((game) => game.name === name);
 // }

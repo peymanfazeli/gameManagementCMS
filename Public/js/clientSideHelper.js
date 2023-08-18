@@ -32,7 +32,7 @@ function checkUserLogin(href = "") {
   if (href === "") {
     if (document.cookie !== "") {
       if (getProfile()) {
-        console.log("PROFILE", getProfile());
+        // console.log("profile :", getProfile());
         findElement("#signup").style.display = "none";
         findElement("#loginBtn").style.display = "none";
         findElement("#profileBtn").style.display = "inline-block";
@@ -216,7 +216,9 @@ function myFetch(path, method, callBack, data = "", func = "") {
           setTimeout(() => {
             if (func === "ctgResponse") {
               console.log("دسته بندی مد نظر یافت نشد");
-            } else if (func !== "ctgResponse") {
+            } else if (func === "loadGameAndTabs") {
+              alert("خطا در یافتن بازی مد نظر");
+            } else if (func !== "ctgResponse" || func !== "loadGameAndTabs") {
               alert("فیلد مورد نظر رو پر کن");
             }
           }, 500)
