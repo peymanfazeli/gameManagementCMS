@@ -449,7 +449,7 @@ async function initFixedHeader() {
                 <a href="profile.html" class="btn" id="profileBtn" onclick=""></a>
                 <a href="adminPage.html" class="btn" id="adminBtn"></a>
                 <a href="register.html" class="btn" id="signup">ثبت نام</a>
-                <a href="#" class="btn" id="logout" onclick="clearSession">خروج</a>
+                <a href="#" class="btn" id="logout" onclick="">خروج</a>
               </div>
             </div>
         </div>

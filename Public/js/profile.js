@@ -14,14 +14,13 @@ const categoryDelete = document.querySelector("#categoryDelete");
 window.onload = () => {
   initFixedHeader();
   if (checkUserLogin()) {
-    console.log("User is Online");
+    findElement("#logout").addEventListener("click", (e) => {
+      e.preventDefault();
+      clearSession();
+    });
   } else {
-    console.log("user is Offline");
+    window.location = "http://localhost:5500/Public/login.html";
   }
-  // if (!checkUserLogin()) {
-  //   // offDisplayLogin(signup, loginBtn, profileBtn, logout, adminBtn);
-  //   window.location='http://localhost:5500/Public/index.html'
-  // }
 };
 covers.forEach((cover) => {
   cover.addEventListener("click", () => {

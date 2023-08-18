@@ -529,4 +529,13 @@
 // }
 window.onload = () => {
   initFixedHeader();
+  if (checkUserLogin()) {
+    findElement("#logout").addEventListener("click", (e) => {
+      e.preventDefault();
+      clearSession();
+    });
+  } else {
+    console.log("User is Offline");
+    // window.location = "http://localhost:5500/Public/login.html";
+  }
 };

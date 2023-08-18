@@ -62,6 +62,12 @@ function checkUserLogin(href = "") {
 function findElement(elName) {
   return document.querySelector(`${elName}`);
 }
+function logout() {
+  findElemen("#logout").addEvenetListener("click", (e) => {
+    e.preventDefult();
+    clearSession();
+  });
+}
 function displayLogin(signup, loginBtn, profileBtn, logout, adminBtn) {
   signup.style.display = "none";
   loginBtn.style.display = "none";
