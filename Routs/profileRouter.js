@@ -1,4 +1,4 @@
-const { Router, request } = require("express");
+const { Router } = require("express");
 const { ObjectId } = require("mongodb");
 
 const profileRoute = Router();
@@ -11,6 +11,14 @@ const { validatePassword, hashPassword } = require("../Utils/helper");
 profileRoute.get("/", async (request, response) => {
   // console.log("reques user in profileroute: ", request.user);
   response.json({ userProfile: request.user });
+});
+profileRoute.get("/:userId", async (request, response) => {
+  const { userId } = request.params;
+  console.log("user id to get player name:", userId);
+  if (userId) {
+    let user = await User.findOne({ _id: userId });
+    return response.json({ userProfile: user });
+  }
 });
 profileRoute.post("/update", async (request, response) => {
   const token = request.user.token;

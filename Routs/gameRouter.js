@@ -1,7 +1,9 @@
-const { Router, response } = require("express");
+const { Router, response, request } = require("express");
 const gameRoute = Router();
 
 const Games = require("../DB/schemas/games");
+const Comments = require("../DB/schemas/comments");
+const User = require("../DB/schemas/user");
 
 // const games = [
 //   {
@@ -41,12 +43,14 @@ gameRoute.get("/postgame", (request, response) => {
 });
 gameRoute.post("/postgame", async (request, response) => {
   const { title, abstract, info, categories } = request.body;
+
   if (
     title.length !== 0 &&
     abstract.length !== 0 &&
     info.length !== 0 &&
     categories.length !== 0
   ) {
+    let comments = "[]";
     await Games.create({
       title,
       abstract,
@@ -54,6 +58,7 @@ gameRoute.post("/postgame", async (request, response) => {
       categories,
       large_image: "C:/xampp/htdocs/IE-Express/Public/images/generalAvatar.png",
       small_image: "C:/xampp/htdocs/IE-Express/Public/images/generalAvatar.png",
+      comments,
     });
     console.log("request body in /postGame: ", request.body);
     response.send({ games: Games });
@@ -80,7 +85,6 @@ gameRoute.post("/postgame", async (request, response) => {
 gameRoute.post("/updateGame", async (request, response) => {
   const { _id, title, abstract, info, categories } = request.body;
   let game = await Games.findOne({ _id: _id });
-
   if (_id) {
     await Games.updateMany(
       { _id: _id },
@@ -128,6 +132,20 @@ gameRoute.get("/:gameName", async (request, response) => {
 gameRoute.get("/:gameName/:tab", async (request, response) => {
   const { gameName, tab } = request.params;
   let game = await Games.findOne({ title: gameName });
+  let commentsInGameDoc = game.comments;
+  console.log("game id: ", game._id);
+  console.log("userId: ", request.user._id);
+  let gameCmsInCommentDoc = await Comments.find({ gameId: game._id });
+  // let gameCmsInCommentDoc
+  console.log("comments in comments doc: ", gameCmsInCommentDoc.length);
+  console.log("comments in game doc:", commentsInGameDoc.length);
+
+  if (commentsInGameDoc.length !== gameCmsInCommentDoc.length) {
+    await Games.updateMany(
+      { _id: game._id },
+      { comments: gameCmsInCommentDoc }
+    );
+  }
   if (!request.params) {
     response.sendStatus(404);
   } else if (tab) {
@@ -135,6 +153,16 @@ gameRoute.get("/:gameName/:tab", async (request, response) => {
   }
   response.send(200);
 });
+
+gameRoute.get("/comments", async (request, response) => {
+  console.log("/:gameName/comments was seen");
+  const { gameName } = request.params;
+  let foundGame = await Games.findOne({ title: gameName });
+  let gameComments = foundGame.comments;
+  console.log("game Comments: ", gameComments);
+  response.json({ comments: gameComments, user: request.user });
+});
+
 // function searchName(name) {
 //   return games.find((game) => game.name === name);
 // }
