@@ -218,7 +218,9 @@ function myFetch(path, method, callBack, data = "", func = "") {
               console.log("دسته بندی مد نظر یافت نشد");
             } else if (func === "loadGameAndTabs") {
               alert("خطا در یافتن بازی مد نظر");
-            } else if (func !== "ctgResponse" || func !== "loadGameAndTabs") {
+            } else if (func === "validateUserCommenting") {
+              alert("برای نظر دادن ابتدا وارد سایت بشید");
+            } else {
               alert("فیلد مورد نظر رو پر کن");
             }
           }, 500)

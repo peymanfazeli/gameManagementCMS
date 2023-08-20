@@ -14,6 +14,7 @@ const authRoute = require("../Routs/authRouter");
 const homeRoute = require("../Routs/homeRouter");
 const adminRoute = require("../Routs/adminRouter");
 const ctgRoute = require("../Routs/ctgRouter");
+const commentRoute = require("../Routs/commentRouter");
 
 require("../DB");
 
@@ -59,5 +60,6 @@ app.use("/home", homeRoute);
 app.use("/assets", cdnRoute);
 app.use("/categories", ctgRoute);
 app.use("/games", gameRoute);
+app.use("/comment", commentRoute);
 
 app.listen(PORT, () => console.log("Express Server☑"));

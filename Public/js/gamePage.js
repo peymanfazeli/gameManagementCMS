@@ -63,6 +63,7 @@ function loadDataBasedOnTab(response, error) {
     console.log("tab Data response: ", response);
     const mainObject = response;
     tab = response.tab;
+    // playersId=response.playersId
     let game = response.game;
     if (tab === "leaderboard") {
       renderLeaderboardTab(game);
@@ -350,38 +351,64 @@ function cmRating(data) {
   }
   return userRateString;
 }
+function validateUserCommenting(response, error) {
+  if (error) {
+    console.log("Error in validating user while commenting", error);
+    return;
+  } else {
+    blackCover.style.filter = "blur(10px)";
+    commentModal.style.display = "block";
+    $("#cmUserName").val(`${response.user}`);
+  }
+}
+function sendCommentResponse(response, error) {
+  if (error) {
+    console.log("Error in sending Comment to server", error);
+    return;
+  } else {
+    console.log("Response in sending Comment to server", response);
+    console.log(correctImgAddress(response.user));
+  }
+}
 let cmHeaderString = "";
-function renderCommentTab(tabInfo) {
+function renderCommentTab(game) {
   console.log("cmFlag in rendering tab", commentsFlag);
-  console.log("comments tab info", tabInfo);
+  console.log("comments tab info", game);
   // comment section of game
   if (commentsFlag === 0) {
     commentsFlag = 1;
     htmlString = "";
     commentTabElement = $("#comments");
-    console.log("cm tab el:", commentTabElement);
-    let offset = 0;
-    commentItems = tabInfo.comments;
+    commentItems = game.comments;
     console.log("commentItems: ", commentItems);
+    let offset = 0;
+
     offset = commentItems.length;
     console.log("offset in first loading:", offset);
     // unloadedComments = commentItems.game.number_of_comments - offset;
     commentItems.forEach((comment) => {
-      if (comment.gameId === tabInfo._id) {
-        gameCommentNumber = tabInfo.comments.length;
+      if (comment.gameId === game._id) {
+        gameCommentNumber = game.comments.length;
         console.log("gameCommentNumber", gameCommentNumber);
         // unloadedComments = gameCommentNumber - offset;
         // cmRating(comment);
         // renderCmHeader(comment, offset);
         cmHeaderString = `
-          <div class="cmHeader nThreshold">
-                <h5>نظرات کاربران</h5>
-                <span id="cmNumber">( ${gameCommentNumber} نظر )</span>
-                <span class="btn cmBtn">نظر دهید</span>
-                </div>
-                ${renderCmBody(comment, offset)}
-                `;
+            <div class="cmHeader nThreshold">
+                  <h5>نظرات کاربران</h5>
+                  <span id="cmNumber">( ${gameCommentNumber} نظر )</span>
+                  <span class="btn cmBtn">نظر دهید</span>
+                  </div>
+                  ${renderCmBody(comment, offset)}
+                  `;
       } else {
+        cmHeaderString = `
+            <div class="cmHeader nThreshold">
+                  <h5>نظرات کاربران</h5>
+                  <span id="cmNumber">( ${gameCommentNumber} نظر )</span>
+                  <span class="btn cmBtn">نظر دهید</span>
+                  </div>
+                  `;
         return;
       }
     });
@@ -389,8 +416,33 @@ function renderCommentTab(tabInfo) {
     htmlString = "";
     // newComment section
     $(".cmBtn").on("click", function () {
-      blackCover.style.filter = "blur(10px)";
-      commentModal.style.display = "block";
+      myFetch(
+        "comment",
+        "GET",
+        validateUserCommenting,
+        "",
+        "validateUserCommenting"
+      );
+    });
+    $(".btnCmSubmit").on("click", function () {
+      let userCm = $("textarea").val();
+      let data = {
+        gameTitle,
+        userCm,
+      };
+      console.log("send your comments", data);
+      myFetch(
+        "comment/sendComment",
+        "POST",
+        sendCommentResponse,
+        data,
+        "sending Comment to server"
+      );
+      blackCover.style.filter = "none";
+      commentModal.style.display = "none";
+      // setTimeout(() => {
+      //   location.reload();
+      // }, 300);
     });
     $(".closeBtn").on("click", function () {
       blackCover.style.filter = "none";
@@ -435,24 +487,42 @@ let gameCommentNumber = 0;
 let playerImgString = "";
 let playerNameString = "";
 let playerArr = [];
-function getPlayerName(response, error) {
+function getPlayerData(response, error) {
   if (error) {
     console.log("Error in getting player name", error);
     return;
   } else {
-    console.log("response of getting player name:", response);
-    let profileName = response.userProfile.userName;
-    let profileImg = correctImgAddress(response.userProfile.avatar);
-    profileString = `<img src="${profileImg}" alt="user-image" />
-                    ${profileName}
-    `;
+    console.log("Error in getting player data", response);
+    // cmBodyString = `
+    // ${(htmlString += `<li class="cmItem">
+    //              <div class="cmTextContent">
+    //              <img src="${profileImg}" alt="user-image" />
+    //                <span class="cmDate"></span>
+    //                <p class="cmText">${profileName}: ${profileCm}</p>
+    //              </div>
+    //              </li>`)}
+    //              `;
+
+    // console.log("offset in cmBody is:", offset);
+    // unloadedComments = gameCommentNumber - offset;
+    // return `<ul class="cmBody">${cmBodyString}</ul><button class="btn ${
+    //   unloadedComments > 0 ? "cmLoadMoreBtn" : "hideBtn"
+    // }">بارگذاری نظرات بیشتر</button>`;
   }
 }
 // function playersNameInComments(userId) {
 //   myFetch(`profile/${userId}`, "GET", getPlayerName, "", "getPlayerName");
 // }
 function renderCmBody(comment, offset) {
-  console.log("comment in render cm body", comment);
+  // myfetch just to get user data
+  // console.log("user id: ", comment.userId);
+  myFetch(
+    `profile/${comment.userId}`,
+    "GET",
+    getPlayerData,
+    "",
+    "getPlayerData"
+  );
 
   cmBodyString = `
   ${(htmlString += `<li class="cmItem">
@@ -462,7 +532,7 @@ function renderCmBody(comment, offset) {
                </div>
                </li>`)}
                `;
-  //  <div class="rate">${cmRating(comment)}</div>
+  // <div class="rate">${cmRating(comment)}</div>;
   console.log("offset in cmBody is:", offset);
   unloadedComments = gameCommentNumber - offset;
   return `<ul class="cmBody">${cmBodyString}</ul><button class="btn ${
@@ -470,7 +540,7 @@ function renderCmBody(comment, offset) {
   }">بارگذاری نظرات بیشتر</button>`;
 }
 
-// function renderRelatedGamesTab(tabInfo) {
+// function renderRelatedGamesTab(game) {
 //   htmlString = "";
 //   relatedGames = tabInfo.response.result.games;
 //   let stars = 5;
@@ -557,8 +627,9 @@ function tabLoadingResponse(response, error) {
   } else {
     let game = response.game;
     let tab = response.tab;
+    let playersId = response.playersId;
     if (tab === "comments") {
-      renderCommentTab(game);
+      renderCommentTab(game, playersId);
     } else if (tab === "gallery") {
       renderGallery(game);
       // galleryFlag = 1;

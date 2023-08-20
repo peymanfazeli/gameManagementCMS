@@ -48,6 +48,7 @@ authRouter.post("/register", async (request, response) => {
         code,
         token,
         ctg: "",
+        comments: "",
         role: "user",
       });
       const html = `

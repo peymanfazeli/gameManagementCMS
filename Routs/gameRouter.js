@@ -133,36 +133,45 @@ gameRoute.get("/:gameName/:tab", async (request, response) => {
   const { gameName, tab } = request.params;
   let game = await Games.findOne({ title: gameName });
   let commentsInGameDoc = game.comments;
-  console.log("game id: ", game._id);
-  console.log("userId: ", request.user._id);
-  let gameCmsInCommentDoc = await Comments.find({ gameId: game._id });
+  let users = commentsInGameDoc.map((comment) => comment.userId);
+  let uniqueUsers = [...new Set(users)];
+  console.log(uniqueUsers);
+  // console.log("gameName/comments: ", game.comments)
+  // console.log("userId: ", request.user._id);
+  // let gameCmsInCommentDoc = await Comments.find({ gameId: game._id });
   // let gameCmsInCommentDoc
-  console.log("comments in comments doc: ", gameCmsInCommentDoc.length);
-  console.log("comments in game doc:", commentsInGameDoc.length);
+  // console.log("comments in comments doc: ", gameCmsInCommentDoc.length);
+  // console.log("comments in game doc:", commentsInGameDoc.length);
 
-  if (commentsInGameDoc.length !== gameCmsInCommentDoc.length) {
-    await Games.updateMany(
-      { _id: game._id },
-      { comments: gameCmsInCommentDoc }
-    );
-  }
+  // if (commentsInGameDoc.length !== gameCmsInCommentDoc.length) {
+  //   await Games.updateMany(
+  //     { _id: game._id },
+  //     { comments: gameCmsInCommentDoc }
+  //   );
+  // }
   if (!request.params) {
     response.sendStatus(404);
   } else if (tab) {
-    return response.json({ game: game, tab: tab });
+    return response.json({ game: game, tab: tab, playersId: uniqueUsers });
   }
   response.send(200);
 });
 
-gameRoute.get("/comments", async (request, response) => {
-  console.log("/:gameName/comments was seen");
-  const { gameName } = request.params;
-  let foundGame = await Games.findOne({ title: gameName });
-  let gameComments = foundGame.comments;
-  console.log("game Comments: ", gameComments);
-  response.json({ comments: gameComments, user: request.user });
+gameRoute.post("/sendComment", async (request, response) => {
+  const { gameTitle, userCm } = request.body;
+  console.log("gameTitle is: ", gameTitle, "cm is: ", userCm);
+  const user = request.user;
+  const gameId = await Games.findOne({ title: gameTitle });
+  let updateGameCm = await Games.updateOne(
+    { title: gameTitle },
+    {
+      $push: {
+        comments: { userId: user._id, text: userCm, gameId: gameId._id },
+      },
+    }
+  );
+  response.json({ game: updateGameCm });
 });
-
 // function searchName(name) {
 //   return games.find((game) => game.name === name);
 // }
