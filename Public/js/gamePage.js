@@ -513,7 +513,7 @@ function renderCmBody(comment, offset) {
     unloadedComments > 0 ? "cmLoadMoreBtn" : "hideBtn"
   }">بارگذاری نظرات بیشتر</button>`;
 }
-
+let rGamesItems = "";
 function renderRelatedGamesTab(relatedGames) {
   htmlString = "";
   console.log("related games are: ", relatedGames);
@@ -522,8 +522,10 @@ function renderRelatedGamesTab(relatedGames) {
   let rateString = "";
   let rateStarDiff;
   relatedGames.forEach((game) => {
-    console.log("game data for sending to produce card: ", game);
-    produceCard(game, true, "بازی های مشابه");
+    rGamesItems += `
+    
+    ${produceCard(game, true, "بازی های مشابه")}
+    `;
   });
   makeElement(htmlString, relatedGamesTab);
 }

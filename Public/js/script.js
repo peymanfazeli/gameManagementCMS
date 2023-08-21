@@ -102,6 +102,7 @@ function enableDots(dots) {
 //   });
 // }
 // test part
+
 function initFvData(response, error) {
   if (error) {
     console.log("Error in initializing fvData1 data", error);
@@ -157,10 +158,10 @@ function initFvData(response, error) {
       console.log("game in new games for sv", game);
       carouselItems += `${produceCard(game)}`;
     });
-    newGames.forEach((game) => {
-      console.log("game in new games for sv2", game);
-      carouselItems += `${produceCard(game)}`;
-    });
+    // newGames.forEach((game) => {
+    //   console.log("game in new games for sv2", game);
+    //   carouselItems += `${produceCard(game)}`;
+    // });
     // Object.values(newGames).forEach((games) => {
     //   carouselItems += `${produceCard(games)}`;
     // });
@@ -204,6 +205,9 @@ function fvData1() {
   myFetch("home", "GET", initFvData);
 }
 fvData1();
+
+//
+
 // fetch Api
 function fvData() {
   fetch(serverUrl)
@@ -542,9 +546,9 @@ function searchItems(item) {
   });
 }
 // Producing gameCard Function
-let rGamesItems = "";
+
 function produceCard(item, hasHeader = false, headerText = "") {
-  console.log("item in produce card: ", item);
+  console.log("item in produce card: ");
   let large_image = correctImgAddress(item.large_image);
 
   let stars = 5;
@@ -564,18 +568,17 @@ function produceCard(item, hasHeader = false, headerText = "") {
   for (let emptyStar = acc; emptyStar < stars; emptyStar++) {
     rateString += `<a href="#" class="fa fa-star"></a>`;
   }
-
   hasHeader
-    ? (htmlString = `
+    ? (htmlString += `
     <h5 class="rgHeader"> ${headerText}  </h5>
       <div class="rGames">
-        <div class="gameCard" id="${item.title}" gameTitle="${item.title}#info"  onclick="transferData(this)">
-            <img src="${large_image}" alt="" />
-            <div class="content">
-              <h5 class="title">${item.title}</h5>
-              <h6 class="categories">${item.categories}</h6>
-            </div>
-          </div>
+      <div class="gameCard" id="${item.title}" gameTitle="${item.title}#info"  onclick="transferData(this)">
+      <img src="${large_image}" alt="" />
+      <div class="content">
+        <h5 class="title">${item.title}</h5>
+        <h6 class="categories">${item.categories}</h6>
+      </div>
+    </div>
       </div>
             `)
     : // <div class="rate">${rateString}</div>
