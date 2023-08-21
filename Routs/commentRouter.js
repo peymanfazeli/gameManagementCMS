@@ -5,6 +5,15 @@ const Games = require("../DB/schemas/games");
 const Comments = require("../DB/schemas/comments");
 const User = require("../DB/schemas/user");
 
+commentRoute.get("/", async (request, response) => {
+  if (request.user) {
+    let user = request.user;
+    return response.json({ user: user });
+  } else {
+    return response.sendStatus(404);
+  }
+});
+
 commentRoute.get("/:id", async (request, response) => {
   const { userId } = request.params;
   console.log(request.body);
@@ -20,15 +29,21 @@ commentRoute.post("/sendComment", async (request, response) => {
   const { userCm, gameTitle } = request.body;
   const user = request.user;
   const game = await Games.findOne({ title: gameTitle });
+  console.log(
+    `userId is: ${user._id}. userCm is: ${userCm}. gameTitle is: ${gameTitle}. userAvatar is: ${user.avatar}. gameName is:${game.title}`
+  );
   if (game.comments[0] === "[]") {
     await Games.updateMany(
       { _id: game._id },
       {
         $set: {
           comments: {
-            userId: user.id,
+            userId: user._id,
+            userName: user.userName,
             text: userCm,
+            userAvatar: user.avatar,
             gameId: game._id,
+            gameName: game.title,
             date: new Date(),
           },
         },
@@ -40,9 +55,12 @@ commentRoute.post("/sendComment", async (request, response) => {
       {
         $push: {
           comments: {
-            userId: user.id,
+            userId: user._id,
+            userName: user.userName,
             text: userCm,
+            userAvatar: user.avatar,
             gameId: game._id,
+            gameName: game.title,
             date: new Date(),
           },
         },
@@ -55,9 +73,12 @@ commentRoute.post("/sendComment", async (request, response) => {
       {
         $set: {
           comments: {
-            userId: user.id,
+            userId: user._id,
+            userName: user.userName,
             text: userCm,
+            userAvatar: user.avatar,
             gameId: game._id,
+            gameName: game.title,
             date: new Date(),
           },
         },
@@ -69,20 +90,25 @@ commentRoute.post("/sendComment", async (request, response) => {
       {
         $push: {
           comments: {
-            userId: user.id,
+            userId: user._id,
+            userName: user.userName,
             text: userCm,
+            userAvatar: user.avatar,
             gameId: game._id,
+            gameName: game.title,
             date: new Date(),
           },
         },
       }
     );
   }
-  await User.find;
   Comments.create({
     userId: user._id,
-    gameId: game._id,
+    userName: user.userName,
     text: userCm,
+    userAvatar: user.avatar,
+    gameId: game._id,
+    gameName: game.title,
     date: new Date(),
     rate: "0",
   });

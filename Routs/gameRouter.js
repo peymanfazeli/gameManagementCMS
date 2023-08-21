@@ -4,6 +4,7 @@ const gameRoute = Router();
 const Games = require("../DB/schemas/games");
 const Comments = require("../DB/schemas/comments");
 const User = require("../DB/schemas/user");
+const { get } = require("mongoose");
 
 // const games = [
 //   {
@@ -132,10 +133,9 @@ gameRoute.get("/:gameName", async (request, response) => {
 gameRoute.get("/:gameName/:tab", async (request, response) => {
   const { gameName, tab } = request.params;
   let game = await Games.findOne({ title: gameName });
-  let commentsInGameDoc = game.comments;
-  let users = commentsInGameDoc.map((comment) => comment.userId);
-  let uniqueUsers = [...new Set(users)];
-  console.log(uniqueUsers);
+  let user = request.user;
+  // let commentsInGameDoc = game.comments;
+  console.log("tab is:", tab);
   // console.log("gameName/comments: ", game.comments)
   // console.log("userId: ", request.user._id);
   // let gameCmsInCommentDoc = await Comments.find({ gameId: game._id });
@@ -151,8 +151,32 @@ gameRoute.get("/:gameName/:tab", async (request, response) => {
   // }
   if (!request.params) {
     response.sendStatus(404);
-  } else if (tab) {
-    return response.json({ game: game, tab: tab, playersId: uniqueUsers });
+  } else {
+    if (tab) {
+      if (tab === "comments") {
+        const comments = await Comments.findOne({ gameName: gameName });
+        console.log("comments for: " + gameName + " : " + comments);
+        return response.json({
+          game: game,
+          tab: tab,
+          comments: comments,
+          user: user,
+        });
+      } else if (tab === "related_games") {
+        const relatedGames = await Games.find({ categories: game.categories });
+        console.log("relatedGames are:", relatedGames);
+        return response.json({
+          game: game,
+          tab: tab,
+          related_Games: relatedGames,
+          user: user,
+        });
+      } else {
+        return response.json({ game: game, tab: tab, user: user });
+      }
+    } else {
+      return response.json({ game: game, user: user });
+    }
   }
   response.send(200);
 });

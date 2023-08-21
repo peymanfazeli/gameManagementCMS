@@ -26,8 +26,6 @@ let bannerBtn = $(".bannerBtn");
 let trailerBtn = $("#gallery");
 let commentSection;
 let paramUrl;
-
-console.log("banner Btn: ", bannerBtn);
 // const serverUrl = `http://localhost:3001/home`;
 // function headerSliderInit(imgContainer, sliderNum, gameId) {
 //   imgContainer.css("background", `url(${sliders[sliderNum].large_image})`);
@@ -112,8 +110,8 @@ function initFvData(response, error) {
     let user = response.user;
     let games = response.games;
     let newGames = response.newGames;
-    console.log("newGames: ", newGames);
-    console.log("user Comments: ", response);
+    let comments = response.comments;
+    console.log("new games are: ", newGames);
     // show user game slider in homepage
     let i = 0;
     headerSliderInit(bgImage, games[i], i, i);
@@ -122,7 +120,6 @@ function initFvData(response, error) {
       let large_image = correctImgAddress(game.large_image);
       let small_image = correctImgAddress(game.small_image);
       BannerBgImg.push(large_image);
-      console.log("banners bg img: ", BannerBgImg);
       carouselItems += `<div class="owItem">
       <img src="${small_image}" alt="" class="owItemImg" gameId=${counter} />
       <p class="imgTitle">بررسی بازی  ${game.title}</p>
@@ -156,21 +153,49 @@ function initFvData(response, error) {
       true
     );
     carouselItems = "";
-    Object.values(newGames).forEach((games) => {
-      carouselItems += `${produceCard(games)}`;
+    newGames.forEach((game) => {
+      console.log("game in new games for sv", game);
+      carouselItems += `${produceCard(game)}`;
     });
-    Object.values(newGames).forEach((games) => {
-      carouselItems += `${produceCard(games)}`;
+    newGames.forEach((game) => {
+      console.log("game in new games for sv2", game);
+      carouselItems += `${produceCard(game)}`;
     });
-    Object.values(newGames).forEach((games) => {
-      carouselItems += `${produceCard(games)}`;
-    });
+    // Object.values(newGames).forEach((games) => {
+    //   carouselItems += `${produceCard(games)}`;
+    // });
+    // Object.values(newGames).forEach((games) => {
+    //   carouselItems += `${produceCard(games)}`;
+    // });
+    // Object.values(newGames).forEach((games) => {
+    //   carouselItems += `${produceCard(games)}`;
+    // });
     let item = "something";
 
     makeElement(
       `<div class='owl-carousel owl-theme' id="dotsCarousel">${carouselItems}</div>`,
       svSlider,
       2,
+      false
+    );
+    // comments
+    carouselItems = "";
+    comments.forEach((comment) => {
+      paramUrl = comment.gameName;
+      carouselItems += `
+       <div class="item cmItem" gameTitle="${paramUrl}#comments" onclick="transferData(this)">
+         <img src="${correctImgAddress(comment.userAvatar)}" alt="thumb" />
+         <div class="content">
+           <h5 class="cmTitle">${comment.text}</h5>
+           <span>${comment.date}</span>
+         </div>
+       </div>
+ `;
+    });
+    makeElement(
+      `<div class="comments">${carouselItems}</div>`,
+      commentsDiv,
+      0,
       false
     );
   }
@@ -517,8 +542,11 @@ function searchItems(item) {
   });
 }
 // Producing gameCard Function
+let rGamesItems = "";
 function produceCard(item, hasHeader = false, headerText = "") {
+  console.log("item in produce card: ", item);
   let large_image = correctImgAddress(item.large_image);
+
   let stars = 5;
   let uRate;
   let rateString = "";
@@ -536,21 +564,22 @@ function produceCard(item, hasHeader = false, headerText = "") {
   for (let emptyStar = acc; emptyStar < stars; emptyStar++) {
     rateString += `<a href="#" class="fa fa-star"></a>`;
   }
+
   hasHeader
     ? (htmlString = `
-        <h5 class="rgHeader"> ${headerText}  </h5>
-        <div class="rGames">
-          <div class="gameCard" id="${item.title}" gameTitle="${item.title}#info"  onclick="transferData(this)">
-          <img src="${large_image}" alt="" />
-          <div class="content">
-            <h5 class="title">${item.title}</h5>
-            <h6 class="categories">${item.categories}</h6>
-            <div class="rate">${rateString}</div>
+    <h5 class="rgHeader"> ${headerText}  </h5>
+      <div class="rGames">
+        <div class="gameCard" id="${item.title}" gameTitle="${item.title}#info"  onclick="transferData(this)">
+            <img src="${large_image}" alt="" />
+            <div class="content">
+              <h5 class="title">${item.title}</h5>
+              <h6 class="categories">${item.categories}</h6>
+            </div>
           </div>
-          </div>
-        </div>
-        `)
-    : (htmlString = `
+      </div>
+            `)
+    : // <div class="rate">${rateString}</div>
+      (htmlString += `
         <div class="gameCard" id="${item.title}"gameTitle="${item.title}#info"  onclick="transferData(this)">
         <img src="${large_image}" alt="" />
         <div class="content">

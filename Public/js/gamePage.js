@@ -71,7 +71,7 @@ function loadDataBasedOnTab(response, error) {
       renderCommentTab(game);
       // commentsFlag = 1;
     } else if (tab === "related_games") {
-      renderRelatedGamesTab(game);
+      renderRelatedGamesTab(mainObject.related_Games);
     } else if (tab === "gallery") {
       console.log(game);
       renderGallery(game);
@@ -221,7 +221,6 @@ const informationDiv = $(".information");
 function renderInfoTab(gameInfo) {
   if (gameInfoFlag === 0) {
     gameInfoFlag = 1;
-    console.log("info tab is rendered", gameInfo);
     htmlString = `<div>${gameInfo}</div>`;
     makeElement(htmlString, informationDiv);
   }
@@ -358,7 +357,8 @@ function validateUserCommenting(response, error) {
   } else {
     blackCover.style.filter = "blur(10px)";
     commentModal.style.display = "block";
-    $("#cmUserName").val(`${response.user}`);
+    console.log("////////////////////////", response);
+    $("#cmUserName").val(`${response.user.userName}`);
   }
 }
 function sendCommentResponse(response, error) {
@@ -367,13 +367,13 @@ function sendCommentResponse(response, error) {
     return;
   } else {
     console.log("Response in sending Comment to server", response);
-    console.log(correctImgAddress(response.user));
   }
 }
 let cmHeaderString = "";
 function renderCommentTab(game) {
   console.log("cmFlag in rendering tab", commentsFlag);
   console.log("comments tab info", game);
+  // console.log("user comments tab info", user);
   // comment section of game
   if (commentsFlag === 0) {
     commentsFlag = 1;
@@ -386,38 +386,49 @@ function renderCommentTab(game) {
     offset = commentItems.length;
     console.log("offset in first loading:", offset);
     // unloadedComments = commentItems.game.number_of_comments - offset;
-    commentItems.forEach((comment) => {
-      if (comment.gameId === game._id) {
-        gameCommentNumber = game.comments.length;
-        console.log("gameCommentNumber", gameCommentNumber);
-        // unloadedComments = gameCommentNumber - offset;
-        // cmRating(comment);
-        // renderCmHeader(comment, offset);
-        cmHeaderString = `
-            <div class="cmHeader nThreshold">
-                  <h5>نظرات کاربران</h5>
-                  <span id="cmNumber">( ${gameCommentNumber} نظر )</span>
-                  <span class="btn cmBtn">نظر دهید</span>
-                  </div>
-                  ${renderCmBody(comment, offset)}
-                  `;
-      } else {
-        cmHeaderString = `
+    if (commentItems.length === 0) {
+      cmHeaderString = `
             <div class="cmHeader nThreshold">
                   <h5>نظرات کاربران</h5>
                   <span id="cmNumber">( ${gameCommentNumber} نظر )</span>
                   <span class="btn cmBtn">نظر دهید</span>
                   </div>
                   `;
-        return;
-      }
-    });
+    } else {
+      commentItems.forEach((comment) => {
+        if (comment.gameId === game._id) {
+          console.log("comment.gameId", comment.gameId);
+          gameCommentNumber = game.comments.length;
+          console.log("gameCommentNumber", gameCommentNumber);
+          // unloadedComments = gameCommentNumber - offset;
+          // cmRating(comment);
+          // renderCmHeader(comment, offset);
+          cmHeaderString = `
+              <div class="cmHeader nThreshold">
+                    <h5>نظرات کاربران</h5>
+                    <span id="cmNumber">( ${gameCommentNumber} نظر )</span>
+                    <span class="btn cmBtn">نظر دهید</span>
+                    </div>
+                    ${renderCmBody(comment, offset)}
+                    `;
+        } else {
+          cmHeaderString = `
+              <div class="cmHeader nThreshold">
+                    <h5>نظرات کاربران</h5>
+                    <span id="cmNumber">( ${gameCommentNumber} نظر )</span>
+                    <span class="btn cmBtn">نظر دهید</span>
+                    </div>
+                    `;
+          return;
+        }
+      });
+    }
     makeElement(cmHeaderString, commentTabElement);
     htmlString = "";
     // newComment section
     $(".cmBtn").on("click", function () {
       myFetch(
-        "comment",
+        `comment`,
         "GET",
         validateUserCommenting,
         "",
@@ -440,9 +451,9 @@ function renderCommentTab(game) {
       );
       blackCover.style.filter = "none";
       commentModal.style.display = "none";
-      // setTimeout(() => {
-      //   location.reload();
-      // }, 300);
+      setTimeout(() => {
+        location.reload();
+      }, 300);
     });
     $(".closeBtn").on("click", function () {
       blackCover.style.filter = "none";
@@ -484,53 +495,16 @@ $(".cmLoadMoreBtn").on("click", function () {
 let gameCommentNumber = 0;
 // let unloadedComments = 0;
 // let cmBodyString = "";
-let playerImgString = "";
-let playerNameString = "";
-let playerArr = [];
-function getPlayerData(response, error) {
-  if (error) {
-    console.log("Error in getting player name", error);
-    return;
-  } else {
-    console.log("Error in getting player data", response);
-    // cmBodyString = `
-    // ${(htmlString += `<li class="cmItem">
-    //              <div class="cmTextContent">
-    //              <img src="${profileImg}" alt="user-image" />
-    //                <span class="cmDate"></span>
-    //                <p class="cmText">${profileName}: ${profileCm}</p>
-    //              </div>
-    //              </li>`)}
-    //              `;
-
-    // console.log("offset in cmBody is:", offset);
-    // unloadedComments = gameCommentNumber - offset;
-    // return `<ul class="cmBody">${cmBodyString}</ul><button class="btn ${
-    //   unloadedComments > 0 ? "cmLoadMoreBtn" : "hideBtn"
-    // }">بارگذاری نظرات بیشتر</button>`;
-  }
-}
-// function playersNameInComments(userId) {
-//   myFetch(`profile/${userId}`, "GET", getPlayerName, "", "getPlayerName");
-// }
 function renderCmBody(comment, offset) {
-  // myfetch just to get user data
-  // console.log("user id: ", comment.userId);
-  myFetch(
-    `profile/${comment.userId}`,
-    "GET",
-    getPlayerData,
-    "",
-    "getPlayerData"
-  );
-
   cmBodyString = `
-  ${(htmlString += `<li class="cmItem">
-               <div class="cmTextContent">
-                 <span class="cmDate">${comment.date}</span>
-                 <p class="cmText">${comment.userId}: ${comment.text}</p>
-               </div>
-               </li>`)}
+  ${(htmlString += `
+  <li class="cmItem">
+  <span class="cmDate">${comment.date}</span>          
+  <div class="cmTextContent">
+    <img src="${correctImgAddress(comment.userAvatar)}" alt="user-image" />
+      <p class="cmText">${comment.userName}: ${comment.text}</p>
+    </div>
+  </li>`)}
                `;
   // <div class="rate">${cmRating(comment)}</div>;
   console.log("offset in cmBody is:", offset);
@@ -540,18 +514,19 @@ function renderCmBody(comment, offset) {
   }">بارگذاری نظرات بیشتر</button>`;
 }
 
-// function renderRelatedGamesTab(game) {
-//   htmlString = "";
-//   relatedGames = tabInfo.response.result.games;
-//   let stars = 5;
-//   let uRate;
-//   let rateString = "";
-//   let rateStarDiff;
-//   relatedGames.forEach((game) => {
-//     produceCard(game, true, "بازی های مشابه");
-//   });
-//   makeElement(htmlString, relatedGamesTab);
-// }
+function renderRelatedGamesTab(relatedGames) {
+  htmlString = "";
+  console.log("related games are: ", relatedGames);
+  let stars = 5;
+  let uRate;
+  let rateString = "";
+  let rateStarDiff;
+  relatedGames.forEach((game) => {
+    console.log("game data for sending to produce card: ", game);
+    produceCard(game, true, "بازی های مشابه");
+  });
+  makeElement(htmlString, relatedGamesTab);
+}
 // function renderGallery(tabInfo) {
 //   if (galleryFlag === 0) {
 //     galleryFlag = 1;
@@ -627,15 +602,16 @@ function tabLoadingResponse(response, error) {
   } else {
     let game = response.game;
     let tab = response.tab;
-    let playersId = response.playersId;
+    let user = response.user;
+    console.log("user: ", user);
     if (tab === "comments") {
-      renderCommentTab(game, playersId);
+      renderCommentTab(game);
+      console.log("comment tab of " + game.title + " must be rendered");
     } else if (tab === "gallery") {
       renderGallery(game);
       // galleryFlag = 1;
     } else if (tab === "info") {
       renderInfoTab(game.info);
-      console.log("info tab of " + game.title + " must be rendered");
     }
   }
 }

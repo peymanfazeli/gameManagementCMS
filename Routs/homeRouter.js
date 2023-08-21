@@ -18,6 +18,10 @@ const homeResposne = {
 homeRouter.get("/", async (request, response) => {
   const allGames = await Games.find();
   const newGames = await Games.find().sort({ _id: -1 }).limit(1).limit(3);
+  const userComments = await Comments.find()
+    .sort({ _id: -1 })
+    .limit(1)
+    .limit(6);
   if (request.user) {
     let loggedinUser = request.user;
     let userCtgs = loggedinUser.ctg;
@@ -32,9 +36,7 @@ homeRouter.get("/", async (request, response) => {
     const userGames = await Games.find({
       categories: sameCtgsArr,
     });
-    const userComments = await Comments.findOne({
-      _id: "64dcf76cb9fdad2e717816c8",
-    });
+
     // console.log(userComments);
     // console.log("loggedinUser id:", userComments.text);
     // console.log("user ctgs: ", userAllCtgs);
@@ -48,6 +50,7 @@ homeRouter.get("/", async (request, response) => {
         user: loggedinUser,
         games: allGames,
         newGames: newGames,
+        comments: userComments,
       });
     } else if (sameCtgsArr.length !== 0) {
       console.log("same ctg arr!==0: ", sameCtgsArr.length);
@@ -55,11 +58,16 @@ homeRouter.get("/", async (request, response) => {
         user: loggedinUser,
         games: userGames,
         newGames: newGames,
+        comments: userComments,
         // userComments: userComments,
       });
     }
   } else {
-    return response.json({ games: allGames, newGames: newGames });
+    return response.json({
+      games: allGames,
+      newGames: newGames,
+      comments: userComments,
+    });
   }
 });
 
