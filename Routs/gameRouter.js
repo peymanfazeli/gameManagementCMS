@@ -210,9 +210,9 @@ gameRoute.post("/searchGame", async (request, response) => {
         searchRes.push(game);
       }
     });
-    return response.json({ games: searchRes });
+    return response.json({ games: searchRes, searchKey: searchItem });
   } else {
-    return response.send({ game: allGames });
+    return response.send({ games: "" });
   }
 
   // console.log(foundGame);

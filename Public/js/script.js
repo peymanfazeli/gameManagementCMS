@@ -1,4 +1,4 @@
-let htmlString = "";
+// let htmlString = "";
 const headerSection = $(".fixedHeader");
 //
 
@@ -508,7 +508,8 @@ let searchKey = "";
 const generalGameList = $(".generalGameList");
 let timer;
 function debounce(func, tiemout = 1000) {
-  return (...args) => {
+  console.log("timer: ", timer);
+  return (args) => {
     clearTimeout(timer);
     timer = setTimeout(() => {
       func.apply(this, args);
@@ -538,15 +539,14 @@ function makeEmpty(node) {
     list.removeChild(list.firstChild);
   }
 }
-// function getTextFromInput() {
-//   searchKey = $("#keyword-search").val();
-//   if (searchKey.length > 0) {
-//     searchItems(searchKey);
-//   } else {
-//     location.href =
-//       "http://localhost/IE-F95-API-master/public/AmirKabirStudio/games_list.html";
-//   }
-// }
+function getTextFromInput() {
+  searchKey = $("#keyword-search").val();
+  if (searchKey.length > 0) {
+    searchItems(searchKey);
+  } else {
+    location.href = "http://localhost:5500/Public/games_list.html";
+  }
+}
 // seperated search function
 function searchResponse(response, error) {
   if (error) {
@@ -554,6 +554,15 @@ function searchResponse(response, error) {
     return;
   } else {
     console.log("search response:", response);
+    searchedDataRoot = response.games;
+    console.log("the response is :", searchedDataRoot);
+    searchedDataRoot.length > 0 ? (itemFound = true) : (itemFound = false);
+    if (itemFound) {
+      localStorage.setItem("searchedData", response.searchKey);
+      location.href = "http://localhost:5500/Public/games_list.html";
+    } else {
+      console.log("not found");
+    }
   }
 }
 function searchItems(item) {
@@ -662,7 +671,7 @@ function produceCard(item, hasHeader = false, headerText = "") {
     rateString += `<a href="#" class="fa fa-star"></a>`;
   }
   hasHeader
-    ? (htmlString += `
+    ? (htmlString = `
     <h5 class="rgHeader"> ${headerText}  </h5>
       <div class="rGames">
       <div class="gameCard" id="${item.title}" gameTitle="${item.title}#info"  onclick="transferData(this)">
@@ -675,7 +684,7 @@ function produceCard(item, hasHeader = false, headerText = "") {
       </div>
             `)
     : // <div class="rate">${rateString}</div>
-      (htmlString += `
+      (htmlString = `
         <div class="gameCard" id="${item.title}"gameTitle="${item.title}#info"  onclick="transferData(this)">
         <img src="${large_image}" alt="" />
         <div class="content">

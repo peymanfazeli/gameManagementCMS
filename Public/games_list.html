@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Font Awesome Icons -->
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+    />
+    <!-- style -->
+    <link rel="stylesheet" href="styles/style.css" />
+    <link rel="stylesheet" href="styles/games_list.css" />
+    <title>لیست بازی ها</title>
+  </head>
+  <body>
+    <!-- loader -->
+    <div class="spinnerContainer">
+      <div class="spinner">
+        <div class="dot1"></div>
+        <div class="dot2"></div>
+      </div>
+      <section class="fixedHeader">
+        <!-- header is loaded automatically -->
+        <div class="banner">
+          <!-- Banner data is fetched by gamesList.js -->
+          <img id="bannerImg" alt="game banner" src="images/421645.jpg" />
+          <h3 class="topic" id="bannerTitle">نتایج جستجو برای:</h3>
+        </div>
+      </section>
+      <section class="mainBody nThreshold">
+        <aside>
+          <div class="category">
+            <!-- automatically -->
+          </div>
+          <div class="gameRating">
+            <!-- <div class="gamesStarRating">
+                -->
+          </div>
+          <button class="btn gmLoadMoreBtn">بارگذاری بیشتر</button>
+        </aside>
+        <div class="gList">
+          <!-- auto -->
+        </div>
+      </section>
+    </div>
+    <section class="footer">
+      <!-- Dynamically -->
+    </section>
+    <!-- js and jquery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <script src="./js/clientSideHelper.js"></script>
+    <script src="./js/script.js"></script>
+    <script src="./js/gameList.js"></script>
+  </body>
+</html>

@@ -1,0 +1,217 @@
+/* Similar */
+@font-face {
+  font-family: "yekan";
+  src: url("../fonts/Yekan.eot");
+  src: url(../fonts/Yekan.eot?#iefix) format("embedded-opentype"),
+    url("../fonts/Yekan.woff") format("woff"),
+    url("../fonts/Yekan.ttf") format("truetype"),
+    url("../fonts/Yekan.svg#BYekan") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+* {
+  box-sizing: border-box;
+  direction: rtl;
+  text-decoration: none;
+  list-style: none;
+  font-family: "yekan";
+}
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "yekan";
+}
+.gmLoadMoreBtn {
+  width: 100%;
+  color: rgb(108, 205, 237);
+  outline: none;
+  border: none;
+  transition: 0.5s all ease;
+}
+.gmLoadMoreBtn:hover {
+  background-color: #d1d1d1;
+  color: #333;
+}
+/* Loader */
+/* .spinner {
+  display: block;
+  margin: 100px auto;
+  width: 40px;
+  height: 40px;
+  position: relative;
+  top: -10px;
+  text-align: center;
+  -webkit-animation: sk-rotate 2s infinite linear;
+  animation: sk-rotate 2s infinite linear;
+} */
+/* fixedHeader style is loaded from style.css*/
+.fixedHeader .banner {
+  position: relative;
+}
+.fixedHeader .banner #bannerTitle {
+  position: absolute;
+  top: 50%;
+  width: 50%;
+  margin: 0 auto 0;
+  transform: translateX(-32%);
+  color: white;
+  font-weight: 100;
+  font-size: larger;
+}
+/* mainBody section */
+.mainBody {
+  display: flex;
+  margin-top: 2%;
+}
+
+.mainBody aside {
+  /* width: 150px; */
+  transition: 0.3s;
+  width: 25%;
+}
+.mainBody .category,
+.mainBody .gameRating {
+  margin-bottom: 20px;
+  background-color: #eee;
+  border-radius: 5px;
+  padding: 2px 5%;
+}
+
+/* categori part */
+/* The container */
+.catItem {
+  display: block;
+  position: relative;
+  cursor: pointer;
+  font-size: 10px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  /* word-spacing: -2px; */
+}
+.disabled {
+  pointer-events: none;
+  opacity: 0.2;
+}
+
+/* Hide the browser's default checkbox */
+.catItem input,
+.srContainer input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Create a custom checkbox */
+.catId {
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 55px;
+  /* position: absolute; */
+  background-color: #eee;
+}
+
+/* On mouse-over, add a grey background color */
+.catItem:hover input ~ .catId {
+  background-color: #eee;
+}
+
+/* When the checkbox is checked, add a blue background */
+.catItem input:checked ~ .catId,
+.srContainer input:checked ~ .srWrapper {
+  background-color: #ccc;
+}
+.category ul {
+  margin-bottom: 10px;
+  padding: 0 15%;
+}
+.category .catItem .catId,
+.srContainer .srWrapper {
+  color: #a1a1a1;
+  font-size: small;
+  padding: 0 15%;
+  cursor: pointer;
+  border-radius: 5px;
+  display: inline-block;
+  width: 90px;
+}
+.category .catItem:hover .catId,
+.srContainer:hover .srWrapper {
+  background-color: #ddd;
+  border-radius: 5px;
+}
+/* game star rating part */
+/* .gameRating */
+.srContainer,
+.srContainer .srWrapper {
+  display: flex;
+  justify-content: space-evenly;
+}
+/* .srContainer span {
+  display: inherit;
+} */
+.fa-star {
+  font-size: 1em;
+  color: rgb(80, 158, 184);
+  margin-left: 2px;
+  cursor: pointer;
+}
+/* game Lists */
+.gList {
+  margin-right: 2%;
+  width: 78%;
+  height: 500px;
+  border-radius: 5px;
+  display: grid;
+  grid-template-columns: auto auto auto;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+/* similar with gamePage.css game card of related games tab */
+.gameCard {
+  width: 150px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #ccc;
+  margin: 4px;
+  border-radius: 5px;
+  overflow: hidden;
+}
+.gameCard img {
+  width: 100%;
+  height: 60%;
+}
+.gameCard:hover {
+  box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.6);
+}
+.gameCard .content {
+  padding: 10px 5px 0 5px;
+}
+.gameCard .title,
+.categories {
+  margin: 1px;
+  color: #ccc;
+}
+.gameCard .rate {
+  display: flex;
+  grid-gap: 3px;
+  padding: 10px 0 3px 0;
+}
+.gameCard .rate a {
+  transition: 0.6s;
+  color: #333;
+}
+.gameCard .rate .checked {
+  color: rgb(108, 205, 237);
+}
+.gameCard .title {
+  color: rgb(108, 205, 237);
+  height: 10px;
+  line-height: 9pt;
+  margin-bottom: 10px;
+}
