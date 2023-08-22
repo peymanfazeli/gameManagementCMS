@@ -469,7 +469,7 @@ async function initFixedHeader() {
             </div>
             <div class="left">
                 <div class="searchPart">
-                <input type="search" id='keyword-search' placeholder="جستجو ..." />
+                <input type="search" id='keyword-search' placeholder="جستجو ..." onkeyup=" debounceSending()" />
                 <i id="searchIcon" class="fa fa-search" onclick="getTextFromInput()"></i>
                 </div>
                 <div class="submit">
@@ -499,15 +499,38 @@ window.onload = () => {
   );
   checkUserLogin();
 };
-// search Function
+
+// Search Function
 let searchItem;
 let itemFound;
 let searchedDataRoot;
 let searchKey = "";
 const generalGameList = $(".generalGameList");
-$("#keyword-search").on("keyup", function () {
-  searchKey = $(this).val();
-});
+let timer;
+function debounce(func, tiemout = 1000) {
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      func.apply(this, args);
+    }, tiemout);
+  };
+}
+function sendInput() {
+  searchItems($("#keyword-search").val().split(" ").join("").trim());
+}
+const debounceSending = debounce(() => sendInput());
+// $("#keyword-search").on(
+//   "keyup",
+
+// function () {
+//   let searchString = $(this).val().split(" ").join("").trim();
+//   console.log("string", searchString);
+//   searchKey = searchString;
+//   // searchKey =
+//   setTimeout(() => {
+//     searchItems(searchKey);
+//   }, 500);
+// );
 // removing redundant nodes function
 function makeEmpty(node) {
   let list = document.querySelector(node);
@@ -515,36 +538,106 @@ function makeEmpty(node) {
     list.removeChild(list.firstChild);
   }
 }
-function getTextFromInput() {
-  searchKey = $("#keyword-search").val();
-  if (searchKey.length > 0) {
-    searchItems(searchKey);
+// function getTextFromInput() {
+//   searchKey = $("#keyword-search").val();
+//   if (searchKey.length > 0) {
+//     searchItems(searchKey);
+//   } else {
+//     location.href =
+//       "http://localhost/IE-F95-API-master/public/AmirKabirStudio/games_list.html";
+//   }
+// }
+// seperated search function
+function searchResponse(response, error) {
+  if (error) {
+    console.log("Error in getting search Response:", error);
+    return;
   } else {
-    location.href =
-      "http://localhost/IE-F95-API-master/public/AmirKabirStudio/games_list.html";
+    console.log("search response:", response);
   }
 }
-// seperated search function
 function searchItems(item) {
   searchItem = item;
-  $.ajax({
-    url: `http://localhost/IE-F95-API-master/games?q=${searchItem}`,
-    type: "GET",
-    dataType: "json",
-    success: function (searchedData) {
-      searchedDataRoot = searchedData.response.result.games;
-      console.log("the response is :", searchedDataRoot);
-      searchedDataRoot.length > 0 ? (itemFound = true) : (itemFound = false);
-      if (itemFound) {
-        localStorage.setItem("searchedData", searchKey);
-        location.href =
-          "http://localhost/IE-F95-API-master/public/AmirKabirStudio/games_list.html";
-      } else {
-        console.log("not found");
-      }
-    },
-  });
+  myFetch(
+    "games/searchGame",
+    "POST",
+    searchResponse,
+    { searchItem },
+    "searchResponse"
+  );
+
+  // myFetch(`games?q=${searchItem}`, "GET", (response, error) => {
+  //   error
+  //     ? console.log("error in sending search data", error)
+  //     : console.log("response in getting search result", response);
+  // });
+  // $.ajax({
+  //   url: `http://localhost/IE-F95-API-master/games?q=${searchItem}`,
+  //   type: "GET",
+  //   dataType: "json",
+  //   success: function (searchedData) {
+  //     searchedDataRoot = searchedData.response.result.games;
+  //     console.log("the response is :", searchedDataRoot);
+  //     searchedDataRoot.length > 0 ? (itemFound = true) : (itemFound = false);
+  //     if (itemFound) {
+  //       localStorage.setItem("searchedData", searchKey);
+  //       location.href =
+  //         "http://localhost/IE-F95-API-master/public/AmirKabirStudio/games_list.html";
+  //     } else {
+  //       console.log("not found");
+  //     }
+  //   },
+  // });
 }
+
+// // search Function
+// let searchItem;
+// let itemFound;
+// let searchedDataRoot;
+// let searchKey = "";
+// const generalGameList = $(".generalGameList");
+// $("#keyword-search").on("keyup", function () {
+//   searchKey = $(this).val();
+//   console.log("keyword search", searchKey);
+// });
+// console.log("#keyword-search", $("#keyword-search"));
+// // removing redundant nodes function
+// function makeEmpty(node) {
+//   let list = document.querySelector(node);
+//   while (list.hasChildNodes()) {
+//     list.removeChild(list.firstChild);
+//   }
+// }
+// function getTextFromInput() {
+//   searchKey = $("#keyword-search").val();
+//   if (searchKey.length > 0) {
+//     searchItems(searchKey);
+//   } else {
+//     location.href =
+//       "http://localhost/IE-F95-API-master/public/AmirKabirStudio/games_list.html";
+//   }
+// }
+// // seperated search function
+// function searchItems(item) {
+//   searchItem = item;
+//   $.ajax({
+//     url: `http://localhost/IE-F95-API-master/games?q=${searchItem}`,
+//     type: "GET",
+//     dataType: "json",
+//     success: function (searchedData) {
+//       searchedDataRoot = searchedData.response.result.games;
+//       console.log("the response is :", searchedDataRoot);
+//       searchedDataRoot.length > 0 ? (itemFound = true) : (itemFound = false);
+//       if (itemFound) {
+//         localStorage.setItem("searchedData", searchKey);
+//         location.href =
+//           "http://localhost/IE-F95-API-master/public/AmirKabirStudio/games_list.html";
+//       } else {
+//         console.log("not found");
+//       }
+//     },
+//   });
+// }
 // Producing gameCard Function
 
 function produceCard(item, hasHeader = false, headerText = "") {

@@ -5,6 +5,7 @@ const Games = require("../DB/schemas/games");
 const Comments = require("../DB/schemas/comments");
 const User = require("../DB/schemas/user");
 const { get } = require("mongoose");
+const { stringify } = require("qs");
 
 // const games = [
 //   {
@@ -119,7 +120,7 @@ gameRoute.post("/deleteGame", async (request, response) => {
 // });
 gameRoute.get("/:gameName", async (request, response) => {
   const { gameName } = request.params;
-  console.log("game name in server: ", request.params);
+  // console.log("game name in server: ", request.params);
   let game = await Games.findOne({ title: gameName });
   // let game = await Games.find({ title: gameName });
   if (!request.params) {
@@ -155,7 +156,7 @@ gameRoute.get("/:gameName/:tab", async (request, response) => {
     if (tab) {
       if (tab === "comments") {
         const comments = await Comments.findOne({ gameName: gameName });
-        console.log("comments for: " + gameName + " : " + comments);
+        // console.log("comments for: " + gameName + " : " + comments);
         return response.json({
           game: game,
           tab: tab,
@@ -164,7 +165,6 @@ gameRoute.get("/:gameName/:tab", async (request, response) => {
         });
       } else if (tab === "related_games") {
         const relatedGames = await Games.find({ categories: game.categories });
-        console.log("relatedGames are:", relatedGames);
         return response.json({
           game: game,
           tab: tab,
@@ -180,10 +180,10 @@ gameRoute.get("/:gameName/:tab", async (request, response) => {
   }
   response.send(200);
 });
-
+// comment section
 gameRoute.post("/sendComment", async (request, response) => {
   const { gameTitle, userCm } = request.body;
-  console.log("gameTitle is: ", gameTitle, "cm is: ", userCm);
+  // console.log("gameTitle is: ", gameTitle, "cm is: ", userCm);
   const user = request.user;
   const gameId = await Games.findOne({ title: gameTitle });
   let updateGameCm = await Games.updateOne(
@@ -195,6 +195,53 @@ gameRoute.post("/sendComment", async (request, response) => {
     }
   );
   response.json({ game: updateGameCm });
+});
+// Search
+gameRoute.post("/searchGame", async (request, response) => {
+  let allGames = await Games.find();
+  let searchRes = [];
+  if (request.body) {
+    searchRes = [];
+    const { searchItem } = request.body;
+    const validateGameName = searchItem.split(" ").join("").trim();
+    allGames.forEach((game) => {
+      let targetGame = game.title.includes(validateGameName);
+      if (targetGame) {
+        searchRes.push(game);
+      }
+    });
+    return response.json({ games: searchRes });
+  } else {
+    return response.send({ game: allGames });
+  }
+
+  // console.log(foundGame);
+  // console.log(validateGameName, foundGame);
+});
+
+gameRoute.get("/", async (request, respsonse) => {
+  let allGames = await Games.find();
+  let gameTitles = [];
+  allGames.forEach((game) => {
+    return gameTitles.push(game.title);
+  });
+  console.log("game titles:", gameTitles);
+
+  let letters = request.query;
+  let gameLetters = stringify(letters).split(" ").join("").trim().split("=")[1];
+  console.log("game letters in gameRouter: ", gameLetters);
+  let targetGame = gameTitles.filter((game) => game === gameLetters);
+  if (targetGame.length > 0) {
+    const endGame = await Games.findOne({ title: targetGame[0] });
+    console.log("endGame is: ", endGame.title);
+    respsonse.send({ game: endGame });
+  }
+
+  // console.log(gameTitles.indexOf(gameLetters));
+
+  // Object.keys(allGames).forEach((keys) => {
+  //   console.log("keys", allGames[keys]);
+  // });
 });
 // function searchName(name) {
 //   return games.find((game) => game.name === name);
