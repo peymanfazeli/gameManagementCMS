@@ -203,21 +203,31 @@ gameRoute.post("/searchGame", async (request, response) => {
   if (request.body) {
     searchRes = [];
     const { searchItem } = request.body;
-    const validateGameName = searchItem.split(" ").join("").trim();
+    let validateGameName;
+    if (searchItem.length > 1) {
+      validateGameName = searchItem.split(" ").join("").trim();
+    } else {
+      validateGameName = searchItem;
+    }
+    //   const validateGameName = searchItem.split(" ").join("").trim();
     allGames.forEach((game) => {
       let targetGame = game.title.includes(validateGameName);
       if (targetGame) {
         searchRes.push(game);
       }
     });
+    if (searchRes.length < 1) {
+      return response.sendStatus(400);
+    }
     return response.json({ games: searchRes, searchKey: searchItem });
   } else {
     return response.send({ games: "" });
   }
-
-  // console.log(foundGame);
-  // console.log(validateGameName, foundGame);
 });
+// gameRoute.get("/searchGame/:searchItem", async (request, response) => {
+//   console.log(request.params);
+//   response.json({ game: "search items is worling" });
+// });
 
 gameRoute.get("/", async (request, respsonse) => {
   let allGames = await Games.find();

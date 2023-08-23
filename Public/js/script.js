@@ -112,7 +112,6 @@ function initFvData(response, error) {
     let games = response.games;
     let newGames = response.newGames;
     let comments = response.comments;
-    console.log("new games are: ", newGames);
     // show user game slider in homepage
     let i = 0;
     headerSliderInit(bgImage, games[i], i, i);
@@ -204,133 +203,132 @@ function initFvData(response, error) {
 function fvData1() {
   myFetch("home", "GET", initFvData);
 }
-fvData1();
 
 //
 
 // fetch Api
-function fvData() {
-  fetch(serverUrl)
-    .then((response) => {
-      try {
-        // console.log("homePage First View data: ", await response.json());
-        return response.json();
-      } catch (error) {
-        throw "Json was incorrect" + error;
-      }
-    })
-    .then((data) => {
-      let homepage;
-      try {
-        homepage = data.response.result.homepage;
-      } catch (error) {
-        throw "homepage response met an error" + error;
-      }
-      sliders = homepage.slider;
-      let i = 0;
-      headerSliderInit(bgImage, i, i);
-      let carouselItems = "";
-      sliders.forEach((slider, counter) => {
-        BannerBgImg.push(slider.large_image);
-        carouselItems += `<div class="owItem">
-        <img src="${slider.small_image}" alt="" class="owItemImg" gameId=${counter} />
-        <p class="imgTitle">بررسی بازی  ${slider.title}</p>
-        <div class="layer" id='blueLayer'>
-          <h6 class="layerTitle">${slider.title}</h6>
-          <p class="commentsNumber">تعداد نظرات : ${slider.number_of_comments}</p>
-          <span  class="layerBtn" gameTitle="${slider.title}#info" onclick="transferData(this)"> صفحه بازی</span>
-        </div>
-      </div>`;
-      });
-      setInterval(() => {
-        if (i < sliders.length) {
-          headerSliderInit(bgImage, i, i);
-          i++;
-        } else {
-          i = 0;
-        }
-      }, 5000);
-      bannerBtn.on("click", function (e) {
-        e.preventDefault();
-        transferData(bannerBtn);
-      });
-      trailerBtn.on("click", function (e) {
-        e.preventDefault();
-        transferData(trailerBtn);
-      });
-      makeElement(
-        `<div class='owl-carousel' id="autoplayCarousel">${carouselItems}</div>`,
-        fvSlider,
-        1,
-        true
-      );
-      carouselItems = "";
-      newGames = homepage.new_games;
-      newGames.forEach((games) => {
-        carouselItems += `${produceCard(games)}`;
-      });
-      newGames.forEach((games) => {
-        carouselItems += `${produceCard(games)}`;
-      });
-      newGames.forEach((games) => {
-        carouselItems += `${produceCard(games)}`;
-      });
-      let item = "something";
+// function fvData() {
+//   fetch(serverUrl)
+//     .then((response) => {
+//       try {
+//         // console.log("homePage First View data: ", await response.json());
+//         return response.json();
+//       } catch (error) {
+//         throw "Json was incorrect" + error;
+//       }
+//     })
+//     .then((data) => {
+//       let homepage;
+//       try {
+//         homepage = data.response.result.homepage;
+//       } catch (error) {
+//         throw "homepage response met an error" + error;
+//       }
+//       sliders = homepage.slider;
+//       let i = 0;
+//       headerSliderInit(bgImage, i, i);
+//       let carouselItems = "";
+//       sliders.forEach((slider, counter) => {
+//         BannerBgImg.push(slider.large_image);
+//         carouselItems += `<div class="owItem">
+//         <img src="${slider.small_image}" alt="" class="owItemImg" gameId=${counter} />
+//         <p class="imgTitle">بررسی بازی  ${slider.title}</p>
+//         <div class="layer" id='blueLayer'>
+//           <h6 class="layerTitle">${slider.title}</h6>
+//           <p class="commentsNumber">تعداد نظرات : ${slider.number_of_comments}</p>
+//           <span  class="layerBtn" gameTitle="${slider.title}#info" onclick="transferData(this)"> صفحه بازی</span>
+//         </div>
+//       </div>`;
+//       });
+//       setInterval(() => {
+//         if (i < sliders.length) {
+//           headerSliderInit(bgImage, i, i);
+//           i++;
+//         } else {
+//           i = 0;
+//         }
+//       }, 5000);
+//       bannerBtn.on("click", function (e) {
+//         e.preventDefault();
+//         transferData(bannerBtn);
+//       });
+//       trailerBtn.on("click", function (e) {
+//         e.preventDefault();
+//         transferData(trailerBtn);
+//       });
+//       makeElement(
+//         `<div class='owl-carousel' id="autoplayCarousel">${carouselItems}</div>`,
+//         fvSlider,
+//         1,
+//         true
+//       );
+//       carouselItems = "";
+//       newGames = homepage.new_games;
+//       newGames.forEach((games) => {
+//         carouselItems += `${produceCard(games)}`;
+//       });
+//       newGames.forEach((games) => {
+//         carouselItems += `${produceCard(games)}`;
+//       });
+//       newGames.forEach((games) => {
+//         carouselItems += `${produceCard(games)}`;
+//       });
+//       let item = "something";
 
-      makeElement(
-        `<div class='owl-carousel owl-theme' id="dotsCarousel">${carouselItems}</div>`,
-        svSlider,
-        2,
-        false
-      );
-      // owl dots
-      // owlDots = document.querySelectorAll(".owl-dots");
+//       makeElement(
+//         `<div class='owl-carousel owl-theme' id="dotsCarousel">${carouselItems}</div>`,
+//         svSlider,
+//         2,
+//         false
+//       );
+//       // owl dots
+//       // owlDots = document.querySelectorAll(".owl-dots");
 
-      // comments
-      comments = homepage.comments;
-      carouselItems = "";
-      comments.forEach((comment) => {
-        paramUrl = comment.game.title;
-        carouselItems += `
-        <div class="item cmItem" gameTitle="${paramUrl}#comments" onclick="transferData(this)">
-          <img src="${comment.player.avatar}" alt="thumb" />
-          <div class="content">
-            <h5 class="cmTitle">${comment.text}</h5>
-            <span>${comment.date}</span>
-          </div>
-        </div>
-  `;
-      });
-      makeElement(
-        `<div class="comments">${carouselItems}</div>`,
-        commentsDiv,
-        0,
-        false
-      );
+//       // comments
+//       comments = homepage.comments;
+//       carouselItems = "";
+//       comments.forEach((comment) => {
+//         paramUrl = comment.game.title;
+//         carouselItems += `
+//         <div class="item cmItem" gameTitle="${paramUrl}#comments" onclick="transferData(this)">
+//           <img src="${comment.player.avatar}" alt="thumb" />
+//           <div class="content">
+//             <h5 class="cmTitle">${comment.text}</h5>
+//             <span>${comment.date}</span>
+//           </div>
+//         </div>
+//   `;
+//       });
+//       makeElement(
+//         `<div class="comments">${carouselItems}</div>`,
+//         commentsDiv,
+//         0,
+//         false
+//       );
 
-      // toturials
-      tutorials = homepage.tutorials;
-      carouselItems = "";
-      tutorials.forEach((tutorial) => {
-        carouselItems += `
-         <div class="item" gameTitle="${tutorial.game.title}#info" onclick="transferData(this)">
-           <img src="${tutorial.game.small_image}" alt="thumb" />
-           <div class="content">
-             <h5>${tutorial.title}</h5>
-             <span>${tutorial.date}</span>
-           </div>
-         </div>
- `;
-      });
-      makeElement(
-        `<div class="tutorials">${carouselItems}</div>`,
-        tutorialsDiv,
-        0,
-        false
-      );
-    })
-    .catch((error) => console.log(error));
-}
+//       // toturials
+//       tutorials = homepage.tutorials;
+//       carouselItems = "";
+//       tutorials.forEach((tutorial) => {
+//         carouselItems += `
+//          <div class="item" gameTitle="${tutorial.game.title}#info" onclick="transferData(this)">
+//            <img src="${tutorial.game.small_image}" alt="thumb" />
+//            <div class="content">
+//              <h5>${tutorial.title}</h5>
+//              <span>${tutorial.date}</span>
+//            </div>
+//          </div>
+//  `;
+//       });
+//       makeElement(
+//         `<div class="tutorials">${carouselItems}</div>`,
+//         tutorialsDiv,
+//         0,
+//         false
+//       );
+//     })
+//     .catch((error) => console.log(error));
+// }
 function initFooter() {
   htmlString = `
   <div class="top threshold">
@@ -490,6 +488,7 @@ async function initFixedHeader() {
   makeElement(htmlString, headerSection, 0, "prepend");
 }
 window.onload = () => {
+  fvData1();
   offDisplayLogin(
     findElement("#signup"),
     findElement("#loginBtn"),
@@ -503,7 +502,7 @@ window.onload = () => {
 // Search Function
 let searchItem;
 let itemFound;
-let searchedDataRoot;
+let gotSearchResponse;
 let searchKey = "";
 const generalGameList = $(".generalGameList");
 let timer;
@@ -517,21 +516,12 @@ function debounce(func, tiemout = 1000) {
   };
 }
 function sendInput() {
-  searchItems($("#keyword-search").val().split(" ").join("").trim());
+  let key = $("#keyword-search").val().split(" ").join("").trim();
+  if (key.length > 0) {
+    searchItems(key);
+  }
 }
 const debounceSending = debounce(() => sendInput());
-// $("#keyword-search").on(
-//   "keyup",
-
-// function () {
-//   let searchString = $(this).val().split(" ").join("").trim();
-//   console.log("string", searchString);
-//   searchKey = searchString;
-//   // searchKey =
-//   setTimeout(() => {
-//     searchItems(searchKey);
-//   }, 500);
-// );
 // removing redundant nodes function
 function makeEmpty(node) {
   let list = document.querySelector(node);
@@ -540,7 +530,7 @@ function makeEmpty(node) {
   }
 }
 function getTextFromInput() {
-  searchKey = $("#keyword-search").val();
+  searchKey = $("#keyword-search").val().split(" ").join("").trim();
   if (searchKey.length > 0) {
     searchItems(searchKey);
   } else {
@@ -548,17 +538,24 @@ function getTextFromInput() {
   }
 }
 // seperated search function
+let typedLetters;
 function searchResponse(response, error) {
   if (error) {
     console.log("Error in getting search Response:", error);
     return;
   } else {
     console.log("search response:", response);
-    searchedDataRoot = response.games;
-    console.log("the response is :", searchedDataRoot);
-    searchedDataRoot.length > 0 ? (itemFound = true) : (itemFound = false);
+    typedLetters = response.searchKey;
+    gotSearchResponse = response.games;
+    gotSearchResponse.length > 0 ? (itemFound = true) : (itemFound = false);
     if (itemFound) {
-      localStorage.setItem("searchedData", response.searchKey);
+      console.log("The key is:", typedLetters);
+      console.log("the response is :", gotSearchResponse);
+      localStorage.setItem(
+        "gotSearchResponse",
+        JSON.stringify(gotSearchResponse)
+      );
+      localStorage.setItem("typedLetters", typedLetters);
       location.href = "http://localhost:5500/Public/games_list.html";
     } else {
       console.log("not found");
@@ -585,9 +582,9 @@ function searchItems(item) {
   //   type: "GET",
   //   dataType: "json",
   //   success: function (searchedData) {
-  //     searchedDataRoot = searchedData.response.result.games;
-  //     console.log("the response is :", searchedDataRoot);
-  //     searchedDataRoot.length > 0 ? (itemFound = true) : (itemFound = false);
+  //     gotSearchResponse = searchedData.response.result.games;
+  //     console.log("the response is :", gotSearchResponse);
+  //     gotSearchResponse.length > 0 ? (itemFound = true) : (itemFound = false);
   //     if (itemFound) {
   //       localStorage.setItem("searchedData", searchKey);
   //       location.href =
@@ -602,7 +599,7 @@ function searchItems(item) {
 // // search Function
 // let searchItem;
 // let itemFound;
-// let searchedDataRoot;
+// let gotSearchResponse;
 // let searchKey = "";
 // const generalGameList = $(".generalGameList");
 // $("#keyword-search").on("keyup", function () {
@@ -634,9 +631,9 @@ function searchItems(item) {
 //     type: "GET",
 //     dataType: "json",
 //     success: function (searchedData) {
-//       searchedDataRoot = searchedData.response.result.games;
-//       console.log("the response is :", searchedDataRoot);
-//       searchedDataRoot.length > 0 ? (itemFound = true) : (itemFound = false);
+//       gotSearchResponse = searchedData.response.result.games;
+//       console.log("the response is :", gotSearchResponse);
+//       gotSearchResponse.length > 0 ? (itemFound = true) : (itemFound = false);
 //       if (itemFound) {
 //         localStorage.setItem("searchedData", searchKey);
 //         location.href =

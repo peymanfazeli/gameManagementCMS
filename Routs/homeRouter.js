@@ -53,7 +53,6 @@ homeRouter.get("/", async (request, response) => {
         comments: userComments,
       });
     } else if (sameCtgsArr.length !== 0) {
-      console.log("same ctg arr!==0: ", sameCtgsArr.length);
       return response.json({
         user: loggedinUser,
         games: userGames,

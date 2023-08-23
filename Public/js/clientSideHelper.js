@@ -163,7 +163,7 @@ function myFetch(path, method, callBack, data = "", func = "") {
       if (response.status === 200) {
         // callBack(await response.json(), null);
         callBack(await response.json(), null);
-        console.log("response ok", response.status);
+        console.log(`${path} response`, response.status);
       } else if (response.status !== 200) {
         throw new Error(response.status);
       }

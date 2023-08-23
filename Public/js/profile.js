@@ -18,6 +18,7 @@ window.onload = () => {
       e.preventDefault();
       clearSession();
     });
+    getAllCtg();
   } else {
     window.location = "http://localhost:5500/Public/login.html";
   }
@@ -151,4 +152,3 @@ categoryDelete.addEventListener("click", (e) => {
   e.preventDefault();
   deleteCtg();
 });
-getAllCtg();

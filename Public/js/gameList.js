@@ -398,37 +398,49 @@ function loadFilters(filterItem, asidePart) {
 }
 // getting transfered data
 let searchedKey;
-function getSearchedItem() {
-  let getValue = localStorage.getItem("searchedData");
+function getSearchedResponse() {
+  let getValue = localStorage.getItem("gotSearchResponse");
   return getValue;
 }
-function makeGameCardResponse(response, error) {
-  if (error) {
-    console.log("Error in making game response: ", error);
-    return;
-  } else {
-    // console.log("Response in making game response: ", response);
-    searchedDataRoot = response.games;
-    console.log("the response is :", searchedDataRoot);
-    makeEmpty(".gList");
-    searchedDataRoot.forEach((item) => {
-      // make Element
-      produceCard(item);
-      makeElement(htmlString, gList, 0, false, "append");
-    });
-    htmlString = "";
-    localStorage.clear();
-  }
-}
+// function makeGameCardResponse(response, error) {
+//   if (error) {
+//     console.log("Error in making game response: ", error);
+//     return;
+//   } else {
+//     console.log("Response in making game response: ", response);
+//     // searchedDataRoot = response.games;
+//     // console.log("the response is :", searchedDataRoot);
+//     // makeEmpty(".gList");
+//     // searchedDataRoot.forEach((item) => {
+//     //   // make Element
+//     //   produceCard(item);
+//     //   makeElement(htmlString, gList, 0, false, "append");
+//     // });
+//     // htmlString = "";
+//     // localStorage.clear();
+//   }
+// }
 function makeGameCards(searchItem) {
-  myFetch(
-    "games/searchGame",
-    "POST",
-    makeGameCardResponse,
-    { searchItem },
-    "makeGameCardResponse"
-  );
+  console.log("data for making cards: ", searchItem);
+  searchItem.forEach((item) => {
+    console.log("each item: ", item);
+    // make Element
+    produceCard(item);
+    makeElement(htmlString, gList, 0, false, "append");
+  });
+  localStorage.clear();
+  // myFetch(`games/searchGame/`, "POST", makeGameCardResponse, { searchItem });
+  // searchedDataRoot = response.games;
+  //   console.log("the response is :", searchedDataRoot);
+  //   makeEmpty(".gList");
+  //   searchedDataRoot.forEach((item) => {
+  //     // make Element
+  //     produceCard(item);
+  //     makeElement(htmlString, gList, 0, false, "append");
+  //   });
+  //   htmlString = "";
 }
+let makeResponseJson = JSON.parse(getSearchedResponse());
 window.onload = () => {
   //fixed header
   initFixedHeader();
@@ -437,14 +449,15 @@ window.onload = () => {
       e.preventDefault();
       clearSession();
     });
-    if (getSearchedItem() != null) {
-      console.log("searched key: ", getSearchedItem());
+    if (makeResponseJson.length !== 0) {
+      console.log("transfered searched response: ", makeResponseJson);
       aside.css("display", "none");
       bannerTitle.css("display", "block");
-      searchedKey = getSearchedItem();
+      console.log("banner title:", bannerTitle);
+      searchedKey = localStorage.getItem("typedLetters");
       bannerTitle.html(`نتایج جستجو برای : ${searchedKey}`);
 
-      makeGameCards(searchedKey);
+      makeGameCards(makeResponseJson);
       // $.ajax({
       //   url: `http://localhost/IE-F95-API-master/games?q=${searchedKey}`,
       //   type: "GET",
