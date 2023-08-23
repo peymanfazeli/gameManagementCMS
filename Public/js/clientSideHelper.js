@@ -243,6 +243,32 @@ function myFetch(path, method, callBack, data = "", func = "") {
     }
   });
 }
+// function getAllCtg() {
+//   myFetch("categories", "GET", makeProfileCtgs, "", "ctgResponse");
+// }
+function ctgWrapper(
+  creatorFunction = "",
+  gameList = false,
+  makeCategoryPartFlag = false
+) {
+  if (!gameList) {
+    // console.log(
+    //   `is in !game list page:${!gameList}, is in makecategorypart: ${makeCategoryPartFlag}`
+    // );
+    return myFetch("categories", "GET", creatorFunction, "", "ctgResponse");
+  } else {
+    console.log(
+      `is in game list page:${gameList}, is in makecategorypart: ${makeCategoryPartFlag}`
+    );
+    return myFetch(
+      "categories",
+      "GET"
+      //   makeCategoryPartFlag ? makeCategoryPart : initAllGames,
+      //   "",
+      //   "ctgResponse"
+    );
+  }
+}
 function correctImgAddress(entityImg) {
   if (entityImg) {
     return entityImg.replace("C:/xampp/htdocs/IE-Express/Public/", "");

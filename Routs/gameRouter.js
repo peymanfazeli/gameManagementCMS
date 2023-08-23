@@ -224,10 +224,19 @@ gameRoute.post("/searchGame", async (request, response) => {
     return response.send({ games: "" });
   }
 });
-// gameRoute.get("/searchGame/:searchItem", async (request, response) => {
-//   console.log(request.params);
-//   response.json({ game: "search items is worling" });
-// });
+gameRoute.post("/postFilters", async (request, response) => {
+  let { filters } = request.body;
+  console.log("sent filters to server: ", filters);
+  if (filters) {
+    let game = await Games.find({ categories: filters });
+    if (game) {
+      console.log("game: ", game);
+      response.json({ game: game });
+    } else {
+      response.sendStatus(400);
+    }
+  }
+});
 
 gameRoute.get("/", async (request, respsonse) => {
   let allGames = await Games.find();

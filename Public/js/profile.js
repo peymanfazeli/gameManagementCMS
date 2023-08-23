@@ -18,7 +18,7 @@ window.onload = () => {
       e.preventDefault();
       clearSession();
     });
-    getAllCtg();
+    ctgWrapper(makeProfileCtgs, false, false);
   } else {
     window.location = "http://localhost:5500/Public/login.html";
   }
@@ -48,7 +48,7 @@ function removeActiveClass() {
 }
 
 // Server connection
-function makeCtgs(response, error) {
+function makeProfileCtgs(response, error) {
   if (error) {
     console.log("Error in making categories: ", error);
     return;
@@ -85,9 +85,9 @@ function makeCtgs(response, error) {
     }
   }
 }
-function getAllCtg() {
-  myFetch("categories", "GET", makeCtgs, "", "ctgResponse");
-}
+// function getAllCtg() {
+//   myFetch("categories", "GET", makeCtgs, "", "ctgResponse");
+// }
 function checkPasword(response, error) {
   if (error) {
     console.log("Error in updating profile password: ", error);

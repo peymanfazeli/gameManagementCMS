@@ -7,43 +7,73 @@ const aside = $("aside");
 const gameRating = $(".gameRating");
 const gList = $(".gList");
 
-const allCats = {
-  all: "همه",
-  shooting: "تیراندازی",
-  action: "اکشن",
-  firesPerson: "اول شخص",
-  thirdPerson: "سوم شخص",
-  sport: "ورزشی",
-  mental: "فکری",
-  role: "نقش آفرینی",
-  strategic: "استراتژیک",
-  adventure: "ماجراجویی",
-};
+// const allCats = {
+//   all: "همه",
+//   shooting: "تیراندازی",
+//   action: "اکشن",
+//   firesPerson: "اول شخص",
+//   thirdPerson: "سوم شخص",
+//   sport: "ورزشی",
+//   mental: "فکری",
+//   role: "نقش آفرینی",
+//   strategic: "استراتژیک",
+//   adventure: "ماجراجویی",
+// };
 const allTitles = {
   gameCtg: "دسته بندی بازی ها",
   gameRate: "امتیاز بازی ها",
 };
 // aside section
 // category Part
+function gameListCtgPart(response, error) {
+  if (error) {
+    console.log("Error in making categories for gameList: ", error);
+    return;
+  } else {
+    console.log(
+      "response in making categories for gameList: ",
+      response.allCtg
+    );
+    let allCategories = response.allCtg;
+    htmlCatString = "";
+    allCategories.forEach((cat) => {
+      ctgs += `<li class="catItem">
+              <input class="ctgCheck" type="checkbox">
+              <span class="catId">${cat.name}</span>
+            </li>
+      `;
+    });
+    htmlCatString = `
+        <span>${allTitles.gameCtg}</span>
+          <ul id='ctgContainer'>
+           ${ctgs}
+          </ul>
+        `;
+    makeElement(htmlCatString, categorySection);
+  }
+}
 let ctgs = "";
 const categorySection = $(".category");
 const ratingSection = $(".gameRating");
 function makeCategoryPart() {
-  Object.values(allCats).forEach((cat) => {
-    ctgs += `<li class="catItem">
-        <input class="ctgCheck" type="checkbox">
-        <span class="catId">${cat}</span>
-      </li>
-`;
-  });
-  htmlString = `
-  <span>${allTitles.gameCtg}</span>
-    <ul id='ctgContainer'>
-     ${ctgs}
-    </ul>
-  `;
-  makeElement(htmlString, categorySection);
+  ctgWrapper(gameListCtgPart, true, true);
+  // console.log("all ctg", ct);
+  //   Object.values(allCats).forEach((cat) => {
+  //     ctgs += `<li class="catItem">
+  //         <input class="ctgCheck" type="checkbox">
+  //         <span class="catId">${cat}</span>
+  //       </li>
+  // `;
+  //   });
+  //   htmlString = `
+  //   <span>${allTitles.gameCtg}</span>
+  //     <ul id='ctgContainer'>
+  //      ${ctgs}
+  //     </ul>
+  //   `;
+  //   makeElement(htmlString, categorySection);
 }
+
 // gameRating part
 let srContainers;
 let star_containers;
@@ -207,10 +237,28 @@ let tmpChi = [];
 let gListBtnSection = "";
 let unloadedObjectCount;
 const gameLoadMoreBtn = $("button");
-function postFilterToServer(selectedFilters) {
+function postingFilterResponse(respsonse, error) {
+  if (error) {
+    console.log("Error in handling response of postig game filters: ", error);
+    return;
+  } else {
+    console.log(
+      "Response in handling response of postig game filters: ",
+      response
+    );
+  }
+}
+function postFilterToServer(filters) {
   makeEmpty(".gList");
   // @todo gmLoadMoreBtn here
-
+  const data = { filters };
+  myFetch(
+    "games/postFilters",
+    "POST",
+    postingFilterResponse,
+    data,
+    "postingFilterResponse"
+  );
   // setTimeout(() => {
   //   $.ajax({
   //     url: `http://localhost/IE-F95-API-master/games_list`,
@@ -273,13 +321,24 @@ function checkMoreGames(allGamesCount, gameOffset) {
   //   makeElement(htmlString, gList, "html");
   // });
 }
-function initAllGames() {
-  Object.values(allCats).forEach((cat) => {
-    if (!catArray.includes(cat)) {
-      catArray.push(cat);
-    }
-  });
+function allGamesCtg(response, error) {
+  if (error) {
+    console.log("Error in handling all game ctgs: ", error);
+    return;
+  } else {
+    console.log("Response in handling all game ctgs: ", response.allCtg);
+    let allCats = response.allCtg;
+    allCats.forEach((cat) => {
+      // console.log("cat in initallgames ctg:", cat);
+      catArray.push(cat.name);
+    });
+  }
 }
+// console.log("catArrY LENGTH:", catArray.length);
+function initAllGames() {
+  ctgWrapper(allGamesCtg, true, false);
+}
+// console.log("catArray:", catArray);
 let isDataLoading = false;
 function loaderChecker(isDataLoading) {
   if (isDataLoading) {
@@ -402,24 +461,6 @@ function getSearchedResponse() {
   let getValue = localStorage.getItem("gotSearchResponse");
   return getValue;
 }
-// function makeGameCardResponse(response, error) {
-//   if (error) {
-//     console.log("Error in making game response: ", error);
-//     return;
-//   } else {
-//     console.log("Response in making game response: ", response);
-//     // searchedDataRoot = response.games;
-//     // console.log("the response is :", searchedDataRoot);
-//     // makeEmpty(".gList");
-//     // searchedDataRoot.forEach((item) => {
-//     //   // make Element
-//     //   produceCard(item);
-//     //   makeElement(htmlString, gList, 0, false, "append");
-//     // });
-//     // htmlString = "";
-//     // localStorage.clear();
-//   }
-// }
 function makeGameCards(searchItem) {
   console.log("data for making cards: ", searchItem);
   searchItem.forEach((item) => {
@@ -429,16 +470,6 @@ function makeGameCards(searchItem) {
     makeElement(htmlString, gList, 0, false, "append");
   });
   localStorage.clear();
-  // myFetch(`games/searchGame/`, "POST", makeGameCardResponse, { searchItem });
-  // searchedDataRoot = response.games;
-  //   console.log("the response is :", searchedDataRoot);
-  //   makeEmpty(".gList");
-  //   searchedDataRoot.forEach((item) => {
-  //     // make Element
-  //     produceCard(item);
-  //     makeElement(htmlString, gList, 0, false, "append");
-  //   });
-  //   htmlString = "";
 }
 let makeResponseJson = JSON.parse(getSearchedResponse());
 window.onload = () => {
@@ -449,32 +480,13 @@ window.onload = () => {
       e.preventDefault();
       clearSession();
     });
-    if (makeResponseJson.length !== 0) {
+    if (makeResponseJson) {
       console.log("transfered searched response: ", makeResponseJson);
       aside.css("display", "none");
       bannerTitle.css("display", "block");
-      console.log("banner title:", bannerTitle);
       searchedKey = localStorage.getItem("typedLetters");
       bannerTitle.html(`نتایج جستجو برای : ${searchedKey}`);
-
       makeGameCards(makeResponseJson);
-      // $.ajax({
-      //   url: `http://localhost/IE-F95-API-master/games?q=${searchedKey}`,
-      //   type: "GET",
-      //   dataType: "json",
-      //   success: function (searchedData) {
-      //     searchedDataRoot = searchedData.response.result.games;
-      //     console.log("the response is :", searchedDataRoot);
-      //     makeEmpty(".gList");
-      //     searchedDataRoot.forEach((item) => {
-      //       // make Element
-      //       produceCard(item);
-      //       makeElement(htmlString, gList, 0, false, "append");
-      //     });
-      //     htmlString = "";
-      //   },
-      // });
-      // localStorage.clear();
     } else {
       // optional search must be initialized
       console.log("**** nothing is searched and filters are available ****");
@@ -506,8 +518,9 @@ window.onload = () => {
         loadFilters($(this), ".srContainer");
       });
       if (!isCatSelected) {
-        initAllGames();
-        postFilterToServer(catArray);
+        let a = initAllGames();
+        console.log("catArray: ", a);
+        // postFilterToServer(catArray);
       } else {
         catArray = [];
       }
