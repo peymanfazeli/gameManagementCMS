@@ -6,7 +6,7 @@ const bannerTitle = $("#bannerTitle");
 const aside = $("aside");
 const gameRating = $(".gameRating");
 const gList = $(".gList");
-
+let allCats;
 // const allCats = {
 //   all: "همه",
 //   shooting: "تیراندازی",
@@ -24,10 +24,6 @@ const allTitles = {
   gameRate: "امتیاز بازی ها",
 };
 // aside section
-function catItemClick() {
-  console.log("catitem is clicked");
-  loadFilters($(this), ".catItem");
-}
 // category Part
 function gameListCtgPart(response, error) {
   if (error) {
@@ -41,9 +37,10 @@ function gameListCtgPart(response, error) {
     let allCategories = response.allCtg;
     htmlCatString = "";
     allCategories.forEach((cat) => {
-      ctgs += `<li class="catItem" onclick='catItemClick()'>
+      catArray.push(cat.name);
+      ctgs += `<li class="catItem">
               <input class="ctgCheck" type="checkbox">
-              <span class="catId">${cat.name}</span>
+              <span class="catId" id="ctg${cat._id}">${cat.name}</span>
             </li>
       `;
     });
@@ -55,6 +52,17 @@ function gameListCtgPart(response, error) {
         `;
     makeElement(htmlCatString, categorySection);
   }
+  $(".catItem").on("click", function () {
+    // isDataLoading = true;
+    // loaderChecker(isDataLoading);
+    // if (isDataLoading) {
+    //   return;
+    // }
+    // isDataLoading = true;
+    loadFilters($(this), ".catItem");
+    // isDataLoading = false;
+    // loaderChecker(isDataLoading);
+  });
 }
 let ctgs = "";
 const categorySection = $(".category");
@@ -243,7 +251,7 @@ let tmpChi = [];
 let gListBtnSection = "";
 let unloadedObjectCount;
 const gameLoadMoreBtn = $("button");
-function postingFilterResponse(respsonse, error) {
+function postingFilterResponse(response, error) {
   if (error) {
     console.log("Error in handling response of postig game filters: ", error);
     return;
@@ -252,6 +260,16 @@ function postingFilterResponse(respsonse, error) {
       "Response in handling response of postig game filters: ",
       response
     );
+    serverGames = response.game;
+    // console.log("all recieved Games from server: ", serverGames);
+    gameOffset = serverGames.length;
+    // console.log("game offset@", gameOffset);
+    // checkMoreGames(Number(serverObj.count), gameOffset);
+    // console.log("game Offset after posting filters : ", gameOffset);
+    serverGames.forEach((game) => {
+      produceCard(game, false);
+      makeElement(htmlString, gList, "html");
+    });
   }
 }
 function postFilterToServer(filters) {
@@ -333,7 +351,7 @@ function allGamesCtg(response, error) {
     return;
   } else {
     console.log("Response in handling all game ctgs: ", response.allCtg);
-    let allCats = response.allCtg;
+    allCats = response.allCtg;
     allCats.forEach((cat) => {
       // console.log("cat in initallgames ctg:", cat);
       catArray.push(cat.name);
@@ -342,7 +360,9 @@ function allGamesCtg(response, error) {
 }
 // console.log("catArrY LENGTH:", catArray.length);
 function initAllGames() {
-  ctgWrapper(allGamesCtg, "allGamesCtg", true, false);
+  console.log("cagtegory arr:", catArray);
+  return catArray;
+  // myFetch('categories','GET',)
 }
 // console.log("catArray:", catArray);
 let isDataLoading = false;
@@ -375,8 +395,8 @@ let serverRates;
 let htmlRateString = "";
 let rateFound = false;
 function loadFilters(filterItem, asidePart) {
-  isDataLoading = true;
-  loaderChecker(isDataLoading);
+  // isDataLoading = true;
+  // loaderChecker(isDataLoading);
   // if filter is category
   getCatId = filterItem.closest(asidePart).children(".catId").html();
   catItemIndex = catArray.indexOf(getCatId);
@@ -395,14 +415,14 @@ function loadFilters(filterItem, asidePart) {
         tempCatItemIndex = tempCtgArr.indexOf(getCatId);
         if ($('.ctgCheck[checked="checked"]').length - 1 > 0) {
           getInput.removeAttr("checked");
-          if (getCatId === allCats.all) {
+          if (getCatId === "همه") {
             catArray.splice(0, catArray.length);
             tempCtgArr.forEach((newCtg) => catArray.push(newCtg));
           }
           if (
             catItemIndex > -1 &&
             tempCatItemIndex > -1 &&
-            getCatId !== allCats.all
+            getCatId !== "همه"
           ) {
             if (
               filterItem
@@ -423,12 +443,12 @@ function loadFilters(filterItem, asidePart) {
           getInput.removeAttr("checked");
           catArray.splice(catItemIndex, 1);
           tempCtgArr.splice(tempCatItemIndex, 1);
-          filterItem
-            .siblings()
-            .first()
-            .children(".ctgCheck")
-            .attr("checked", "checked");
-          initAllGames();
+          // filterItem
+          //   .siblings()
+          //   .first()
+          //   .children(".ctgCheck")
+          //   .attr("checked", "checked");
+          // initAllGames();
         }
       } else if (asidePart === ".srContainer") {
         rateArr.splice(itemIndex, 1);
@@ -442,14 +462,14 @@ function loadFilters(filterItem, asidePart) {
           .first()
           .children(".ctgCheck")
           .removeAttr("checked");
-        if (getCatId !== allCats.all) {
+        if (getCatId !== "همه") {
           catArray.splice(0, catArray.length);
           if (!tempCtgArr.includes(getCatId)) {
             tempCtgArr.push(getCatId);
             tempCtgArr.forEach((ctg) => catArray.push(ctg));
           }
           // tempCtgArr.splice(0, tempCtgArr.length);
-        } else if (getCatId === allCats.all) {
+        } else if (getCatId === "همه") {
           tempCtgArr.splice(0, tempCtgArr.length);
           filterItem.siblings().children(".ctgCheck").removeAttr("checked");
           initAllGames();
@@ -498,25 +518,14 @@ window.onload = () => {
       console.log("**** nothing is searched and filters are available ****");
       aside.css("display", "block");
       bannerTitle.css("display", "none");
-      // initAllGames();
+
       makeRatingPart();
       // if (isDataLoading) {
       //   $(".catItem").off("click");
       // } else {
       makeCategoryPart();
-      console.log("category part is:", $(".ctgContainer"));
-      console.log("catItem is:", $(".catItem"));
-      $(".catItem").on("click", function () {
-        // isDataLoading = true;
-        // loaderChecker(isDataLoading);
-        if (isDataLoading) {
-          return;
-        }
-        isDataLoading = true;
-        loadFilters($(this), ".catItem");
-        // isDataLoading = false;
-        // loaderChecker(isDataLoading);
-      });
+      initAllGames();
+
       // }
 
       //   $(".srContainer").on("click", function () {
