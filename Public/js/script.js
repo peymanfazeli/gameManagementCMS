@@ -496,7 +496,8 @@ window.onload = () => {
     findElement("#logout"),
     findElement("#adminBtn")
   );
-  checkUserLogin();
+  // console.log("get profile in script onload: ", getProfile());
+  console.log("checkogin in script onload: ", checkUserLogin());
 };
 
 // Search Function

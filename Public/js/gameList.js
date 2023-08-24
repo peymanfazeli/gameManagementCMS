@@ -24,6 +24,10 @@ const allTitles = {
   gameRate: "امتیاز بازی ها",
 };
 // aside section
+function catItemClick() {
+  console.log("catitem is clicked");
+  loadFilters($(this), ".catItem");
+}
 // category Part
 function gameListCtgPart(response, error) {
   if (error) {
@@ -37,7 +41,7 @@ function gameListCtgPart(response, error) {
     let allCategories = response.allCtg;
     htmlCatString = "";
     allCategories.forEach((cat) => {
-      ctgs += `<li class="catItem">
+      ctgs += `<li class="catItem" onclick='catItemClick()'>
               <input class="ctgCheck" type="checkbox">
               <span class="catId">${cat.name}</span>
             </li>
@@ -56,7 +60,9 @@ let ctgs = "";
 const categorySection = $(".category");
 const ratingSection = $(".gameRating");
 function makeCategoryPart() {
-  ctgWrapper(gameListCtgPart, true, true);
+  // ctgWrapper(gameListCtgPart, "gameListCtgPart", true, true);
+  myFetch("categories", "GET", gameListCtgPart, "", "gameListCtgPart");
+  // ctgWrapper(gameListCtgPart, "gameListCtgPart", true, true);
   // console.log("all ctg", ct);
   //   Object.values(allCats).forEach((cat) => {
   //     ctgs += `<li class="catItem">
@@ -336,7 +342,7 @@ function allGamesCtg(response, error) {
 }
 // console.log("catArrY LENGTH:", catArray.length);
 function initAllGames() {
-  ctgWrapper(allGamesCtg, true, false);
+  ctgWrapper(allGamesCtg, "allGamesCtg", true, false);
 }
 // console.log("catArray:", catArray);
 let isDataLoading = false;
@@ -369,8 +375,8 @@ let serverRates;
 let htmlRateString = "";
 let rateFound = false;
 function loadFilters(filterItem, asidePart) {
-  // isDataLoading = true;
-  // loaderChecker(isDataLoading);
+  isDataLoading = true;
+  loaderChecker(isDataLoading);
   // if filter is category
   getCatId = filterItem.closest(asidePart).children(".catId").html();
   catItemIndex = catArray.indexOf(getCatId);
@@ -471,7 +477,7 @@ function makeGameCards(searchItem) {
   });
   localStorage.clear();
 }
-let makeResponseJson = JSON.parse(getSearchedResponse());
+let searchedGameResponseJson = JSON.parse(getSearchedResponse());
 window.onload = () => {
   //fixed header
   initFixedHeader();
@@ -480,23 +486,26 @@ window.onload = () => {
       e.preventDefault();
       clearSession();
     });
-    if (makeResponseJson) {
-      console.log("transfered searched response: ", makeResponseJson);
+    if (searchedGameResponseJson) {
+      console.log("transfered searched response: ", searchedGameResponseJson);
       aside.css("display", "none");
       bannerTitle.css("display", "block");
       searchedKey = localStorage.getItem("typedLetters");
       bannerTitle.html(`نتایج جستجو برای : ${searchedKey}`);
-      makeGameCards(makeResponseJson);
+      makeGameCards(searchedGameResponseJson);
     } else {
       // optional search must be initialized
       console.log("**** nothing is searched and filters are available ****");
       aside.css("display", "block");
       bannerTitle.css("display", "none");
-      makeCategoryPart();
+      // initAllGames();
       makeRatingPart();
       // if (isDataLoading) {
       //   $(".catItem").off("click");
       // } else {
+      makeCategoryPart();
+      console.log("category part is:", $(".ctgContainer"));
+      console.log("catItem is:", $(".catItem"));
       $(".catItem").on("click", function () {
         // isDataLoading = true;
         // loaderChecker(isDataLoading);
@@ -510,20 +519,20 @@ window.onload = () => {
       });
       // }
 
-      $(".srContainer").on("click", function () {
-        if (isDataLoading) {
-          return;
-        }
-        isDataLoading = true;
-        loadFilters($(this), ".srContainer");
-      });
-      if (!isCatSelected) {
-        let a = initAllGames();
-        console.log("catArray: ", a);
-        // postFilterToServer(catArray);
-      } else {
-        catArray = [];
-      }
+      //   $(".srContainer").on("click", function () {
+      //     if (isDataLoading) {
+      //       return;
+      //     }
+      //     isDataLoading = true;
+      //     loadFilters($(this), ".srContainer");
+      //   });
+      //   if (!isCatSelected) {
+      //     let a = initAllGames();
+      //     console.log("catArray: ", a);
+      //     // postFilterToServer(catArray);
+      //   } else {
+      //     catArray = [];
+      //   }
     }
   } else {
     console.log("User is Offline");

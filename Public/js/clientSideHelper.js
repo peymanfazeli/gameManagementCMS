@@ -30,6 +30,7 @@ function getProfile() {
 }
 function checkUserLogin(href = "") {
   if (href === "") {
+    // console.log("cookie in checkUserLogin function: ", document.cookie);
     if (document.cookie !== "") {
       if (getProfile()) {
         // console.log("profile :", getProfile());
@@ -248,26 +249,52 @@ function myFetch(path, method, callBack, data = "", func = "") {
 // }
 function ctgWrapper(
   creatorFunction = "",
+  creatorFunctionName = "",
   gameList = false,
   makeCategoryPartFlag = false
 ) {
-  if (!gameList) {
-    // console.log(
-    //   `is in !game list page:${!gameList}, is in makecategorypart: ${makeCategoryPartFlag}`
-    // );
-    return myFetch("categories", "GET", creatorFunction, "", "ctgResponse");
-  } else {
+  console.log(
+    "ctgWrapper Args: ",
+    creatorFunctionName,
+    gameList,
+    makeCategoryPartFlag
+  );
+  if (
+    (gameList && creatorFunctionName === "allGamesCtg") ||
+    creatorFunctionName === "gameListCtgPart"
+  ) {
     console.log(
-      `is in game list page:${gameList}, is in makecategorypart: ${makeCategoryPartFlag}`
+      "user is in game list page and the needy creator function name is: ",
+      creatorFunctionName
     );
     return myFetch(
       "categories",
-      "GET"
-      //   makeCategoryPartFlag ? makeCategoryPart : initAllGames,
-      //   "",
-      //   "ctgResponse"
+      "GET",
+      makeCategoryPartFlag ? makeCategoryPart : initAllGames,
+      "",
+      "ctgResponse"
     );
+  } else if (!gameList) {
+    console.log(
+      "user is in profile page and creator function name is: ",
+      creatorFunctionName
+    );
+    return myFetch("categories", "GET", creatorFunction, "", "ctgResponse");
   }
+  // if (!gameList) {
+  //   return myFetch("categories", "GET", creatorFunction, "", "ctgResponse");
+  // } else {
+  //   console.log(
+  //     `is in game list page:${gameList}, is in makecategorypart: ${makeCategoryPartFlag}`
+  //   );
+  //   return myFetch(
+  //     "categories",
+  //     "GET",
+  //     makeCategoryPartFlag ? makeCategoryPart : initAllGames,
+  //     "",
+  //     "ctgResponse"
+  //   );
+  // }
 }
 function correctImgAddress(entityImg) {
   if (entityImg) {
