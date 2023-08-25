@@ -229,8 +229,9 @@ gameRoute.post("/postFilters", async (request, response) => {
   console.log("sent filters to server: ", filters);
   if (filters) {
     let game = await Games.find({ categories: filters });
-    if (game) {
-      console.log("game: ", game);
+    if (game && game.length > 0) {
+      console.log("game length: ", game.length);
+
       response.json({ game: game });
     } else {
       response.sendStatus(400);

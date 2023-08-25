@@ -15,6 +15,7 @@ const homeRoute = require("../Routs/homeRouter");
 const adminRoute = require("../Routs/adminRouter");
 const ctgRoute = require("../Routs/ctgRouter");
 const commentRoute = require("../Routs/commentRouter");
+const minesweeperRoute = require("../Routs/minesweeperRouter");
 
 require("../DB");
 
@@ -63,5 +64,6 @@ app.use("/assets", cdnRoute);
 app.use("/categories", ctgRoute);
 app.use("/games", gameRoute);
 app.use("/comment", commentRoute);
+app.use("/mineseweeper", minesweeperRoute);
 
 app.listen(PORT, () => console.log("Express Server☑"));

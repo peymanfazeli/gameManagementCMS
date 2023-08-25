@@ -18,7 +18,7 @@ window.onload = () => {
       e.preventDefault();
       clearSession();
     });
-    ctgWrapper(makeProfileCtgs, "makeProfileCtgs", false, false);
+    myFetch("categories", "GET", makeProfileCtgs, "", "ctgResponse");
   } else {
     window.location = "http://localhost:5500/Public/login.html";
   }

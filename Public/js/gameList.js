@@ -68,9 +68,7 @@ let ctgs = "";
 const categorySection = $(".category");
 const ratingSection = $(".gameRating");
 function makeCategoryPart() {
-  // ctgWrapper(gameListCtgPart, "gameListCtgPart", true, true);
   myFetch("categories", "GET", gameListCtgPart, "", "gameListCtgPart");
-  // ctgWrapper(gameListCtgPart, "gameListCtgPart", true, true);
   // console.log("all ctg", ct);
   //   Object.values(allCats).forEach((cat) => {
   //     ctgs += `<li class="catItem">
