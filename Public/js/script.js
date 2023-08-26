@@ -477,6 +477,7 @@ async function initFixedHeader() {
                 <a href="adminPage.html" class="btn" id="adminBtn"></a>
                 <a href="register.html" class="btn" id="signup">ثبت نام</a>
                 <a href="#" class="btn" id="logout" onclick="">خروج</a>
+                <a href="mineSweeper.html" class="btn" id="mSweeper"> مینروب</a>
               </div>
             </div>
         </div>
@@ -506,12 +507,12 @@ let itemFound;
 let gotSearchResponse;
 let searchKey = "";
 const generalGameList = $(".generalGameList");
-let timer;
+let dTimer;
 function debounce(func, tiemout = 1000) {
-  console.log("timer: ", timer);
+  console.log("timer: ", dTimer);
   return (args) => {
-    clearTimeout(timer);
-    timer = setTimeout(() => {
+    clearTimeout(dTimer);
+    dTimer = setTimeout(() => {
       func.apply(this, args);
     }, tiemout);
   };

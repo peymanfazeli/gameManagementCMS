@@ -48,6 +48,7 @@ var timeleft;
 let timerSet = false;
 function gameTimerFunction(timeleft) {
   clearInterval(gameTimer);
+  console.log("game timer is: ", gameTimer);
   gameTimer = setInterval(function () {
     if (timeleft <= 0) {
       clearInterval(gameTimer);
@@ -139,10 +140,11 @@ function updateGridResponse(selectedLevel, update = false) {
           if (isTimer === false) {
             if (!countedArr.includes(noneFlaggedSpan.index())) {
               increaseCounter(noneFlaggedSpan.index());
+              console.log("check countedArr length: ", countedArr.length);
             }
           } else if (timerSet === true) {
             gameTimerFunction(timeleft);
-            // timerSet = false;
+            timerSet = false;
           }
           revealNeighbors(noneFlaggedSpan.index());
         }
@@ -248,8 +250,13 @@ $(document).ready(function () {
 });
 
 // Game Logic based On Events:
+
 function diffrenceBetweenFlagsAndMines() {
   counterBox.innerHTML = allMines - flagNumber;
+  console.log(
+    "counterBox in difference between flags and mines:",
+    counterBox.innerText
+  );
 }
 // checking has user won or not yet
 function checkWinStatus(isRightClick, index) {
@@ -265,12 +272,15 @@ function checkWinStatus(isRightClick, index) {
   if (allRevealedSpans === allGcells - allMines && flagNumber === allMines) {
     setTimeout(() => {
       alert("You are Winner");
+      console.log("timer: ", timer.innerText);
+      postUserGameData(timer.innerText);
     }, 500);
     $(".smile").attr("data-value", "win");
     $(".grid").children().off("mousedown contextmenu");
     clearTimeout(gameTimer);
   }
 }
+let levelToPost;
 let smile = document.querySelector(".smile");
 // Add event listener to smile button
 smile.onmousedown = function (e) {
@@ -283,6 +293,7 @@ smile.onmousedown = function (e) {
     (level) => level.title === selectedLevelName
   );
   if (selectedLevel) {
+    levelToPost = selectedLevel.title;
     updateGridResponse(selectedLevel, true);
   }
 };
@@ -293,6 +304,7 @@ function mineClicked(index) {
   clearTimeout(gameTimer);
   setTimeout(() => {
     alert("Game Over");
+    postUserGameData(timer.innerText);
   }, 500);
 }
 
@@ -433,3 +445,56 @@ function increaseCounter(index) {
   countedArr.push(index);
   console.log(countedArr);
 }
+
+// testPart
+function getUserNameResponse(response, error) {
+  if (error) {
+    console.log("Error in getting user name response: ", error);
+    return;
+  } else {
+    console.log("Response in Getting user name response", response);
+    const user = response.user;
+    input.value = user;
+    input.disabled = true;
+    btn.disabled = true;
+  }
+}
+function postUserGameDataResponse(response, error) {
+  if (error) {
+    console.log("Error in sending users game data: ", error);
+    return;
+  } else {
+    console.log("Response in sending users game data: ", response);
+  }
+}
+function getUserName() {
+  myFetch(
+    "mineseweeper",
+    "GET",
+    getUserNameResponse,
+    "",
+    "getUserNameResponse"
+  );
+}
+function postUserGameData(timer_counter) {
+  let remainedMineNum = Number(counterBox.innerText);
+  let winIndex = Number(timer_counter);
+  // if (!timerHandler) {
+  //   winIndex = countedArr.length;
+  // } else {
+  //   winIndex = Number(timer.innerText);
+  // }
+  const data = { remainedMineNum, winIndex, levelToPost };
+  console.log("user game condition: ", data);
+  myFetch(
+    "mineseweeper",
+    "POST",
+    postUserGameDataResponse,
+    data,
+    "postUserGameDataResponse"
+  );
+}
+window.onload = () => {
+  getUserName();
+};
+// end of test Part

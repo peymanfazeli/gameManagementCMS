@@ -14,13 +14,16 @@ const categoryDelete = document.querySelector("#categoryDelete");
 window.onload = () => {
   initFixedHeader();
   if (checkUserLogin()) {
+    console.log("is user logged in: ", checkUserLogin());
     findElement("#logout").addEventListener("click", (e) => {
       e.preventDefault();
       clearSession();
     });
     myFetch("categories", "GET", makeProfileCtgs, "", "ctgResponse");
   } else {
-    window.location = "http://localhost:5500/Public/login.html";
+    console.log("is user logged in (else): ", getProfile());
+    // console.log("Cookie: ", document.cookie);
+    // window.location = "http://localhost:5500/Public/login.html";
   }
 };
 covers.forEach((cover) => {

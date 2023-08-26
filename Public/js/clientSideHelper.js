@@ -22,11 +22,11 @@ function getProfileData(response, error) {
     findElement(
       "#profileBtn"
     ).style.backgroundImage = `url("${userAvatarFile}")`;
+    return true;
   }
 }
 function getProfile() {
   myFetch("profile", "GET", getProfileData);
-  return true;
 }
 function checkUserLogin(href = "") {
   if (href === "") {
