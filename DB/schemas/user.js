@@ -30,5 +30,13 @@ const UserSchema = new mongoose.Schema({
     type: Array,
     default: [],
   },
+  minesweeper: [
+    {
+      level: { type: mongoose.SchemaTypes.String },
+      winCondition: { type: mongoose.SchemaTypes.String },
+      clickNumber: { type: Number },
+      timer: { type: Number },
+    },
+  ],
 });
 module.exports = mongoose.model("Users", UserSchema);

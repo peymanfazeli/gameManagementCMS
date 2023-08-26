@@ -50,6 +50,14 @@ authRouter.post("/register", async (request, response) => {
         ctg: "",
         comments: "",
         role: "user",
+        minesweeper: [
+          {
+            level: "Beginner",
+            winCondition: "click",
+            clickNumber: 10,
+            timer: 0,
+          },
+        ],
       });
       const html = `
       <h1>سلام</h1>

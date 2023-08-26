@@ -144,6 +144,7 @@ function updateGridResponse(selectedLevel, update = false) {
             }
           } else if (timerSet === true) {
             gameTimerFunction(timeleft);
+            winningBy = "timer";
             timerSet = false;
           }
           revealNeighbors(noneFlaggedSpan.index());
@@ -273,6 +274,7 @@ function checkWinStatus(isRightClick, index) {
     setTimeout(() => {
       alert("You are Winner");
       console.log("timer: ", timer.innerText);
+      winner = true;
       postUserGameData(timer.innerText);
     }, 500);
     $(".smile").attr("data-value", "win");
@@ -281,6 +283,8 @@ function checkWinStatus(isRightClick, index) {
   }
 }
 let levelToPost;
+let winningBy = "click";
+let winner = true;
 let smile = document.querySelector(".smile");
 // Add event listener to smile button
 smile.onmousedown = function (e) {
@@ -304,6 +308,7 @@ function mineClicked(index) {
   clearTimeout(gameTimer);
   setTimeout(() => {
     alert("Game Over");
+    winner = false;
     postUserGameData(timer.innerText);
   }, 500);
 }
@@ -479,12 +484,13 @@ function getUserName() {
 function postUserGameData(timer_counter) {
   let remainedMineNum = Number(counterBox.innerText);
   let winIndex = Number(timer_counter);
+
   // if (!timerHandler) {
   //   winIndex = countedArr.length;
   // } else {
   //   winIndex = Number(timer.innerText);
   // }
-  const data = { remainedMineNum, winIndex, levelToPost };
+  const data = { remainedMineNum, winIndex, winningBy, levelToPost, winner };
   console.log("user game condition: ", data);
   myFetch(
     "mineseweeper",
