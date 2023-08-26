@@ -444,6 +444,7 @@ nav {
 }
 .secondView .top .gameCard {
   width: 150px;
+  height: 180px;
   background-color: white;
   display: flex;
   flex-direction: column;

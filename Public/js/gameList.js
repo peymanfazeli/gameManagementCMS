@@ -37,7 +37,7 @@ function gameListCtgPart(response, error) {
     let allCategories = response.allCtg;
     htmlCatString = "";
     allCategories.forEach((cat) => {
-      catArray.push(cat.name);
+      // catArray.push(cat.name);
       ctgs += `<li class="catItem">
               <input class="ctgCheck" type="checkbox">
               <span class="catId" id="ctg${cat._id}">${cat.name}</span>
@@ -398,6 +398,14 @@ function loadFilters(filterItem, asidePart) {
   // if filter is category
   getCatId = filterItem.closest(asidePart).children(".catId").html();
   catItemIndex = catArray.indexOf(getCatId);
+  console.log(
+    "category name:",
+    getCatId,
+    "categry item index in cat arr: ",
+    catItemIndex,
+    "cat arr: ",
+    catArray
+  );
   // if filter is rating
   starNumber = filterItem.attr("starnumber");
   itemIndex = rateArr.indexOf(starNumber);
@@ -411,6 +419,7 @@ function loadFilters(filterItem, asidePart) {
       asidePart === ".catItem" ? catItemIndex : itemIndex;
       if (asidePart === ".catItem") {
         tempCatItemIndex = tempCtgArr.indexOf(getCatId);
+        console.log(tempCatItemIndex);
         if ($('.ctgCheck[checked="checked"]').length - 1 > 0) {
           getInput.removeAttr("checked");
           if (getCatId === "همه") {
@@ -429,9 +438,10 @@ function loadFilters(filterItem, asidePart) {
                 .children(".ctgCheck")
                 .attr("checked")
             ) {
+              console.log("hit point 3: ");
               catArray.splice(catItemIndex, 1);
               tempCtgArr.splice(tempCatItemIndex, 1);
-              initAllGames();
+              // initAllGames();
             } else {
               catArray.splice(catItemIndex, 1);
               tempCtgArr.splice(tempCatItemIndex, 1);
@@ -446,6 +456,8 @@ function loadFilters(filterItem, asidePart) {
           //   .first()
           //   .children(".ctgCheck")
           //   .attr("checked", "checked");
+          console.log("hit point 2: ");
+          console.log(catArray);
           // initAllGames();
         }
       } else if (asidePart === ".srContainer") {
@@ -455,12 +467,13 @@ function loadFilters(filterItem, asidePart) {
     } else {
       getInput.attr("checked", "checked");
       if (asidePart === ".catItem") {
-        filterItem
-          .siblings()
-          .first()
-          .children(".ctgCheck")
-          .removeAttr("checked");
+        // filterItem
+        //   .siblings()
+        //   .first()
+        //   .children(".ctgCheck")
+        //   .removeAttr("checked");
         if (getCatId !== "همه") {
+          console.log("hit point 1");
           catArray.splice(0, catArray.length);
           if (!tempCtgArr.includes(getCatId)) {
             tempCtgArr.push(getCatId);
@@ -477,7 +490,7 @@ function loadFilters(filterItem, asidePart) {
       }
     }
     postFilterToServer(catArray);
-  }, 3000);
+  }, 300);
 }
 // getting transfered data
 let searchedKey;
@@ -488,7 +501,6 @@ function getSearchedResponse() {
 function makeGameCards(searchItem) {
   console.log("data for making cards: ", searchItem);
   searchItem.forEach((item) => {
-    console.log("each item: ", item);
     // make Element
     produceCard(item);
     makeElement(htmlString, gList, 0, false, "append");
@@ -518,9 +530,6 @@ window.onload = () => {
       bannerTitle.css("display", "none");
 
       makeRatingPart();
-      // if (isDataLoading) {
-      //   $(".catItem").off("click");
-      // } else {
       makeCategoryPart();
       initAllGames();
 

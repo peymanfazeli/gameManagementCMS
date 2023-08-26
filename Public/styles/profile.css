@@ -120,7 +120,7 @@
 }
 /* category Container */
 .categoryContainer {
-  margin: 50px auto 0;
+  margin: 10px auto 0;
   text-align: center;
   display: flex;
   justify-content: space-evenly;
@@ -128,6 +128,7 @@
 .categoryContainer .btn {
   font-size: 8pt;
   padding: 2%;
+  margin-top: 20px;
 }
 .categoryContainer label {
   font-size: small;
