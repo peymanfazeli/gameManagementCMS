@@ -38,9 +38,16 @@ function updateData(response, error) {
   if (error) {
     return;
   } else {
-    setTimeout(() => {
-      alert("تغییرات با موفقیت دخیره شد"), location.reload();
-    }, 500);
+    if (response.unAuthCode) {
+      setTimeout(() => {
+        alert(" به دلیل وقفه طولانی باید مجددا وارد سایت شی"),
+          (window.location = "http://localhost:5500/Public/login.html");
+      }, 500);
+    } else {
+      setTimeout(() => {
+        alert("تغییرات ذخیره شد"), location.reload();
+      }, 500);
+    }
   }
 }
 function grantPlayer(_id) {
@@ -58,6 +65,7 @@ function deletePlayer(_id) {
 let string = "";
 async function adminAllCtgCb(ctgResponse, type) {
   // let response = await ctgResponse.json();
+
   let response = await ctgResponse;
   let allCategories = response.allCtg;
   console.log("admin all ctgs: ", allCategories);
@@ -160,6 +168,7 @@ document
   });
 
 function fillUpdateGameDataInput(response) {
+  console.log("response in searching games: ", response);
   let game = response.game;
   updateGameDataForm.style.display = "flex";
   gameIdInput.value = game._id;
@@ -170,6 +179,7 @@ function fillUpdateGameDataInput(response) {
   getAdminAllCtg("update");
   makeInputEmpty(gameNameInput);
 }
+
 function fillCtgItemsInUpdateGameDataForm(response, error) {
   if (error) {
     console.log("Error in filling ctgItems in update dataForm: ", error);

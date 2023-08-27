@@ -21,77 +21,89 @@ profileRoute.get("/:userId", async (request, response) => {
   }
 });
 profileRoute.post("/update", async (request, response) => {
-  const token = request.user.token;
-  const updatedUser = await User.findOne({ token: token });
-  console.log("updated user in update router: ", await request.body);
-  if (request.body.userName) {
-    let userInDb = await User.updateOne(
-      { userName: updatedUser.userName },
-      { userName: request.body.userName }
-    );
-    return response.send({ user: userInDb });
-  } else if (request.body.password) {
-    let newPassword = validatePassword(request.body.password);
-    if (newPassword) {
+  if (request.user) {
+    const token = request.user.token;
+    const updatedUser = await User.findOne({ token: token });
+    console.log("updated user in update router: ", await request.body);
+    if (request.body.userName) {
       let userInDb = await User.updateOne(
-        { password: updatedUser.password },
-        { password: hashPassword(request.body.password) }
+        { userName: updatedUser.userName },
+        { userName: request.body.userName }
       );
       return response.send({ user: userInDb });
-    } else {
-      return response.sendStatus(401);
+    } else if (request.body.password) {
+      let newPassword = validatePassword(request.body.password);
+      if (newPassword) {
+        let userInDb = await User.updateOne(
+          { password: updatedUser.password },
+          { password: hashPassword(request.body.password) }
+        );
+        return response.send({ user: userInDb });
+      } else {
+        return response.sendStatus(401);
+      }
     }
+  } else {
+    response.json({ unAuthCode: 1404 });
   }
 });
 profileRoute.post("/ctgUpdate", async (request, response) => {
-  const oldCtg = request.user.ctg;
-  const { category } = request.body;
+  if (request.user) {
+    const oldCtg = request.user.ctg;
+    const { category } = request.body;
 
-  const _id = category._id;
-  console.log("ctg Id in ctg router: ", _id);
-  const ctgInDb = await categories.findOne({ _id });
-  console.log("ctg in db:", ctgInDb);
-  const name = ctgInDb.name;
-  // await User.updateOne({ ctg: request.user.ctg }, { ctg: { _id, name } });
-  let isRedundantSimple = request.user.ctg.findIndex(
-    (ctg) => ctg._id === category._id
-  );
-  console.log(
-    "isRedundantSimple: ",
-    isRedundantSimple,
-    "id: ",
-    String(category._id)
-  );
-  if (isRedundantSimple === -1) {
-    console.log("userCtg b4 up: ", request.user.ctg);
-    await User.updateOne(
-      { ctg: request.user.ctg },
-      { $push: { ctg: { _id, name } } }
+    const _id = category._id;
+    console.log("ctg Id in ctg router: ", _id);
+    const ctgInDb = await categories.findOne({ _id });
+    console.log("ctg in db:", ctgInDb);
+    const name = ctgInDb.name;
+    // await User.updateOne({ ctg: request.user.ctg }, { ctg: { _id, name } });
+    let isRedundantSimple = request.user.ctg.findIndex(
+      (ctg) => ctg._id === category._id
     );
-    console.log("userCtg after up: ", request.user.ctg);
-    response.send({ ctg: request.user.ctg });
+    console.log(
+      "isRedundantSimple: ",
+      isRedundantSimple,
+      "id: ",
+      String(category._id)
+    );
+    if (isRedundantSimple === -1) {
+      console.log("userCtg b4 up: ", request.user.ctg);
+      await User.updateOne(
+        { ctg: request.user.ctg },
+        { $push: { ctg: { _id, name } } }
+      );
+      console.log("userCtg after up: ", request.user.ctg);
+      response.send({ ctg: request.user.ctg });
+    } else {
+      response.sendStatus(409);
+    }
   } else {
-    response.sendStatus(409);
+    response.json({ unAuthCode: 1404 });
   }
   // }
 });
 profileRoute.post("/ctgDelete", async (request, response) => {
-  const { category } = request.body;
-  let _id = category._id;
-  console.log("ctg to be deleted: ", category, "id: ", _id);
-  console.log("user: ", request.user);
-  const ctgInDb = await categories.findOne({ _id });
-  const name = ctgInDb.name;
+  if (request.user) {
+    const { category } = request.body;
+    let _id = category._id;
+    console.log("ctg to be deleted: ", category, "id: ", _id);
+    console.log("user: ", request.user);
+    const ctgInDb = await categories.findOne({ _id });
+    const name = ctgInDb.name;
 
-  console.log("ctg to be deleted: ", name, "id: ", _id);
-  let findCtginUserDb = request.user.ctg.find(
-    (ctg) => ctg._id === category._id
-  );
-  console.log("user db ctg: ", findCtginUserDb);
-  await User.updateOne(
-    { ctg: request.user.ctg },
-    { $pull: { ctg: findCtginUserDb } }
-  );
-  response.json({ user: await User.find() });
+    console.log("ctg to be deleted: ", name, "id: ", _id);
+    let findCtginUserDb = request.user.ctg.find(
+      (ctg) => ctg._id === category._id
+    );
+    console.log("user db ctg: ", findCtginUserDb);
+    await User.updateOne(
+      { ctg: request.user.ctg },
+      { $pull: { ctg: findCtginUserDb } }
+    );
+    response.json({ user: await User.find() });
+  } else {
+    response.json({ unAuthCode: 1404 });
+  }
 });
 module.exports = profileRoute;

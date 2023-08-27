@@ -5,7 +5,7 @@ function getProfileData(response, error) {
     return;
   } else {
     let userProfile = response.userProfile;
-    console.log("get profile:", userProfile);
+    // console.log("get profile:", userProfile);
     let id = userProfile._id;
     if (userProfile.role === "admin") {
       findElement("#adminBtn").style.display = "inline-block";
@@ -149,7 +149,21 @@ function makeInputEmpty(item) {
   item.value = "";
 }
 // My Fetch
+let requestNum = 0;
+let responseNum = 0;
+let getMethod = "color:cyan ;font-size:15";
+let postMethod = "color:yellow;font_size:15 ";
+let requestColor = "color: orange";
+let responseColor = "color:pink";
 function myFetch(path, method, callBack, data = "", func = "") {
+  requestNum++;
+
+  console.group(`%c REQUEST #${requestNum}: ${path}`, requestColor);
+
+  method === "GET"
+    ? console.log(`%c ${method}=>${path}`, getMethod)
+    : console.log(`%c ${method}=>${path}`, postMethod);
+  console.groupEnd();
   fetch(
     `http://localhost:3001/${path}`,
     method === "GET"
@@ -161,11 +175,24 @@ function myFetch(path, method, callBack, data = "", func = "") {
           body: JSON.stringify(data),
         }
   ).then(async (response) => {
+    // out put
+    responseNum++;
+    let resOk = "color:yellowgreen; font-size:12px";
+    let resFail = "color:red ;font-size:12px";
+    let resData = "color:lightblue";
     try {
       if (response.status === 200) {
         // callBack(await response.json(), null);
-        callBack(await response.json(), null);
-        console.log(`${path} response`, response.status);
+        let serverRes = await response.json();
+        callBack(serverRes, null);
+        console.group(`%c RESPONSE #${responseNum}: ${path}`, responseColor);
+        if (response.status === 200) {
+          console.log(`%c  status: ${response.status}`, resOk);
+          console.log(`%c data is: ${JSON.stringify(serverRes)}`, resData);
+        } else {
+          console.log(`%c status: ${response.status}`, resFail);
+        }
+        console.groupEnd();
       } else if (response.status !== 200) {
         throw new Error(response.status);
       }
@@ -255,5 +282,14 @@ function correctImgAddress(entityImg) {
     return;
   }
 }
+// function checkCookie(location) {
+//   setTimeout(() => {
+//     if (document.cookie !== "") {
+//       console.log("user Online");
+//     } else {
+//       window.location = location;
+//     }
+//   }, 60000000000);
+// }
 
 //

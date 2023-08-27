@@ -15,6 +15,7 @@ ctgRouter.get("/", async (request, response) => {
   } else {
     response.sendStatus(404);
   }
+  // response.json({ allCtg: allCategories });
 });
 ctgRouter.get("/adminCtg", async (request, response) => {
   let allCategories = await categories.find();

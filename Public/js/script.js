@@ -154,7 +154,7 @@ function initFvData(response, error) {
     );
     carouselItems = "";
     newGames.forEach((game) => {
-      console.log("game in new games for sv", game);
+      // console.log("game in new games for sv", game);
       carouselItems += `${produceCard(game)}`;
     });
     // newGames.forEach((game) => {
@@ -358,7 +358,7 @@ function initFooter() {
   </span>
 </div>
 <div class="bottom">
-  <span> تمامی حقوق محفوظ و متعلق به دانشگاه امیر کبیر است</span>
+  <span> تمامی حقوق محفوظ و متعلق به استودیو بازی سازی است</span>
 </div>
     `;
   makeElement(htmlString, footerSection);
@@ -367,6 +367,7 @@ if (window.location.href === "http://localhost:5500/Public/index.html") {
   // fvData();
   // deleteAllDisabled(document.querySelectorAll(".disabled"));
   // enableDots(owlDots);
+
   initFooter();
 }
 // window.onload = function () {
@@ -488,17 +489,35 @@ async function initFixedHeader() {
   `;
   makeElement(htmlString, headerSection, 0, "prepend");
 }
+function homePageHeader() {
+  $(".nThreshold").css("background", "rgba(255, 255, 255, 0.2)");
+  $(".nThreshold").css("backdrop-filter", "blur(5px)");
+  $(".nThreshold").css("color", "white");
+}
+function dataInit(locationToSendGuest) {
+  initFixedHeader();
+  homePageHeader();
+  // checkCookie(locationToSendGuest);
+  if (checkUserLogin()) {
+    // console.log("is user logged in: ", checkUserLogin());
+    findElement("#logout").addEventListener("click", (e) => {
+      e.preventDefault();
+      clearSession();
+    });
+  }
+}
 window.onload = () => {
+  dataInit("http://localhost:5500/Public/index.html");
   fvData1();
-  offDisplayLogin(
-    findElement("#signup"),
-    findElement("#loginBtn"),
-    findElement("#profileBtn"),
-    findElement("#logout"),
-    findElement("#adminBtn")
-  );
+  // offDisplayLogin(
+  //   findElement("#signup"),
+  //   findElement("#loginBtn"),
+  //   findElement("#profileBtn"),
+  //   findElement("#logout"),
+  //   findElement("#adminBtn")
+  // );
+  // checkUserLogin();
   // console.log("get profile in script onload: ", getProfile());
-  console.log("checkogin in script onload: ", checkUserLogin());
 };
 
 // Search Function
@@ -509,7 +528,6 @@ let searchKey = "";
 const generalGameList = $(".generalGameList");
 let dTimer;
 function debounce(func, tiemout = 1000) {
-  console.log("timer: ", dTimer);
   return (args) => {
     clearTimeout(dTimer);
     dTimer = setTimeout(() => {
@@ -649,7 +667,6 @@ function searchItems(item) {
 // Producing gameCard Function
 
 function produceCard(item, hasHeader = false, headerText = "") {
-  console.log("item in produce card: ");
   let large_image = correctImgAddress(item.large_image);
 
   let stars = 5;

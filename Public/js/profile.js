@@ -12,19 +12,13 @@ const categoryAdd = document.querySelector("#categoryAdd");
 const categoryDelete = document.querySelector("#categoryDelete");
 // Client Side
 window.onload = () => {
-  initFixedHeader();
-  if (checkUserLogin()) {
-    console.log("is user logged in: ", checkUserLogin());
-    findElement("#logout").addEventListener("click", (e) => {
-      e.preventDefault();
-      clearSession();
-    });
-    myFetch("categories", "GET", makeProfileCtgs, "", "ctgResponse");
-  } else {
-    console.log("is user logged in (else): ", getProfile());
-    // console.log("Cookie: ", document.cookie);
-    // window.location = "http://localhost:5500/Public/login.html";
-  }
+  dataInit("http://localhost:5500/Public/login.html");
+  myFetch("categories", "GET", makeProfileCtgs, "", "ctgResponse");
+  // } else {
+  //   console.log("is user logged in (else): ", getProfile());
+  //   // console.log("Cookie: ", document.cookie);
+  //   window.location = "http://localhost:5500/Public/login.html";
+  // }
 };
 covers.forEach((cover) => {
   cover.addEventListener("click", () => {
@@ -96,10 +90,16 @@ function checkPasword(response, error) {
     console.log("Error in updating profile password: ", error);
     return;
   } else {
-    console.log("response in updating pass is: ", response);
-    setTimeout(() => {
-      alert("تغییرات ذخیره شد"), location.reload();
-    }, 500);
+    if (response.unAuthCode) {
+      setTimeout(() => {
+        alert(" به دلیل وقفه طولانی باید مجددا وارد سایت شی"),
+          (window.location = "http://localhost:5500/Public/login.html");
+      }, 500);
+    } else {
+      setTimeout(() => {
+        alert("تغییرات ذخیره شد"), location.reload();
+      }, 500);
+    }
   }
   // }
 }
@@ -117,9 +117,16 @@ function ctgResponse(response, error) {
     console.log("Error in handling ctgResponse: ", error);
     return;
   } else {
-    setTimeout(() => {
-      alert("تغییرات ذخیره شد"), location.reload();
-    }, 500);
+    if (response.unAuthCode) {
+      setTimeout(() => {
+        alert(" به دلیل وقفه طولانی باید مجددا وارد سایت شی"),
+          (window.location = "http://localhost:5500/Public/login.html");
+      }, 500);
+    } else {
+      setTimeout(() => {
+        alert("تغییرات ذخیره شد"), location.reload();
+      }, 500);
+    }
   }
 }
 let category;
