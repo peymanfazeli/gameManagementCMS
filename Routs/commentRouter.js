@@ -26,94 +26,98 @@ commentRoute.get("/:id", async (request, response) => {
   }
 });
 commentRoute.post("/sendComment", async (request, response) => {
-  const { userCm, gameTitle } = request.body;
-  const user = request.user;
-  const game = await Games.findOne({ title: gameTitle });
-  console.log(
-    `userId is: ${user._id}. userCm is: ${userCm}. gameTitle is: ${gameTitle}. userAvatar is: ${user.avatar}. gameName is:${game.title}`
-  );
-  if (game.comments[0] === "[]") {
-    await Games.updateMany(
-      { _id: game._id },
-      {
-        $set: {
-          comments: {
-            userId: user._id,
-            userName: user.userName,
-            text: userCm,
-            userAvatar: user.avatar,
-            gameId: game._id,
-            gameName: game.title,
-            date: new Date(),
-          },
-        },
-      }
+  if (request.user) {
+    const { userCm, gameTitle } = request.body;
+    const user = request.user;
+    const game = await Games.findOne({ title: gameTitle });
+    console.log(
+      `userId is: ${user._id}. userCm is: ${userCm}. gameTitle is: ${gameTitle}. userAvatar is: ${user.avatar}. gameName is:${game.title}`
     );
+    if (game.comments[0] === "[]") {
+      await Games.updateMany(
+        { _id: game._id },
+        {
+          $set: {
+            comments: {
+              userId: user._id,
+              userName: user.userName,
+              text: userCm,
+              userAvatar: user.avatar,
+              gameId: game._id,
+              gameName: game.title,
+              date: new Date(),
+            },
+          },
+        }
+      );
+    } else {
+      await Games.updateMany(
+        { _id: game._id },
+        {
+          $push: {
+            comments: {
+              userId: user._id,
+              userName: user.userName,
+              text: userCm,
+              userAvatar: user.avatar,
+              gameId: game._id,
+              gameName: game.title,
+              date: new Date(),
+            },
+          },
+        }
+      );
+    }
+    if ((user.comments[0] = "")) {
+      await User.updateMany(
+        { _id: user._id },
+        {
+          $set: {
+            comments: {
+              userId: user._id,
+              userName: user.userName,
+              text: userCm,
+              userAvatar: user.avatar,
+              gameId: game._id,
+              gameName: game.title,
+              date: new Date(),
+            },
+          },
+        }
+      );
+    } else {
+      await User.updateMany(
+        { _id: user._id },
+        {
+          $push: {
+            comments: {
+              userId: user._id,
+              userName: user.userName,
+              text: userCm,
+              userAvatar: user.avatar,
+              gameId: game._id,
+              gameName: game.title,
+              date: new Date(),
+            },
+          },
+        }
+      );
+    }
+    Comments.create({
+      userId: user._id,
+      userName: user.userName,
+      text: userCm,
+      userAvatar: user.avatar,
+      gameId: game._id,
+      gameName: game.title,
+      date: new Date(),
+      rate: "0",
+    });
+    //   console.log("User after sending cm:", userInDb);
+    response.json({ user: user.avatar });
   } else {
-    await Games.updateMany(
-      { _id: game._id },
-      {
-        $push: {
-          comments: {
-            userId: user._id,
-            userName: user.userName,
-            text: userCm,
-            userAvatar: user.avatar,
-            gameId: game._id,
-            gameName: game.title,
-            date: new Date(),
-          },
-        },
-      }
-    );
+    response.json({ unAuthCode: 1404 });
   }
-  if ((user.comments[0] = "")) {
-    await User.updateMany(
-      { _id: user._id },
-      {
-        $set: {
-          comments: {
-            userId: user._id,
-            userName: user.userName,
-            text: userCm,
-            userAvatar: user.avatar,
-            gameId: game._id,
-            gameName: game.title,
-            date: new Date(),
-          },
-        },
-      }
-    );
-  } else {
-    await User.updateMany(
-      { _id: user._id },
-      {
-        $push: {
-          comments: {
-            userId: user._id,
-            userName: user.userName,
-            text: userCm,
-            userAvatar: user.avatar,
-            gameId: game._id,
-            gameName: game.title,
-            date: new Date(),
-          },
-        },
-      }
-    );
-  }
-  Comments.create({
-    userId: user._id,
-    userName: user.userName,
-    text: userCm,
-    userAvatar: user.avatar,
-    gameId: game._id,
-    gameName: game.title,
-    date: new Date(),
-    rate: "0",
-  });
-  //   console.log("User after sending cm:", userInDb);
-  response.json({ user: user.avatar });
 });
 // commentRoute.get('/comments',async(request,response)=>{
 //     const{userId}=request.params;

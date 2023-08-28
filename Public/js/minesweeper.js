@@ -426,6 +426,9 @@ function revealAndCheck(index) {
 // Modal
 const btn = document.querySelector(".modal-btn");
 const input = document.querySelector(".field");
+const levelName = document.querySelector("#levelName");
+const lastRecord = document.querySelector("#lastRecord");
+const playerClass = document.querySelector("#playerClass");
 const modal = document.querySelector(".modal-content");
 function letters(inputText) {
   let letter = /^[A-Za-z\u0600-\u06FF\s]+$/;
@@ -452,33 +455,40 @@ function increaseCounter(index) {
 }
 
 // testPart
-function getUserNameResponse(response, error) {
+const reloadGame = document.querySelector("#reloadGame");
+function getPlayerDataResponse(response, error) {
   if (error) {
     console.log("Error in getting user name response: ", error);
     return;
   } else {
     console.log("Response in Getting user name response", response);
     const user = response.user;
-    input.value = user;
+    input.value = user.userName;
     input.disabled = true;
     btn.disabled = true;
+    levelName.innerText = user.minesweeper[0].level;
+    lastRecord.innerText = user.minesweeper[0].cup;
+    playerClass.innerHTML = user.score;
+    reloadGame.setAttribute("level", `${user.minesweeper[0].level}`);
   }
 }
+
 function postUserGameDataResponse(response, error) {
   if (error) {
     console.log("Error in sending users game data: ", error);
     return;
   } else {
     console.log("Response in sending users game data: ", response);
+    console.log("prev Cup", response.cup);
   }
 }
-function getUserName() {
+function getPlayerData() {
   myFetch(
     "mineseweeper",
     "GET",
-    getUserNameResponse,
+    getPlayerDataResponse,
     "",
-    "getUserNameResponse"
+    "getPlayerDataResponse"
   );
 }
 function postUserGameData(timer_counter) {
@@ -490,7 +500,13 @@ function postUserGameData(timer_counter) {
   // } else {
   //   winIndex = Number(timer.innerText);
   // }
-  const data = { remainedMineNum, winIndex, winningBy, levelToPost, winner };
+  const data = {
+    remainedMineNum,
+    winIndex,
+    winningBy,
+    levelToPost,
+    winner,
+  };
   console.log("user game condition: ", data);
   myFetch(
     "mineseweeper",
@@ -500,7 +516,28 @@ function postUserGameData(timer_counter) {
     "postUserGameDataResponse"
   );
 }
+function resetGameResponse(response, error) {
+  if (error) {
+    console.log("Error in resetting game", error);
+    return;
+  } else {
+    console.log("reset res: ", response);
+  }
+}
+function resetGameGrid(level) {
+  myFetch(
+    `mineseweeper/${level}`,
+    "GET",
+    resetGameResponse,
+    "",
+    "resetGameResponse"
+  );
+}
+$("#reloadGame").click(function () {
+  // $(this).attr("level")
+  resetGameGrid($(this).attr("level"));
+});
 window.onload = () => {
-  getUserName();
+  getPlayerData();
 };
 // end of test Part

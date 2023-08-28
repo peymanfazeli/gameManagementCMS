@@ -44,28 +44,33 @@ gameRoute.get("/postgame", (request, response) => {
   response.send({ msg: "ok" });
 });
 gameRoute.post("/postgame", async (request, response) => {
-  const { title, abstract, info, categories } = request.body;
-
-  if (
-    title.length !== 0 &&
-    abstract.length !== 0 &&
-    info.length !== 0 &&
-    categories.length !== 0
-  ) {
-    let comments = "[]";
-    await Games.create({
-      title,
-      abstract,
-      info,
-      categories,
-      large_image: "C:/xampp/htdocs/IE-Express/Public/images/generalAvatar.png",
-      small_image: "C:/xampp/htdocs/IE-Express/Public/images/generalAvatar.png",
-      comments,
-    });
-    console.log("request body in /postGame: ", request.body);
-    response.send({ games: Games });
+  if (request.user) {
+    const { title, abstract, info, categories } = request.body;
+    if (
+      title.length !== 0 &&
+      abstract.length !== 0 &&
+      info.length !== 0 &&
+      categories.length !== 0
+    ) {
+      let comments = "[]";
+      await Games.create({
+        title,
+        abstract,
+        info,
+        categories,
+        large_image:
+          "C:/xampp/htdocs/IE-Express/Public/images/generalAvatar.png",
+        small_image:
+          "C:/xampp/htdocs/IE-Express/Public/images/generalAvatar.png",
+        comments,
+      });
+      console.log("request body in /postGame: ", request.body);
+      response.send({ games: Games });
+    } else {
+      response.sendStatus(404);
+    }
   } else {
-    response.sendStatus(404);
+    response.json({ unAuthCode: 1404 });
   }
 });
 // search games based on rate
@@ -85,34 +90,42 @@ gameRoute.post("/postgame", async (request, response) => {
 // });
 
 gameRoute.post("/updateGame", async (request, response) => {
-  const { _id, title, abstract, info, categories } = request.body;
-  let game = await Games.findOne({ _id: _id });
-  if (_id) {
-    await Games.updateMany(
-      { _id: _id },
-      {
-        $set: {
-          title: title,
-          abstract: abstract,
-          info: info,
-          categories: categories,
-        },
-      }
-    );
-    response.json({ game: game });
+  if (request.user) {
+    const { _id, title, abstract, info, categories } = request.body;
+    let game = await Games.findOne({ _id: _id });
+    if (_id) {
+      await Games.updateMany(
+        { _id: _id },
+        {
+          $set: {
+            title: title,
+            abstract: abstract,
+            info: info,
+            categories: categories,
+          },
+        }
+      );
+      response.json({ game: game });
+    } else {
+      response.sendStatus(400);
+    }
   } else {
-    response.sendStatus(400);
+    response.json({ unAuthCode: 1404 });
   }
 });
 gameRoute.post("/deleteGame", async (request, response) => {
-  const { _id } = request.body;
-  console.log("id to be deleted: ", _id);
-  if (_id) {
-    await Games.deleteMany({ _id: _id });
-    let game = await Games.find();
-    response.json({ game: game });
+  if (request.user) {
+    const { _id } = request.body;
+    console.log("id to be deleted: ", _id);
+    if (_id) {
+      await Games.deleteMany({ _id: _id });
+      let game = await Games.find();
+      response.json({ game: game });
+    } else {
+      response.sendStatus(404);
+    }
   } else {
-    response.sendStatus(404);
+    response.json({ unAuthCode: 1404 });
   }
 });
 // gameRoute.get("/:gameName/header", (request, response) => {

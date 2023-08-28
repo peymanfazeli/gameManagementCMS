@@ -314,13 +314,13 @@ nav {
 }
 .layer .layerTitle {
   margin-top: 10px;
-  margin-bottom: 2px;
+  margin-bottom: 0px;
   font-size: 12pt;
   line-height: 20px;
 }
 .layer .commentsNumber {
   position: absolute;
-  top: 35%;
+  top: 45%;
 }
 .firstView .banner {
   text-align: right;

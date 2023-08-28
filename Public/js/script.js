@@ -124,8 +124,9 @@ function initFvData(response, error) {
       <img src="${small_image}" alt="" class="owItemImg" gameId=${counter} />
       <p class="imgTitle">بررسی بازی  ${game.title}</p>
       <div class="layer" id='blueLayer'>
-        <h6 class="layerTitle">${game.title}</h6>
-        <p class="commentsNumber">تعداد نظرات : ${game.number_of_comments}</p>
+        <h4 class="layerTitle">${game.title}</h4>
+        <h6 class="gameCtgs">${game.categories}</h6>
+        <p class="commentsNumber">تعداد نظرات : ${game.comments.length}</p>
         <span  class="layerBtn" gameTitle="${game.title}#info" onclick="transferData(this)"> صفحه بازی</span>
       </div>
     </div>`;
@@ -493,7 +494,12 @@ function homePageHeader() {
   $(".nThreshold").css("background", "rgba(255, 255, 255, 0.2)");
   $(".nThreshold").css("backdrop-filter", "blur(5px)");
   $(".nThreshold").css("color", "white");
+
+  $(".nThreshold").css("border-radius", "20px");
 }
+// if ((window.location = "http://localhost:5500/Public/index.html")){
+
+// }
 function dataInit(locationToSendGuest) {
   initFixedHeader();
   homePageHeader();

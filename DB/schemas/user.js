@@ -36,7 +36,9 @@ const UserSchema = new mongoose.Schema({
       winCondition: { type: mongoose.SchemaTypes.String },
       clickNumber: { type: Number },
       timer: { type: Number },
+      cup: { type: Number },
     },
   ],
+  score: { type: mongoose.SchemaTypes.String },
 });
 module.exports = mongoose.model("Users", UserSchema);

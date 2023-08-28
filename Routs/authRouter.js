@@ -56,8 +56,10 @@ authRouter.post("/register", async (request, response) => {
             winCondition: "click",
             clickNumber: 10,
             timer: 0,
+            cup: 0,
           },
         ],
+        score: "Z",
       });
       const html = `
       <h1>سلام</h1>

@@ -366,7 +366,16 @@ function sendCommentResponse(response, error) {
     console.log("Error in sending Comment to server", error);
     return;
   } else {
-    console.log("Response in sending Comment to server", response);
+    if (response.unAuthCode) {
+      setTimeout(() => {
+        alert(" به دلیل وقفه طولانی باید مجددا وارد سایت شی"),
+          (window.location = "http://localhost:5500/Public/login.html");
+      }, 500);
+    } else {
+      setTimeout(() => {
+        alert("نظرتون ثبت شد"), location.reload();
+      }, 500);
+    }
   }
 }
 let cmHeaderString = "";

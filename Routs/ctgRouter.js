@@ -11,9 +11,9 @@ ctgRouter.get("/", async (request, response) => {
     let userCategories = request.user.ctg;
     userCategories.remove(0);
     // await User.updateOne({ _id: request.user._id }, { $pop: { ctg: 1 } });
-    response.send({ allCtg: allCategories, userCtg: userCategories });
+    return response.send({ allCtg: allCategories, userCtg: userCategories });
   } else {
-    response.sendStatus(404);
+    return response.send({ allCtg: allCategories });
   }
   // response.json({ allCtg: allCategories });
 });
@@ -55,13 +55,17 @@ ctgRouter.post("/ctgUpdate", async (request, response) => {
   // }
 });
 ctgRouter.post("/addCtg", async (request, response) => {
-  const { name } = request.body;
-  if (name.length >= 3) {
-    await categories.create({ name });
-    const allCtgs = await categories.find();
-    response.send({ ctgs: allCtgs });
+  if (request.user) {
+    const { name } = request.body;
+    if (name.length >= 3) {
+      await categories.create({ name });
+      const allCtgs = await categories.find();
+      response.send({ ctgs: allCtgs });
+    } else {
+      response.sendStatus(404);
+    }
   } else {
-    response.sendStatus(404);
+    response.json({ unAuthCode: 1404 });
   }
 });
 module.exports = ctgRouter;

@@ -516,45 +516,46 @@ window.onload = () => {
       e.preventDefault();
       clearSession();
     });
-    if (searchedGameResponseJson) {
-      console.log("transfered searched response: ", searchedGameResponseJson);
-      aside.css("display", "none");
-      bannerTitle.css("display", "block");
-      searchedKey = localStorage.getItem("typedLetters");
-      bannerTitle.html(`نتایج جستجو برای : ${searchedKey}`);
-      makeGameCards(searchedGameResponseJson);
-    } else {
-      // optional search must be initialized
-      console.log("**** nothing is searched and filters are available ****");
-      aside.css("display", "block");
-      bannerTitle.css("display", "none");
-
-      makeRatingPart();
-      makeCategoryPart();
-      initAllGames();
-
-      // }
-
-      //   $(".srContainer").on("click", function () {
-      //     if (isDataLoading) {
-      //       return;
-      //     }
-      //     isDataLoading = true;
-      //     loadFilters($(this), ".srContainer");
-      //   });
-      //   if (!isCatSelected) {
-      //     let a = initAllGames();
-      //     console.log("catArray: ", a);
-      //     // postFilterToServer(catArray);
-      //   } else {
-      //     catArray = [];
-      //   }
-    }
   } else {
     console.log("User is Offline");
     // window.location = "http://localhost:5500/Public/login.html";
   }
+  if (searchedGameResponseJson) {
+    console.log("transfered searched response: ", searchedGameResponseJson);
+    aside.css("display", "none");
+    bannerTitle.css("display", "block");
+    searchedKey = localStorage.getItem("typedLetters");
+    bannerTitle.html(`نتایج جستجو برای : ${searchedKey}`);
+    makeGameCards(searchedGameResponseJson);
+  } else {
+    // optional search must be initialized
+    console.log("**** nothing is searched and filters are available ****");
+    aside.css("display", "block");
+    bannerTitle.css("display", "none");
+
+    makeRatingPart();
+    makeCategoryPart();
+    initAllGames();
+
+    // }
+
+    //   $(".srContainer").on("click", function () {
+    //     if (isDataLoading) {
+    //       return;
+    //     }
+    //     isDataLoading = true;
+    //     loadFilters($(this), ".srContainer");
+    //   });
+    //   if (!isCatSelected) {
+    //     let a = initAllGames();
+    //     console.log("catArray: ", a);
+    //     // postFilterToServer(catArray);
+    //   } else {
+    //     catArray = [];
+    //   }
+  }
 };
+
 // let isClickable = true;
 
 // window.onload = () => {

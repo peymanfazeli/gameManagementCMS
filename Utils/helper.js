@@ -69,6 +69,31 @@ function findCommonElements(firstCollection, secondCollection) {
   }
   return sameCtg;
 }
+function calculateUserScore(prevCup, cupIndex) {
+  let totalCups = prevCup + cupIndex;
+  // let scoreClass = "";
+  if (totalCups > 0 && totalCups < 10) {
+    return "J";
+  } else if (totalCups > 10 && totalCups < 20) {
+    return "I";
+  } else if (totalCups > 20 && totalCups < 30) {
+    return "H";
+  } else if (totalCups > 30 && totalCups < 40) {
+    return "G";
+  } else if (totalCups > 40 && totalCups < 50) {
+    return "F";
+  } else if (totalCups > 50 && totalCups < 60) {
+    return "E";
+  } else if (totalCups > 60 && totalCups < 70) {
+    return "D";
+  } else if (totalCups > 70 && totalCups < 80) {
+    return "C";
+  } else if (totalCups > 80 && totalCups < 90) {
+    return "B";
+  } else if (totalCups > 90) {
+    return "A";
+  }
+}
 module.exports = {
   hashPassword,
   comparePass,
@@ -78,4 +103,5 @@ module.exports = {
   userToken,
   getCategories,
   findCommonElements,
+  calculateUserScore,
 };

@@ -185,16 +185,26 @@ function fillCtgItemsInUpdateGameDataForm(response, error) {
     console.log("Error in filling ctgItems in update dataForm: ", error);
     return;
   } else {
-    const adminCtgIdentifiers = document.querySelectorAll(
-      ".adminCtgIdentifier"
-    );
-    adminCtgIdentifiers.forEach((btn) => {
-      btn.addEventListener("click", (e) => {
-        e.preventDefault();
-        gameUpdatedCtgInput.value = btn.nextElementSibling.innerText;
+    if (response.unAuthCode) {
+      setTimeout(() => {
+        alert(" به دلیل وقفه طولانی باید مجددا وارد سایت شی"),
+          (window.location = "http://localhost:5500/Public/login.html");
+      }, 500);
+    } else {
+      // setTimeout(() => {
+      //   alert("تغییرات ذخیره شد"), location.reload();
+      // }, 500);
+      const adminCtgIdentifiers = document.querySelectorAll(
+        ".adminCtgIdentifier"
+      );
+      adminCtgIdentifiers.forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          e.preventDefault();
+          gameUpdatedCtgInput.value = btn.nextElementSibling.innerText;
+        });
       });
-    });
-    updateData();
+      updateData();
+    }
   }
 }
 searchBtn.addEventListener("click", async (e) => {

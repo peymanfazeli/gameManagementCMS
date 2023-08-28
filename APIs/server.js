@@ -55,7 +55,13 @@ app.use(async (request, response, next) => {
   }
   next();
 });
-
+// app.use(async (request, response, next) => {
+//   if (!request.user) {
+//     return response.json({ code: 1404 });
+//   } else {
+//     next();
+//   }
+// });
 app.use("/auth", authRoute);
 app.use("/admin", adminRoute);
 app.use("/profile", profileRoute);

@@ -158,7 +158,7 @@ let responseColor = "color:pink";
 function myFetch(path, method, callBack, data = "", func = "") {
   requestNum++;
 
-  console.group(`%c REQUEST #${requestNum}: ${path}`, requestColor);
+  console.groupCollapsed(`%c REQUEST #${requestNum}: ${path}`, requestColor);
 
   method === "GET"
     ? console.log(`%c ${method}=>${path}`, getMethod)
@@ -185,7 +185,10 @@ function myFetch(path, method, callBack, data = "", func = "") {
         // callBack(await response.json(), null);
         let serverRes = await response.json();
         callBack(serverRes, null);
-        console.group(`%c RESPONSE #${responseNum}: ${path}`, responseColor);
+        console.groupCollapsed(
+          `%c RESPONSE #${responseNum}: ${path}`,
+          responseColor
+        );
         if (response.status === 200) {
           console.log(`%c  status: ${response.status}`, resOk);
           console.log(`%c data is: ${JSON.stringify(serverRes)}`, resData);
