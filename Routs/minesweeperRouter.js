@@ -127,11 +127,6 @@ minesweeperRouter.post("/", async (request, response) => {
         }
         console.log("cups timerBase: ", cupIndex);
         if (prevTime < winIndex) {
-          // if (prevCup + cupIndex > 30 && prevCup + cupIndex < 50) {
-          //   scoreIndex = scoreIndex + "C";
-          // } else if (prevCup + cupIndex > 50 && prevCup + cupIndex < 60) {
-          //   scoreIndex = scoreIndex + "B";
-          // }
           await User.updateOne(
             { _id: user._id },
             {

@@ -80,11 +80,13 @@ function updateGridResponse(selectedLevel, update = false) {
       timerSet = true;
       timeleft = selectedLevel.time;
       timer.innerHTML = timeleft;
+      $("#reloadGame").attr("level", "timer");
     } else {
       isTimer = false;
       timerSet = false;
       clickNumber = 0;
       timer.innerHTML = clickNumber;
+      $("#reloadGame").attr("level", "click");
       clearInterval(gameTimer);
     }
 
@@ -114,6 +116,7 @@ function updateGridResponse(selectedLevel, update = false) {
   });
   $(".gCell").on("mousedown", function (event) {
     event.preventDefault();
+    console.log("grid type:", levels);
     if (event.which === 3) {
       const flaggedSpan = $(this);
       if (!flaggedSpan.hasClass("flag") && flaggedSpan.hasClass("revealed")) {
@@ -140,7 +143,6 @@ function updateGridResponse(selectedLevel, update = false) {
           if (isTimer === false) {
             if (!countedArr.includes(noneFlaggedSpan.index())) {
               increaseCounter(noneFlaggedSpan.index());
-              console.log("check countedArr length: ", countedArr.length);
             }
           } else if (timerSet === true) {
             gameTimerFunction(timeleft);
@@ -242,6 +244,7 @@ $(document).ready(function () {
       var selectedLevel = levels[defaultLevel];
       gridXsl = gXsl;
       // Initialize grid with default level
+      console.log("First loading grid");
       updateGridResponse(selectedLevel);
     },
     error: function () {
@@ -426,7 +429,7 @@ function revealAndCheck(index) {
 // Modal
 const btn = document.querySelector(".modal-btn");
 const input = document.querySelector(".field");
-const levelName = document.querySelector("#levelName");
+// const levelName = document.querySelector("#levelName");
 const lastRecord = document.querySelector("#lastRecord");
 const playerClass = document.querySelector("#playerClass");
 const modal = document.querySelector(".modal-content");
@@ -466,10 +469,9 @@ function getPlayerDataResponse(response, error) {
     input.value = user.userName;
     input.disabled = true;
     btn.disabled = true;
-    levelName.innerText = user.minesweeper[0].level;
+    // levelName.innerText = user.minesweeper[0].level;
     lastRecord.innerText = user.minesweeper[0].cup;
     playerClass.innerHTML = user.score;
-    reloadGame.setAttribute("level", `${user.minesweeper[0].level}`);
   }
 }
 
@@ -516,26 +518,22 @@ function postUserGameData(timer_counter) {
     "postUserGameDataResponse"
   );
 }
-function resetGameResponse(response, error) {
-  if (error) {
-    console.log("Error in resetting game", error);
-    return;
-  } else {
-    console.log("reset res: ", response);
-  }
-}
-function resetGameGrid(level) {
-  myFetch(
-    `mineseweeper/${level}`,
-    "GET",
-    resetGameResponse,
-    "",
-    "resetGameResponse"
-  );
-}
+
+let levelToReload = "";
 $("#reloadGame").click(function () {
-  // $(this).attr("level")
-  resetGameGrid($(this).attr("level"));
+  let gridType = $(this).attr("level");
+  console.log("rG", gridType);
+  if (gridType === "click") {
+    levelToReload = "Beginner";
+  } else {
+    levelToReload = "Harder";
+  }
+  const resetLevel = levels.find((level) => level.title === levelToReload);
+  console.log(resetLevel);
+  if (resetLevel) {
+    levelToPost = resetLevel.title;
+    updateGridResponse(resetLevel, true);
+  }
 });
 window.onload = () => {
   getPlayerData();
