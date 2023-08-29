@@ -245,7 +245,7 @@ function renderLeaderboardTab(tabInfo) {
   userScoreTemp.forEach((player, index) => {
     // console.log(index);
     // userNUm++;
-    if (index <= 3) {
+    if (index <= 2) {
       if (index === 0) {
         scorePosition = " highest";
       } else if (index === 1) {
@@ -257,7 +257,7 @@ function renderLeaderboardTab(tabInfo) {
 
       topThreeUsers += `
           <div class="person ${scorePosition}Score">
-          <span class="id">${index}</span>
+          <span class="id">${index + 1}</span>
           <div class="profile-pic">
             <img src="${correctImgAddress(player.avatar)}" alt="" />
             <span class="poly"><a>${player.cup}</a></span>

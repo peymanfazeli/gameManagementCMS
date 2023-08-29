@@ -8,6 +8,8 @@ const searchGameUpdateInputs = document.getElementById(
   "searchGameUpdateInputs"
 );
 const gameIdInput = document.querySelector("#gameIdInput");
+const gameAvatar = document.querySelector("#gameAvatar");
+let currentAction = gameAvatar.action;
 const searchBtn = document.querySelector("#searchBtn");
 const updateGameBtn = document.querySelector("#updateGameBtn");
 const deleteGameBtn = document.querySelector("#deleteGameBtn");
@@ -166,12 +168,14 @@ document
       name,
     });
   });
-
+console.log("game avatar form: ", gameAvatar);
+console.log("current action", currentAction);
 function fillUpdateGameDataInput(response) {
   console.log("response in searching games: ", response);
   let game = response.game;
   updateGameDataForm.style.display = "flex";
   gameIdInput.value = game._id;
+  gameAvatar.action = currentAction + game._id;
   gameUpdatedNameInput.value = game.title;
   gameUpdatedAbstractInput.value = game.abstract;
   gameUpdatedInfoInput.value = game.info;

@@ -60,9 +60,9 @@ gameRoute.post("/postgame", async (request, response) => {
         info,
         categories,
         large_image:
-          "C:/xampp/htdocs/IE-Express/Public/images/generalAvatar.png",
+          "C:/xampp/htdocs/IE-Express/Public/images/gameImages/generalAvatar.png",
         small_image:
-          "C:/xampp/htdocs/IE-Express/Public/images/generalAvatar.png",
+          "C:/xampp/htdocs/IE-Express/Public/images/gameImages/generalAvatar.png",
         comments,
       });
       console.log("request body in /postGame: ", request.body);

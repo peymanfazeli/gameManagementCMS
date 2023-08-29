@@ -48,7 +48,7 @@
           <div class="updateGameData">
             <div class="newGameSection" style="display: none">
               <label for="gameName">آی دی </label>
-              <input type="text" name="gameName" id="gameIdInput" disabled />
+              <input type="text" name="gameName" id="gameIdInput"  />
             </div>
             <div class="newGameSection">
               <label for="gameName">نام بازی</label>
@@ -72,6 +72,20 @@
               <div class="dropdown-content" id="dropdownContentUpdate" >
               </div>
             </div>
+            <div class="newGameSection" id="updateGamePhoto">
+              <label for="gamImg">تصویر بازی </label>
+              <form id="gameAvatar"
+              action="http://localhost:3001/assets/games/"
+              method="post"
+              enctype="multipart/form-data"
+              name="gameImg"
+            >
+              <input type="file" name="image" id="changeGameImage" />
+              <button class="btn" id="changeGamePhoto" type="submit">
+                آپلود تصویر بازی
+              </button>
+            </form>
+          </div>
             <div class="newGameSection btnContainer">
               <button class="btn practical" id="updateGameBtn">
                 ویرایش اطلاعات
@@ -100,10 +114,10 @@
             <div class="dropdown-content" id="dropdownContentRegister">
             </div>
           </div>
-          <div class="newGameSection">
-            <label for="abstract">امتیاز </label>
+          <!-- <div class="newGameSection"> -->
+            <!-- <label for="abstract">امتیاز </label>
             <textarea name="abstract" id="gameRateInput"></textarea>
-          </div>
+          </div> -->
           <button class="btn practical" id="registerGameBtn">ثبت</button>
         </div>
         <div class="addCategory panel">

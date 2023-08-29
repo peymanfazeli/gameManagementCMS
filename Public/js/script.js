@@ -121,7 +121,7 @@ function initFvData(response, error) {
       let small_image = correctImgAddress(game.small_image);
       BannerBgImg.push(large_image);
       carouselItems += `<div class="owItem">
-      <img src="${small_image}" alt="" class="owItemImg" gameId=${counter} />
+      <img src="${large_image}" alt="" class="owItemImg" gameId=${counter} />
       <p class="imgTitle">بررسی بازی  ${game.title}</p>
       <div class="layer" id='blueLayer'>
         <h4 class="layerTitle">${game.title}</h4>

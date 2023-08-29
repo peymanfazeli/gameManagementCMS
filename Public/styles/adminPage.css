@@ -43,6 +43,9 @@ section {
   flex-direction: column;
   /* justify-content: center; */
 }
+.allGames {
+  height: 100% !important;
+}
 #gameSetting .panel,
 #playerSetting .panel {
   padding: 1%;
