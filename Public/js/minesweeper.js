@@ -116,7 +116,7 @@ function updateGridResponse(selectedLevel, update = false) {
   });
   $(".gCell").on("mousedown", function (event) {
     event.preventDefault();
-    console.log("grid type:", levels);
+    // console.log("grid type:", levels);
     if (event.which === 3) {
       const flaggedSpan = $(this);
       if (!flaggedSpan.hasClass("flag") && flaggedSpan.hasClass("revealed")) {
@@ -244,7 +244,6 @@ $(document).ready(function () {
       var selectedLevel = levels[defaultLevel];
       gridXsl = gXsl;
       // Initialize grid with default level
-      console.log("First loading grid");
       updateGridResponse(selectedLevel);
     },
     error: function () {
@@ -466,7 +465,7 @@ function getPlayerDataResponse(response, error) {
     input.disabled = true;
     btn.disabled = true;
     // levelName.innerText = user.minesweeper[0].level;
-    lastRecord.innerText = user.minesweeper[0].cup;
+    lastRecord.innerText = user.cup;
     playerClass.innerHTML = user.score;
   }
 }
@@ -480,10 +479,16 @@ function postUserGameDataResponse(response, error) {
     if (response.addedCup) {
       setTimeout(() => {
         alert(`${response.addedCup}کاپ بهتون اضافه شد`);
+        location.reload();
       }, 500);
     } else if (response.lostGame) {
       setTimeout(() => {
         alert("سه تا کاپ ازدست دادی");
+        location.reload();
+      }, 500);
+    } else if (response.msg) {
+      setTimeout(() => {
+        alert("بازیو بردی ولی رکوردی نزدی کاپات عوض نمیشه");
       }, 500);
     }
   }

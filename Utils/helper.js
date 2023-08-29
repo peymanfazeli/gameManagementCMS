@@ -69,7 +69,22 @@ function findCommonElements(firstCollection, secondCollection) {
   }
   return sameCtg;
 }
-function decreaseCup(user, winIndex, prevTime, prevCup, cupIndex = 3) {
+let ans = 0;
+function decreaseCup(
+  user,
+  winIndex,
+  prevTime,
+  prevCup,
+  prevClickNum,
+  cupIndex = 3
+) {
+  ans = prevCup - cupIndex;
+  console.log("ans :", ans);
+  if (ans <= 0) {
+    ans = 0;
+  } else {
+    ans = prevCup - cupIndex;
+  }
   return User.updateOne(
     { _id: user._id },
     {
@@ -78,15 +93,28 @@ function decreaseCup(user, winIndex, prevTime, prevCup, cupIndex = 3) {
           {
             level: "Beginner",
             widCondition: "click",
-            clickNumber: winIndex,
+            clickNumber: prevClickNum,
+            clickNumberToLose: winIndex,
             timer: prevTime,
-            cup: prevCup - cupIndex,
+            // cup: ans,
           },
         ],
+        cup: ans,
         score: calculateUserScore(prevCup, cupIndex),
       },
     }
   );
+}
+function cupHandler(player) {
+  if (player.cup > 0 && player.cup <= 10) {
+    return "bronze";
+  } else if (player.cup > 10 && player.cup <= 20) {
+    return "silver";
+  } else if (player.cup > 20 && player.cup <= 30) {
+    return "gold";
+  } else if (player.cup === 0) {
+    return "metal";
+  }
 }
 function calculateUserScore(prevCup, cupIndex) {
   let totalCups = prevCup + cupIndex;
@@ -124,4 +152,5 @@ module.exports = {
   findCommonElements,
   decreaseCup,
   calculateUserScore,
+  cupHandler,
 };

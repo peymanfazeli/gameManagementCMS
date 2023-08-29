@@ -62,20 +62,20 @@ minesweeperRouter.post("/", async (request, response) => {
 
     let prevClickNum = user.minesweeper[0].clickNumber;
     let prevTime = user.minesweeper[0].timer;
-    let prevCup = user.minesweeper[0].cup;
+    let prevCup = user.cup;
     console.log("click Base game: ", prevClickNum);
     console.log("timer Base game: ", prevTime);
     console.log("prev cup in server: ", prevCup);
 
     if (levelToPost === "Beginner" && winningBy === "click") {
       if (winner) {
-        if (winIndex > 0 && winIndex < 3) {
+        if (winIndex > 0 && winIndex <= 3) {
           cupIndex = cupIndex + 9;
           console.log("win index=", winIndex, "and cupIndex is:", cupIndex);
-        } else if (winIndex > 3 && winIndex < 6) {
+        } else if (winIndex > 3 && winIndex <= 6) {
           cupIndex = cupIndex + 6;
           console.log("win index=", winIndex, "and cupIndex is:", cupIndex);
-        } else if (winIndex > 6 && winIndex < 9) {
+        } else if (winIndex > 6 && winIndex <= 9) {
           cupIndex = cupIndex + 3;
           console.log("win index=", winIndex, "and cupIndex is:", cupIndex);
         } else if (winIndex > 9) {
@@ -97,9 +97,10 @@ minesweeperRouter.post("/", async (request, response) => {
                     widCondition: "click",
                     clickNumber: winIndex,
                     timer: prevTime,
-                    cup: prevCup + cupIndex,
+                    // cup: prevCup + cupIndex,
                   },
                 ],
+                cup: prevCup + cupIndex,
                 score: calculateUserScore(prevCup, cupIndex),
               },
             }
@@ -115,16 +116,16 @@ minesweeperRouter.post("/", async (request, response) => {
         }
       } else {
         response.json({ lostGame: "ok" });
-        return decreaseCup(user, winIndex, prevTime, prevCup);
+        return decreaseCup(user, winIndex, prevTime, prevCup, prevClickNum);
       }
     } else if (levelToPost === "Harder" && winningBy === "timer") {
       cupIndex = 0;
       if (winner) {
-        if (winIndex > 100 && winIndex < 120) {
+        if (winIndex > 100 && winIndex <= 120) {
           cupIndex = cupIndex + 9;
-        } else if (winIndex > 80 && winIndex < 100) {
+        } else if (winIndex > 80 && winIndex <= 100) {
           cupIndex = cupIndex + 6;
-        } else if (winIndex > 60 && winIndex < 80) {
+        } else if (winIndex > 60 && winIndex <= 80) {
           cupIndex = cupIndex + 3;
         } else if (winIndex < 60) {
           cupIndex = cupIndex + 1;
@@ -141,16 +142,17 @@ minesweeperRouter.post("/", async (request, response) => {
                     widCondition: "timer",
                     clickNumber: prevClickNum,
                     timer: winIndex,
-                    cup: prevCup + cupIndex,
+                    // cup: prevCup + cupIndex,
                   },
                 ],
+                cup: prevCup + cupIndex,
                 score: calculateUserScore(prevCup, cupIndex),
               },
             }
           );
           response.json({
             addedCup: cupIndex,
-            totalCup: user.minesweeper[0].cup,
+            totalCup: user.cup,
           });
         } else {
           response.json({
@@ -159,7 +161,7 @@ minesweeperRouter.post("/", async (request, response) => {
         }
       } else {
         response.json({ lostGame: "ok" });
-        return decreaseCup(user, winIndex, prevTime, prevCup);
+        return decreaseCup(user, winIndex, prevTime, prevCup, prevClickNum);
       }
     }
   } else {

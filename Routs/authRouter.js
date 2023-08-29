@@ -55,10 +55,11 @@ authRouter.post("/register", async (request, response) => {
             level: "Beginner",
             winCondition: "click",
             clickNumber: 10,
+            clickNumberToLose: 0,
             timer: 0,
-            cup: 0,
           },
         ],
+        cup: 0,
         score: "Z",
       });
       const html = `

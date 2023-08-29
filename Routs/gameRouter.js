@@ -7,6 +7,7 @@ const User = require("../DB/schemas/user");
 const { get } = require("mongoose");
 const { stringify } = require("qs");
 
+const { cupHandler } = require("../Utils/helper");
 // const games = [
 //   {
 //     name: "call Of Duty",
@@ -148,7 +149,7 @@ gameRoute.get("/:gameName/:tab", async (request, response) => {
   const { gameName, tab } = request.params;
   let game = await Games.findOne({ title: gameName });
   let user = request.user;
-  // let commentsInGameDoc = game.comments;
+  let playerArray = [];
   console.log("tab is:", tab);
   // console.log("gameName/comments: ", game.comments)
   // console.log("userId: ", request.user._id);
@@ -184,6 +185,23 @@ gameRoute.get("/:gameName/:tab", async (request, response) => {
           related_Games: relatedGames,
           user: user,
         });
+      } else if (tab === "leaderboard") {
+        // cupHandler
+        const playerGame = await Games.find({ title: game.title });
+        const allUsers = await User.find();
+        Object.values(allUsers).forEach((user) => {
+          playerArray.push(user);
+          // response.json({players:})
+          // console.log(user.cup);
+        });
+        playerArray.sort((pa, pb) => {
+          return pb["cup"] - pa["cup"];
+        });
+        playerArray.forEach((p) => {
+          console.log(`${p.userName} => ${p.cup}`);
+        });
+
+        return response.json({ game: game, tab: tab, players: playerArray });
       } else {
         return response.json({ game: game, tab: tab, user: user });
       }

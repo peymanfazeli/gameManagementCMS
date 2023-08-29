@@ -2,7 +2,7 @@ let keysValues = window.location.search;
 const urlParams = new URLSearchParams(keysValues);
 const param = urlParams.get("game");
 let gameTitle = param;
-console.log("********Recieved gameTitle:", gameTitle);
+// console.log("********Recieved gameTitle:", gameTitle);
 let tail;
 let homepage;
 let gameName;
@@ -48,7 +48,7 @@ function loadGameAndTabs(response, error) {
   } else {
     const gameObject = response.game;
     renderHeader(gameObject);
-    console.log("tab part: ", getTabFromUrl());
+    // console.log("tab part: ", getTabFromUrl());
 
     if (getTabFromUrl()) {
       loadTabDataFromUrl();
@@ -60,17 +60,19 @@ function loadDataBasedOnTab(response, error) {
     console.log("Error while loading tab data: ", error);
     return;
   } else {
-    console.log("tab Data response: ", response);
+    // console.log("tab Data response: ", response);
     const mainObject = response;
     tab = response.tab;
     // playersId=response.playersId
     let game = response.game;
+    console.log("tab: ", response);
     if (tab === "leaderboard") {
-      renderLeaderboardTab(game);
+      renderLeaderboardTab(response.players);
     } else if (tab === "comments") {
       renderCommentTab(game);
       // commentsFlag = 1;
     } else if (tab === "related_games") {
+      // console.log("related game must be rendered");
       renderRelatedGamesTab(mainObject.related_Games);
     } else if (tab === "gallery") {
       console.log(game);
@@ -187,7 +189,6 @@ function selectTab(tabId) {
 // };
 // // Rendering
 function renderHeader(game) {
-  console.log("game: ", game);
   htmlString = `
   <img
    id="bannerImg"
@@ -225,131 +226,137 @@ function renderInfoTab(gameInfo) {
     makeElement(htmlString, informationDiv);
   }
 }
-// function renderLeaderboardTab(tabInfo) {
-//   console.log(tabInfo);
-//   htmlString = "";
-//   // rating section of game
-//   let tableUserString = "";
-//   let topThreeUsers = "";
-//   const userTable = $(".table");
-//   let userNUm = 0;
-//   let maxScore;
-//   let scorePosition;
-//   leaderbordMembers = tabInfo.response.result.leaderboard;
-//   let userScoreTemp = leaderbordMembers;
-//   if (leaderbordMembers.length < 1) {
-//     $(".noRate").css("display", "block");
-//   }
-//   userScoreTemp.forEach((player) => {
-//     userNUm++;
-//     if (userNUm <= 3) {
-//       if (userNUm === 1) {
-//         scorePosition = " highest";
-//       } else if (userNUm === 2) {
-//         scorePosition = " second";
-//       } else {
-//         scorePosition = " third";
-//       }
-//       topThreeUsers += `
-//           <div class="person ${scorePosition}Score">
-//           <span class="id">${userNUm}</span>
-//           <div class="profile-pic">
-//             <img src="${player.player.avatar}" alt="" />
-//             <span class="poly"><a>${player.level}</a></span>
-//           </div>
-//           <div class="profile-desc">
-//             <a class="profile-name">${player.player.name}</a>
-//             <a class="profile-score">${player.score}</a>
-//           </div>
-//           <div class="rating">
-//             <input type="radio" name="rating" value="5" id="5" /><label
-//               for="5"
-//               >☆</label
-//             >
-//             <input type="radio" name="rating" value="4" id="4" /><label
-//               for="4"
-//               >☆</label
-//             >
-//             <input type="radio" name="rating" value="3" id="3" /><label
-//               for="3"
-//               >☆</label
-//             >
-//             <input type="radio" name="rating" value="2" id="2" /><label
-//               for="2"
-//               >☆</label
-//             >
-//             <input type="radio" name="rating" value="1" id="1" /><label
-//               for="1"
-//               >☆</label
-//             >
-//           </div>
-//         </div>`;
-//     }
-//     htmlString = `
-//     <h5 class="rgHeader">رتبه بندی </h5>
-//       <!-- bg and centeralization -->
-//       <div class="body-container">
-//         <!-- card -->
-//         <div class="container">
-//           <!-- Top 3 -->
-//           <section class="top">
-//           ${topThreeUsers}
-//           </section>
-//           <!-- tabel section -->
-//           <section class="table">
-//           ${(tableUserString += `<div class="person">
-//           <!-- field1 -->
-//           <div class="div1">
-//             <span class="id">${userNUm}</span>
-//             <div class="profile-pic">
-//               <span class="poly"><a>${player.level}</a></span>
-//               <img src="${player.player.avatar}" alt="">
-//           </div>
-//           </div>
-//           <!-- field2 -->
-//           <div class="div2">
-//           <div class="profile-desc">
-//             <a class="profile-name">${player.player.name}</a>
-//             <a class="profile-score">${player.score}</a>
-//           </div>
-//           </div>
-//           <!-- lastfield -->
-//           <div class="div3">
-//             <div class="rating">
-//               <input type="radio" name="rating" value="5" id="5"><label for="5">☆</label>
-//               <input type="radio" name="rating" value="4" id="4"><label for="4">☆</label>
-//               <input type="radio" name="rating" value="3" id="3"><label for="3">☆</label>
-//               <input type="radio" name="rating" value="2" id="2"><label for="2">☆</label>
-//               <input type="radio" name="rating" value="1" id="1"><label for="1">☆</label>
-//             </div>
-//           </div>
-//       </div>`)}
-//           </section>
-//           <!-- @todo more -->
-//           <section class="more">...</section>`;
-//   });
-//   makeElement(htmlString, ratingTab);
-// }
-function cmRating(data) {
-  // ratingPart
-  let cmStars = 5;
-  let cmRate;
-  let userRateString = "";
-  let userRateStarDiff;
-  let acc = 0;
-  cmRate = Math.trunc(data.rate);
-  userRateStarDiff = cmStars - cmRate;
-  if (cmRate >= 1 || cmRate <= 5) {
-    for (let filledStar = 1; filledStar <= cmRate; filledStar++) {
-      userRateString += `<a href="#" class="fa fa-star checked"></a>`;
-      acc++;
+function renderLeaderboardTab(tabInfo) {
+  console.log("leaderboaed tab rendering", tabInfo);
+  htmlString = "";
+  // rating section of game
+  let tableUserString = "";
+  let topThreeUsers = "";
+  const userTable = $(".table");
+  let userNUm = 0;
+  let maxScore;
+  let scorePosition;
+  leaderbordMembers = tabInfo;
+  let userScoreTemp = leaderbordMembers;
+  console.log("leaderbord mem length:", leaderbordMembers.length);
+  if (leaderbordMembers.length < 1) {
+    $(".noRate").css("display", "block");
+  }
+  userScoreTemp.forEach((player, index) => {
+    // console.log(index);
+    // userNUm++;
+    if (index <= 3) {
+      if (index === 0) {
+        scorePosition = " highest";
+      } else if (index === 1) {
+        scorePosition = " second";
+      } else {
+        scorePosition = " third";
+      }
+      //
+
+      topThreeUsers += `
+          <div class="person ${scorePosition}Score">
+          <span class="id">${index}</span>
+          <div class="profile-pic">
+            <img src="${correctImgAddress(player.avatar)}" alt="" />
+            <span class="poly"><a>${player.cup}</a></span>
+          </div>
+          <div class="profile-desc">
+            <a class="profile-name">${player.userName}</a>
+            <a class="profile-score">${player.score}</a>
+          </div>
+          <div class="rating">
+            <input type="radio" name="rating" value="5" id="5" /><label
+              for="5"
+              >☆</label
+            >
+            <input type="radio" name="rating" value="4" id="4" /><label
+              for="4"
+              >☆</label
+            >
+            <input type="radio" name="rating" value="3" id="3" /><label
+              for="3"
+              >☆</label
+            >
+            <input type="radio" name="rating" value="2" id="2" /><label
+              for="2"
+              >☆</label
+            >
+            <input type="radio" name="rating" value="1" id="1" /><label
+              for="1"
+              >☆</label
+            >
+          </div>
+        </div>`;
     }
-  }
-  for (let emptyStar = acc; emptyStar < cmStars; emptyStar++) {
-    userRateString += `<a href="#" class="fa fa-star"></a>`;
-  }
-  return userRateString;
+    console.log("scoreposition: ", player.score);
+    console.log("Hey and ", topThreeUsers);
+    htmlString = `
+  <h5 class="rgHeader">رتبه بندی </h5>
+    <!-- bg and centeralization -->
+    <div class="body-container">
+      <!-- card -->
+      <div class="container">
+        <!-- Top 3 -->
+        <section class="top">
+        ${topThreeUsers}
+        </section>
+        <!-- tabel section -->
+        <section class="table">
+        ${(tableUserString += `<div class="person">
+        <!-- field1 -->
+        <div class="div1">
+          <span class="id">${index}</span>
+          <div class="profile-pic">
+            <span class="poly"><a>${player.cup}</a></span>
+            <img src="${correctImgAddress(player.avatar)}" alt="">
+        </div>
+        </div>
+        <!-- field2 -->
+        <div class="div2">
+        <div class="profile-desc">
+          <a class="profile-name">${player.userName}</a>
+          <a class="profile-score">${player.score}</a>
+        </div>
+        </div>
+        <!-- lastfield -->
+        <div class="div3">
+          <div class="rating">
+            <input type="radio" name="rating" value="5" id="5"><label for="5">☆</label>
+            <input type="radio" name="rating" value="4" id="4"><label for="4">☆</label>
+            <input type="radio" name="rating" value="3" id="3"><label for="3">☆</label>
+            <input type="radio" name="rating" value="2" id="2"><label for="2">☆</label>
+            <input type="radio" name="rating" value="1" id="1"><label for="1">☆</label>
+          </div>
+        </div>
+    </div>`)}
+        </section>
+        <!-- @todo more -->
+        <section class="more">...</section>`;
+  });
+  makeElement(htmlString, ratingTab);
 }
+// function cmRating(data) {
+//   // ratingPart
+//   let cmStars = 5;
+//   let cmRate;
+//   let userRateString = "";
+//   let userRateStarDiff;
+//   let acc = 0;
+//   cmRate = Math.trunc(data.rate);
+//   userRateStarDiff = cmStars - cmRate;
+//   if (cmRate >= 1 || cmRate <= 5) {
+//     for (let filledStar = 1; filledStar <= cmRate; filledStar++) {
+//       userRateString += `<a href="#" class="fa fa-star checked"></a>`;
+//       acc++;
+//     }
+//   }
+//   for (let emptyStar = acc; emptyStar < cmStars; emptyStar++) {
+//     userRateString += `<a href="#" class="fa fa-star"></a>`;
+//   }
+//   return userRateString;
+// }
 function validateUserCommenting(response, error) {
   if (error) {
     console.log("Error in validating user while commenting", error);
@@ -614,7 +621,7 @@ function tabLoadingResponse(response, error) {
     let game = response.game;
     let tab = response.tab;
     let user = response.user;
-    console.log("user: ", user);
+    // console.log("user: ", user);
     if (tab === "comments") {
       renderCommentTab(game);
       console.log("comment tab of " + game.title + " must be rendered");
@@ -627,7 +634,7 @@ function tabLoadingResponse(response, error) {
   }
 }
 function loadTabDataFromUrl(tabName) {
-  console.log("load tab data");
+  // console.log("load tab data");
   tabName = getTabFromUrl();
   myFetch(
     `games/${gameTitle}/${tabName}`,

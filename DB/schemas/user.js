@@ -35,10 +35,12 @@ const UserSchema = new mongoose.Schema({
       level: { type: mongoose.SchemaTypes.String },
       winCondition: { type: mongoose.SchemaTypes.String },
       clickNumber: { type: Number },
+      clickNumberToLose: { type: Number },
       timer: { type: Number },
-      cup: { type: Number },
+      // cup: { type: Number },
     },
   ],
+  cup: { type: Number },
   score: { type: mongoose.SchemaTypes.String },
 });
 module.exports = mongoose.model("Users", UserSchema);
