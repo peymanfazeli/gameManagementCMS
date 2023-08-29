@@ -1,7 +1,7 @@
 const { Router } = require("express");
 
 const User = require("../DB/schemas/user");
-const { calculateUserScore } = require("../Utils/helper");
+const { decreaseCup, calculateUserScore } = require("../Utils/helper");
 
 const minesweeperRouter = Router();
 minesweeperRouter.get("/", (request, response) => {
@@ -104,7 +104,10 @@ minesweeperRouter.post("/", async (request, response) => {
               },
             }
           );
-          response.json({ cup: user.minesweeper[0].cup });
+          response.json({
+            addedCup: cupIndex,
+            totalCup: user.minesweeper[0].cup,
+          });
         } else {
           response.json({
             msg: "clickBased winning but record is not changed",
@@ -112,6 +115,7 @@ minesweeperRouter.post("/", async (request, response) => {
         }
       } else {
         response.json({ lostGame: "ok" });
+        return decreaseCup(user, winIndex, prevTime, prevCup);
       }
     } else if (levelToPost === "Harder" && winningBy === "timer") {
       cupIndex = 0;
@@ -144,7 +148,10 @@ minesweeperRouter.post("/", async (request, response) => {
               },
             }
           );
-          response.json({ cup: user.minesweeper[0].cup });
+          response.json({
+            addedCup: cupIndex,
+            totalCup: user.minesweeper[0].cup,
+          });
         } else {
           response.json({
             msg: "time Based winning but record is not changed",
@@ -152,6 +159,7 @@ minesweeperRouter.post("/", async (request, response) => {
         }
       } else {
         response.json({ lostGame: "ok" });
+        return decreaseCup(user, winIndex, prevTime, prevCup);
       }
     }
   } else {

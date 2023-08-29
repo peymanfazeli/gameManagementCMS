@@ -69,6 +69,25 @@ function findCommonElements(firstCollection, secondCollection) {
   }
   return sameCtg;
 }
+function decreaseCup(user, winIndex, prevTime, prevCup, cupIndex = 3) {
+  return User.updateOne(
+    { _id: user._id },
+    {
+      $set: {
+        minesweeper: [
+          {
+            level: "Beginner",
+            widCondition: "click",
+            clickNumber: winIndex,
+            timer: prevTime,
+            cup: prevCup - cupIndex,
+          },
+        ],
+        score: calculateUserScore(prevCup, cupIndex),
+      },
+    }
+  );
+}
 function calculateUserScore(prevCup, cupIndex) {
   let totalCups = prevCup + cupIndex;
   // let scoreClass = "";
@@ -103,5 +122,6 @@ module.exports = {
   userToken,
   getCategories,
   findCommonElements,
+  decreaseCup,
   calculateUserScore,
 };

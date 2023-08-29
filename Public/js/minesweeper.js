@@ -18,9 +18,9 @@ const levels = Array.from(doc.querySelectorAll("level")).map((level) => ({
     ? parseInt(level.querySelector("time").textContent)
     : null,
 }));
-console.log("Title :", title);
-console.log("Default Level: ", defaultLevel);
-console.log("Levels: ", levels);
+// console.log("Title :", title);
+// console.log("Default Level: ", defaultLevel);
+// console.log("Levels: ", levels);
 // Handlers
 const counterBox = document.querySelector(".counter");
 const timer = document.querySelector("#timer");
@@ -275,11 +275,9 @@ function checkWinStatus(isRightClick, index) {
 
   if (allRevealedSpans === allGcells - allMines && flagNumber === allMines) {
     setTimeout(() => {
-      alert("You are Winner");
-      console.log("timer: ", timer.innerText);
       winner = true;
       postUserGameData(timer.innerText);
-    }, 500);
+    }, 300);
     $(".smile").attr("data-value", "win");
     $(".grid").children().off("mousedown contextmenu");
     clearTimeout(gameTimer);
@@ -310,10 +308,9 @@ function mineClicked(index) {
   $(".grid").children().off("mousedown contextmenu");
   clearTimeout(gameTimer);
   setTimeout(() => {
-    alert("Game Over");
     winner = false;
     postUserGameData(timer.innerText);
-  }, 500);
+  }, 300);
 }
 
 // checking if the cell that is sent is in the grid border to send matrix or no
@@ -454,7 +451,6 @@ function increaseCounter(index) {
   clickNumber++;
   timer.innerHTML = clickNumber;
   countedArr.push(index);
-  console.log(countedArr);
 }
 
 // testPart
@@ -481,7 +477,15 @@ function postUserGameDataResponse(response, error) {
     return;
   } else {
     console.log("Response in sending users game data: ", response);
-    console.log("prev Cup", response.cup);
+    if (response.addedCup) {
+      setTimeout(() => {
+        alert(`${response.addedCup}کاپ بهتون اضافه شد`);
+      }, 500);
+    } else if (response.lostGame) {
+      setTimeout(() => {
+        alert("سه تا کاپ ازدست دادی");
+      }, 500);
+    }
   }
 }
 function getPlayerData() {
